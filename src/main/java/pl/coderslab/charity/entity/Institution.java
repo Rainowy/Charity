@@ -23,4 +23,6 @@ public class Institution {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<Donation> donations = new ArrayList<>();
+
+    private String testowanie;
 }
