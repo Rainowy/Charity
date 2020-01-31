@@ -28,11 +28,13 @@ public class HomeController {
 //    }
 
     @GetMapping("/")
-    @ResponseBody
-    public List<InstitutionPartialView> home(Model model){
+//    @ResponseBody
+//    public List<InstitutionPartialView> home(Model model){
+    public String home(Model model){
 
         List<InstitutionPartialView> allInstitutions = institutionService.getAllInstitutions();
         System.out.println(institutionService.getAllInstitutions());
+        model.addAttribute("institutions",allInstitutions);
 
 
         for(InstitutionPartialView s : allInstitutions){
@@ -40,6 +42,7 @@ public class HomeController {
 
         }
 
-        return allInstitutions;
+//        return allInstitutions;
+        return "index";
     }
 }
