@@ -15,7 +15,7 @@ public class InstitutionService {
         this.institutionRepository = institutionRepository;
     }
 
-    public List<InstitutionPartialView> getAllInstitutions(){
+    public List<InstitutionPartialView> getAllInstitutions() {
         return institutionRepository.findAllByOrderByIdAsc();
     }
 }

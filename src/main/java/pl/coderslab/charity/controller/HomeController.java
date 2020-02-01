@@ -3,13 +3,17 @@ package pl.coderslab.charity.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.Repository.InstitutionPartialView;
 import pl.coderslab.charity.service.InstitutionService;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/")
 public class HomeController {
 
     private InstitutionService institutionService;
@@ -18,31 +22,16 @@ public class HomeController {
         this.institutionService = institutionService;
     }
 
-    //    @GetMapping("/")
-//    @ResponseBody
-//    public ModelAndView home() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("index");
-//        return modelAndView;
-//
-//    }
+    @ModelAttribute("institutions")
+    List<InstitutionPartialView> showInstitutions(){
+        return institutionService.getAllInstitutions();
+    }
 
-    @GetMapping("/")
-//    @ResponseBody
-//    public List<InstitutionPartialView> home(Model model){
-    public String home(Model model){
-
-        List<InstitutionPartialView> allInstitutions = institutionService.getAllInstitutions();
-        System.out.println(institutionService.getAllInstitutions());
-        model.addAttribute("institutions",allInstitutions);
-
-
-        for(InstitutionPartialView s : allInstitutions){
-            System.out.println(s.getDescription() + " OPIS");
-
-        }
-
-//        return allInstitutions;
-        return "index";
+    @GetMapping()
+    public ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("institutions",showInstitutions());
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 }

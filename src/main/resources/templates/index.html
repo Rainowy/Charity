@@ -101,66 +101,45 @@
 
         <ul class="help--slides-items">
             <li>
-                <div class="col">
-                    <div th:text="${institutions.get(0).getName()}" class="title"></div>
-                    <div th:text="${institutions.get(0).getDescription()}" class="subtitle"></div>
-                </div>
-                <div class="col">
-                    <div th:text="${institutions.get(1).getName()}" class="title"></div>
-                    <div th:text="${institutions.get(1).getDescription()}" class="subtitle"></div>
+                <div th:if="${institutionStat.index < 2}" th:each="institution : ${institutions}" class="col">
+                    <div th:text="${institutions.get(institutionStat.index).getName()}" class="title"></div>
+                    <div th:text="${institutions.get(institutionStat.index).getDescription()}" class="subtitle"></div>
                 </div>
             </li>
             <li>
-                <div class="col">
-                    <div th:text="${institutions.get(2).getName()}" class="title"></div>
-                    <div th:text="${institutions.get(2).getDescription()}" class="subtitle"></div>
-                </div>
-                <div class="col">
-                    <div th:text="${institutions.get(3).getName()}" class="title"></div>
-                    <div th:text="${institutions.get(3).getDescription()}" class="subtitle"></div>
+                <div th:if="${institutionStat.index == 2 || institutionStat.index ==3} "
+                     th:each="institution : ${institutions}" class="col">
+                    <div th:text="${institutions.get(institutionStat.index).getName()}" class="title"></div>
+                    <div th:text="${institutions.get(institutionStat.index).getDescription()}" class="subtitle"></div>
                 </div>
             </li>
+            <li>
+                <div th:if="${institutionStat.index > 3}" th:each="institution : ${institutions}" class="col">
+                    <div th:text="${institutions.get(institutionStat.index).getName()}" class="title"></div>
+                    <div th:text="${institutions.get(institutionStat.index).getDescription()}" class="subtitle"></div>
+                </div>
+            </li>
+            <!--<li>-->
+            <!--<div class="col">-->
+            <!--<div th:text="${institutions.get(0).getName()}" class="title"></div>-->
+            <!--<div th:text="${institutions.get(0).getDescription()}" class="subtitle"></div>-->
             <!--</div>-->
-            <!--<div  th:text="${institutions.get(1).getName()}" class="title"></div>-->
-            <!--<div th:text="${institutions.get(institutionStat.index +1).getName()}" class="title"></div>-->
-            <!--<div th:text="${institution.getDescription()}" class="subtitle"></div>-->
-            <!--th:if="${institutionStat.index ==0}"-->
-
-            <!--<div class="title">Fundacja "Dbam o Zdrowie"</div>-->
-            <!--<div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>-->
-            <!--<div class="title">Fundacja "Dbam o Zdrowie"</div>-->
-            <!--<div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>-->
+            <!--<div class="col">-->
+            <!--<div th:text="${institutions.get(1).getName()}" class="title"></div>-->
+            <!--<div th:text="${institutions.get(1).getDescription()}" class="subtitle"></div>-->
             <!--</div>-->
-            <!--th:each="institution : ${institutions}"-->
-            <!--<div th:if="${institutionStat.index >= 2}" class="col">-->
-            <!--<div  class="col">-->
-            <!--<div th:each="institution : ${institutions}" th:if="${institutionStat.index >=2}" class="col">-->
+            <!--</li>-->
+            <!--<li>-->
             <!--<div class="col">-->
             <!--<div th:text="${institutions.get(2).getName()}" class="title"></div>-->
             <!--<div th:text="${institutions.get(2).getDescription()}" class="subtitle"></div>-->
+            <!--</div>-->
+            <!--<div class="col">-->
             <!--<div th:text="${institutions.get(3).getName()}" class="title"></div>-->
             <!--<div th:text="${institutions.get(3).getDescription()}" class="subtitle"></div>-->
-            <!--<div th:text="${institutions.get(institutionStat.index  ).getName()}" class="title"></div>-->
-            <!--<div th:text="${institutions.get(institutionStat.index  ).getName()}" class="title"></div>-->
             <!--</div>-->
-            <!--<div class="title">Fundacja "A kogo"</div>-->
-            <!--<div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>-->
-            <!--<div th:text="${institution.getName()}" class="title"></div>-->
-            <!--<div th:text="${institution.getDescription()}" class="subtitle"></div>-->
-
-
-            <!--<li>-->
-            <!--<div class="col">-->
-            <!--<div class="title">Fundacja “Dla dzieci"</div>-->
-            <!--<div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>-->
-            <!--</div>-->
-            <!--<div class="col">-->
-            <!--<div class="title">Fundacja “Bez domu”</div>-->
-            <!--<div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>-->
-            <!--</div>-->
-
             <!--</li>-->
-
+            <!---->
         </ul>
 
     </div>
