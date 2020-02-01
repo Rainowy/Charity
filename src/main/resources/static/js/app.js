@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     this.currentStep++;
                     this.updateForm();
+                    myFunction() // dodane przezemnie
                 });
             });
 
@@ -138,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     this.currentStep--;
                     this.updateForm();
+                    myFunction() // dodane przezemnie
                 });
             });
 
@@ -168,10 +170,51 @@ document.addEventListener("DOMContentLoaded", function () {
             // TODO: get data from inputs and show them in summary
         }
 
+
     }
+
+
+
 
     const form = document.querySelector(".form--steps");
     if (form !== null) {
         new FormSteps(form);
     }
+
+    // $('input').on('blur', function() {
+    //     let summary = [];
+    //     $('input').each( function() {
+    //         // summary += $(this).val() + ' ';
+    //         summary.push($(this).val())
+    //     });
+    //     // $('#summary').text(summary);
+    //     $('#1').text(summary[0])
+    //     $('#2').text(summary[1])
+    //     $('#3').text(summary[2])
+    //     $('#4').text(summary[3])
+    //     $('#5').text(summary[4])
+    //     $('#6').text(summary[5])
+    //     $('#7').text(summary[6])
+    //     $('#8').text(summary[7])
+    //     $('#9').text(summary[8])
+    // });
+    // $("#bags_id").html(document.getElementById("bags").value);
+    // var firstName = document.getElementsByName("bags")[0].value;
+    // var pierwszy = document.getElementById('bags').value;
+    // $("#bags_id").html(pierwszy)
+    // // alert(pierwszy)
+    // myFunction()
+    //
+    // function myFunction() {
+    //     var test = document.getElementById("bags").value;
+    //     console.log(test)
+    //     $("#bags_id").html(test)
+    // }
+    function myFunction() {
+        var x = document.getElementById("bags").value;
+        // document.getElementById("demo").innerHTML = x;
+        console.log(x)
+        $("#bags_id").html(document.getElementById("bags").value);
+    }
+
 });
