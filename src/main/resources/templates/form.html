@@ -89,16 +89,17 @@
         <!--<form action="form-confirmation.html" method="post">-->
         <form action="#" th:action="@{/donation/form}" th:object="${donation}" method="post">
             <!-- STEP 1: class .active is switching steps -->
-            <div  data-step="1" class="active">
+            <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
 
-                <!--<div th:each="category : ${categories}" class="form-group form-group&#45;&#45;checkbox">-->
+                <!--<div th:each="category : ${categoriess}" class="form-group form-group&#45;&#45;checkbox">-->
                     <!--<label>-->
                         <!--&lt;!&ndash;<th:block th:each="category : ${categories}">&ndash;&gt;-->
                         <!--&lt;!&ndash;th:value="${category.id}"&ndash;&gt;-->
-                        <!--<input id="category" type="checkbox"  th:value="${category.id}" th:checked="${category.getName()}"/>-->
+                        <!--<input type="checkbox" th:id="'myForm' + ${category.id}" th:value="${category.id}"-->
+                               <!--th:name="${category.name}"/>-->
                         <!--<span class="checkbox"></span>-->
-                        <!--<span  th:name="${category.name}" th:text="${category.name}"-->
+                        <!--<span th:text="${category.name}"-->
                               <!--class="description"> </span>-->
                         <!--&lt;!&ndash;</th:block>&ndash;&gt;-->
                         <!--&lt;!&ndash;<th:block th:each="category : ${categories}">&ndash;&gt;-->
@@ -107,48 +108,57 @@
                         <!--&lt;!&ndash;</th:block>&ndash;&gt;-->
                     <!--</label>-->
                 <!--</div>-->
+                <!--th:field="*{categories}"-->
+                <!--th:checked="${category.getName()}"-->
                 <!--id="category"-->
                 <!--name="categories"-->
 
-                <!--<div class="form-group form-group&#45;&#45;checkbox">-->
+                <th:block th:each="category : ${categoriess}">
+                <div class="form-group form-group--checkbox">
+
+                        <label   th:name="${category.name}" >
+
+                            <input
+                                    type="checkbox"
+                                    name="categories"
+                                    th:id="'myForm' + ${category.id}"
+
+                                    th:value="${category.id}"/>
+                            <!--th:name="${category.name}"-->
+                            <span class="checkbox"></span>
+                            <span class="description"  th:text="${category.name}"
+                            ></span>
+
+                        </label>
+
+                </div>
+                </th:block>
+
+                <!--<div  class="form-group form-group&#45;&#45;checkbox">-->
                 <!--<label>-->
-                <!--<th:block th:each="category : ${categories}">-->
                 <!--<input-->
                 <!--type="checkbox"-->
                 <!--name="categories"-->
-                <!--th:value="${category.getId()}"/>-->
+                <!--id="category1"-->
+                <!--th:value="${categories.get(0).id}"-->
+                <!--th:name="${categories.get(0).name}"/>-->
                 <!--<span class="checkbox"></span>-->
-                <!--<span class="description" th:value="${category.getName()}"-->
-                <!--&gt;</span>-->
-                <!--</th:block>-->
+                <!--<span class="description"th:text="${categories.get(0).getName()}"></span>-->
                 <!--</label>-->
                 <!--</div>-->
+                <!--<div class="form-group form-group&#45;&#45;checkbox">-->
+                <!--<label>-->
+                <!--<input-->
+                <!--type="checkbox"-->
+                <!--name="categories"-->
+                <!--id="category2"-->
+                <!--th:value="${categories.get(1).id}"-->
+                <!--th:name="${categories.get(1).name}"/>-->
 
-                <div  class="form-group form-group--checkbox">
-                    <label>
-                        <input
-                                type="checkbox"
-                                name="categories"
-                                id="category1"
-                                th:value="${categories.get(0).id}"
-                                th:name="${categories.get(0).name}"/>
-                        <span class="checkbox"></span>
-                        <span class="description"th:text="${categories.get(0).getName()}"></span>
-                    </label>
-                </div>
-                <div class="form-group form-group--checkbox">
-                    <label>
-                        <input
-                                type="checkbox"
-                                name="categories"
-                                id="category2"
-                                th:value="${categories.get(1).id}"
-                                th:name="${categories.get(1).name}"/>
-
-                        <span class="checkbox"></span>
-                        <span class="description"th:text="${categories.get(1).getName()}"></span>
-                    </label>
-                </div>
+                <!--<span class="checkbox"></span>-->
+                <!--<span class="description"th:text="${categories.get(1).getName()}"></span>-->
+                <!--</label>-->
+                <!--</div>-->
 
                 <!--<div class="form-group form-group&#45;&#45;checkbox">-->
                 <!--<label>-->
@@ -314,11 +324,13 @@
                             <li>
                                 <span class="icon icon-bag"></span>
                                 <!--<span class="summary&#45;&#45;text">4 worki ubrań w dobrym stanie dla dzieci</span>-->
-                                <span class="summary--text"><div id="categorySummary"></div> WORKÓW <div
-                                        id="quantitySummary"></div></span>
+                                <span class="summary--text"></span>
+                                <div id="categorySummary"></div>
                             </li>
 
                             <li>
+                                <!--<div id="categorySummary"></div> WORKÓW <div-->
+                                    <!--id="quantitySummary"></div>-->
 
                                 <span class="icon icon-hand"></span>
                                 <!--<span class="summary&#45;&#45;text">Dla fundacji "Mam marzenie" w Warszawie</span>-->

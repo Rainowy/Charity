@@ -218,6 +218,23 @@ document.addEventListener("DOMContentLoaded", function () {
         // var x = document.getElementById("bags").value;
         // document.getElementById("demo").innerHTML = x;
         // console.log(x)
+        let bags = ''
+        bags += document.getElementById("quantity").value
+
+        if (document.getElementById("quantity").value < 2) {
+
+            bags += " worek "
+        }
+        else if (document.getElementById("quantity").value >= 2 && document.getElementById("quantity").value < 5) {
+            bags += " worki "
+        }
+        else{
+            bags += " worków "
+        }
+
+        // bags +=
+
+
         $("#quantitySummary").html(document.getElementById("quantity").value);
         $("#streetSummary").html(document.getElementById("street").value)
         $("#citySummary").html(document.getElementById("city").value)
@@ -236,18 +253,29 @@ document.addEventListener("DOMContentLoaded", function () {
         // $("#categorySummary").html(document.getElementById("category1").value)
         // $("#categorySummary").html(document.getElementById("category2").value)
         // $("#categorySummary").html(document.getElementById("category3").value)
-        let summary =""
-        if(document.getElementById("category1").checked) {
-            // $("#categorySummary").html(document.getElementById("category1").name)
-           summary += document.getElementById("category1").name.concat(", ")
-        }
-        if(document.getElementById("category2").checked) {
-            // $("#categorySummary").html(document.getElementById("category2").name)
-            summary += document.getElementById("category2").name.concat(", ")
-        }
-        $("#categorySummary").html(summary)
 
+
+        let summary = ""
+        if (document.getElementById("myForm1").checked) {
+            // $("#categorySummary").html(document.getElementById("category1").name)
+            // summary += document.getElementById("myForm1").name.concat(", ")
+           bags += "ZABAWEK ,"
+        }
+        if (document.getElementById("myForm2").checked) {
+            // $("#categorySummary").html(document.getElementById("category2").name)
+            // summary += document.getElementById("myForm2").name.concat(", ")
+            bags += "UBRAŃ ,"
+        }
+        $("#categorySummary").html(bags)
+
+        // let summary =""
+        // if(document.getElementById("category").checked) {
+        //     // $("#categorySummary").html(document.getElementById("category1").name)
+        //    summary += document.getElementById("category").value.concat(", ")
+        // }
+        // $("#categorySummary").html(summary)
 
 
     }
-});
+})
+;

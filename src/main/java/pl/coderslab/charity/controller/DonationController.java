@@ -29,7 +29,7 @@ public class DonationController {
         return institutionService.getAllInstitutions();
     }
 
-    @ModelAttribute("categories")
+    @ModelAttribute("categoriess")
     public List<Category> getAllCategories(){
         return categoryService.getAllCategories();
     }
@@ -40,7 +40,7 @@ public class DonationController {
         Donation donation = new Donation();
         modelAndView.addObject("donation",donation);
         modelAndView.addObject("institutions",getAllInstitutions());
-        modelAndView.addObject("categories",getAllCategories());
+        modelAndView.addObject("categoriess",getAllCategories());
         modelAndView.setViewName("form");
         return modelAndView;
     }
