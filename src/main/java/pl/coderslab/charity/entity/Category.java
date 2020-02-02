@@ -19,4 +19,13 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="donation_id")
     private Donation donation;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", donation=" + donation +
+                '}';
+    }
 }

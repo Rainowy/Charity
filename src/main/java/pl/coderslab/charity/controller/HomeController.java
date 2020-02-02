@@ -23,14 +23,14 @@ public class HomeController {
     }
 
     @ModelAttribute("institutions")
-    List<InstitutionPartialView> showInstitutions(){
-        return institutionService.getAllInstitutions();
+    List<InstitutionPartialView> showAllInstitutionsProjection(){
+        return institutionService.getAllInstitutionsProjection();
     }
 
     @GetMapping()
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("institutions",showInstitutions());
+        modelAndView.addObject("institutions",showAllInstitutionsProjection());
         modelAndView.setViewName("index");
         return modelAndView;
     }

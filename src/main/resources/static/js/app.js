@@ -129,7 +129,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     this.currentStep++;
                     this.updateForm();
-                    myFunction() // dodane przezemnie
+                    if (this.currentStep == 5) {
+                        showSummary() // dodane przezemnie
+                    }
+
+
                 });
             });
 
@@ -139,12 +143,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     this.currentStep--;
                     this.updateForm();
-                    myFunction() // dodane przezemnie
+                    // myFunction() // dodane przezemnie
                 });
             });
 
+
             // Form submit
-            this.$form.querySelector("form").addEventListener("submit", e => this.submit(e));
+            this.$form.querySelector("form").addEventListener("btnSubmit", e => this.submit(e));
+            console.log("potwierdzam")
         }
 
         /**
@@ -172,8 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     }
-
-
 
 
     const form = document.querySelector(".form--steps");
@@ -210,11 +214,40 @@ document.addEventListener("DOMContentLoaded", function () {
     //     console.log(test)
     //     $("#bags_id").html(test)
     // }
-    function myFunction() {
-        var x = document.getElementById("bags").value;
+    function showSummary() {
+        // var x = document.getElementById("bags").value;
         // document.getElementById("demo").innerHTML = x;
-        console.log(x)
-        $("#bags_id").html(document.getElementById("bags").value);
-    }
+        // console.log(x)
+        $("#quantitySummary").html(document.getElementById("quantity").value);
+        $("#streetSummary").html(document.getElementById("street").value)
+        $("#citySummary").html(document.getElementById("city").value)
+        $("#postcodeSummary").html(document.getElementById("postcode").value)
+        $("#phoneSummary").html(document.getElementById("phone").value)
+        $("#dateSummary").html(document.getElementById("date").value)
+        $("#timeSummary").html(document.getElementById("time").value)
+        $("#infoSummary").html(document.getElementById("info").value)
+        // if(document.getElementById("category").value == 1) {
+        //     $("#categorySummary").html("ZABAWKI")
+        // }
+        // if(document.getElementById("category").value ==2) {
+        //     $("#categorySummary").html("UBRANIA")
+        // }
 
+        // $("#categorySummary").html(document.getElementById("category1").value)
+        // $("#categorySummary").html(document.getElementById("category2").value)
+        // $("#categorySummary").html(document.getElementById("category3").value)
+        let summary =""
+        if(document.getElementById("category1").checked) {
+            // $("#categorySummary").html(document.getElementById("category1").name)
+           summary += document.getElementById("category1").name.concat(", ")
+        }
+        if(document.getElementById("category2").checked) {
+            // $("#categorySummary").html(document.getElementById("category2").name)
+            summary += document.getElementById("category2").name.concat(", ")
+        }
+        $("#categorySummary").html(summary)
+
+
+
+    }
 });
