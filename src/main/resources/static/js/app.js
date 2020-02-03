@@ -132,8 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (this.currentStep == 5) {
                         showSummary() // dodane przezemnie
                     }
-
-
                 });
             });
 
@@ -204,7 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function categorySummary() {
-
 
         let summary = '';
         summary += document.getElementById("quantity").value

@@ -16,15 +16,16 @@ import java.util.List;
 @Entity
 @Table(name = "donation")
 public class Donation {
-
+//    mappedBy = "donation
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "donation_id")
     private Long id;
     private int quantity;
-    @OneToMany(mappedBy = "donation",
+    @OneToMany(
     cascade = CascadeType.ALL,
     orphanRemoval = true)
+    @JoinColumn(name = "donation_id")
     private List<Category> categories =new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
@@ -39,21 +40,5 @@ public class Donation {
     private LocalTime pickUpTime;
     private String pickUpComment;
 
-    @Override
-    public String toString() {
-        return "Donation{" +
-                "id=" + id +
-                ", quantity=" + quantity +
-                ", categories=" + categories +
-                ", institution=" + institution +
-                ", street='" + street + '\'' +
-                ", city='" + city + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", pickUpDate=" + pickUpDate +
-                ", pickUpTime=" + pickUpTime +
-                ", pickUpComment='" + pickUpComment + '\'' +
-                '}';
-    }
 }
 

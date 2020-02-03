@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.Repository.InstitutionPartialView;
+import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
 
 import java.util.List;
@@ -17,9 +18,11 @@ import java.util.List;
 public class HomeController {
 
     private InstitutionService institutionService;
+    private DonationService donationService;
 
-    public HomeController(InstitutionService institutionService) {
+    public HomeController(InstitutionService institutionService, DonationService donationService) {
         this.institutionService = institutionService;
+        this.donationService = donationService;
     }
 
     @ModelAttribute("institutions")
@@ -31,6 +34,8 @@ public class HomeController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("institutions",showAllInstitutionsProjection());
+        modelAndView.addObject("sumQuantities",donationService.sumQuantities());
+        modelAndView.addObject("donationQuantities",donationService.donationQuantities());
         modelAndView.setViewName("index");
         return modelAndView;
     }

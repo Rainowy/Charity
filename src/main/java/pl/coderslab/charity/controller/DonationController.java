@@ -8,6 +8,7 @@ import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.CategoryService;
+import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
 
 import java.time.LocalDate;
@@ -18,10 +19,12 @@ import java.util.List;
 @RequestMapping("/donation")
 public class DonationController {
 
+    private DonationService donationService;
     private InstitutionService institutionService;
     private CategoryService categoryService;
 
-    public DonationController(InstitutionService institutionService, CategoryService categoryService) {
+    public DonationController(DonationService donationService, InstitutionService institutionService, CategoryService categoryService) {
+        this.donationService = donationService;
         this.institutionService = institutionService;
         this.categoryService = categoryService;
     }
@@ -41,8 +44,8 @@ public class DonationController {
         ModelAndView modelAndView = new ModelAndView();
         Donation donation = new Donation();
         modelAndView.addObject("donation",donation);
-        modelAndView.addObject("institutions",getAllInstitutions());
-        modelAndView.addObject("categories",getAllCategories());
+        modelAndView.addObject("institutions");
+        modelAndView.addObject("categories");
         modelAndView.setViewName("form");
         return modelAndView;
     }
@@ -50,16 +53,8 @@ public class DonationController {
     @PostMapping("/form")
     public ModelAndView donationForm(Donation donation){
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println(donation);
-        modelAndView.setViewName("redirect:/");
-
-//        public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-//            return dateToConvert.toInstant()
-//                    .atZone(ZoneId.systemDefault())
-//                    .toLocalDate();
-//        }
-
-
+        donationService.saveDonation(donation);
+        modelAndView.setViewName("form-confirmation");
 
         return modelAndView;
     }

@@ -24,13 +24,14 @@ public class Institution {
             orphanRemoval = true)
     private List<Donation> donations = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "Institution{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", donations=" + donations +
-                '}';
+    /**Synchro methods*/
+    public void addDonation(Donation donation){
+        donations.add(donation);
+        donation.setInstitution(this);
     }
+    public void removeDonation(Donation donation){
+        donations.remove(donation);
+        donation.setInstitution(null);
+    }
+
 }
