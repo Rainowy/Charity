@@ -10,6 +10,8 @@ import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.CategoryService;
 import pl.coderslab.charity.service.InstitutionService;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -29,7 +31,7 @@ public class DonationController {
         return institutionService.getAllInstitutions();
     }
 
-    @ModelAttribute("categoriess")
+    @ModelAttribute("categories")
     public List<Category> getAllCategories(){
         return categoryService.getAllCategories();
     }
@@ -40,7 +42,7 @@ public class DonationController {
         Donation donation = new Donation();
         modelAndView.addObject("donation",donation);
         modelAndView.addObject("institutions",getAllInstitutions());
-        modelAndView.addObject("categoriess",getAllCategories());
+        modelAndView.addObject("categories",getAllCategories());
         modelAndView.setViewName("form");
         return modelAndView;
     }
@@ -50,6 +52,15 @@ public class DonationController {
         ModelAndView modelAndView = new ModelAndView();
         System.out.println(donation);
         modelAndView.setViewName("redirect:/");
+
+//        public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+//            return dateToConvert.toInstant()
+//                    .atZone(ZoneId.systemDefault())
+//                    .toLocalDate();
+//        }
+
+
+
         return modelAndView;
     }
 }

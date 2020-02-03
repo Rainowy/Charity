@@ -23,4 +23,14 @@ public class Institution {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<Donation> donations = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Institution{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", donations=" + donations +
+                '}';
+    }
 }

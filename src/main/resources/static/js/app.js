@@ -143,7 +143,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     e.preventDefault();
                     this.currentStep--;
                     this.updateForm();
-                    // myFunction() // dodane przezemnie
                 });
             });
 
@@ -175,67 +174,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // TODO: get data from inputs and show them in summary
         }
-
-
     }
-
 
     const form = document.querySelector(".form--steps");
     if (form !== null) {
         new FormSteps(form);
     }
 
-    // $('input').on('blur', function() {
-    //     let summary = [];
-    //     $('input').each( function() {
-    //         // summary += $(this).val() + ' ';
-    //         summary.push($(this).val())
-    //     });
-    //     // $('#summary').text(summary);
-    //     $('#1').text(summary[0])
-    //     $('#2').text(summary[1])
-    //     $('#3').text(summary[2])
-    //     $('#4').text(summary[3])
-    //     $('#5').text(summary[4])
-    //     $('#6').text(summary[5])
-    //     $('#7').text(summary[6])
-    //     $('#8').text(summary[7])
-    //     $('#9').text(summary[8])
-    // });
-    // $("#bags_id").html(document.getElementById("bags").value);
-    // var firstName = document.getElementsByName("bags")[0].value;
-    // var pierwszy = document.getElementById('bags').value;
-    // $("#bags_id").html(pierwszy)
-    // // alert(pierwszy)
-    // myFunction()
-    //
-    // function myFunction() {
-    //     var test = document.getElementById("bags").value;
-    //     console.log(test)
-    //     $("#bags_id").html(test)
-    // }
     function showSummary() {
-        // var x = document.getElementById("bags").value;
-        // document.getElementById("demo").innerHTML = x;
-        // console.log(x)
-        let bags = ''
-        bags += document.getElementById("quantity").value
 
-        if (document.getElementById("quantity").value < 2) {
-
-            bags += " worek "
-        }
-        else if (document.getElementById("quantity").value >= 2 && document.getElementById("quantity").value < 5) {
-            bags += " worki "
-        }
-        else{
-            bags += " worków "
-        }
-
-        // bags +=
-
-
-        $("#quantitySummary").html(document.getElementById("quantity").value);
         $("#streetSummary").html(document.getElementById("street").value)
         $("#citySummary").html(document.getElementById("city").value)
         $("#postcodeSummary").html(document.getElementById("postcode").value)
@@ -243,39 +190,34 @@ document.addEventListener("DOMContentLoaded", function () {
         $("#dateSummary").html(document.getElementById("date").value)
         $("#timeSummary").html(document.getElementById("time").value)
         $("#infoSummary").html(document.getElementById("info").value)
-        // if(document.getElementById("category").value == 1) {
-        //     $("#categorySummary").html("ZABAWKI")
-        // }
-        // if(document.getElementById("category").value ==2) {
-        //     $("#categorySummary").html("UBRANIA")
-        // }
 
-        // $("#categorySummary").html(document.getElementById("category1").value)
-        // $("#categorySummary").html(document.getElementById("category2").value)
-        // $("#categorySummary").html(document.getElementById("category3").value)
+        let summary = '';
+        if (document.getElementById("inst1").checked) summary = "Dbam o Zdrowie"
+        if (document.getElementById("inst2").checked) summary = "Bez domu"
+        if (document.getElementById("inst3").checked) summary = "A kogo"
+        if (document.getElementById("inst4").checked) summary = "Dla dzieci"
+        if (document.getElementById("inst5").checked) summary = "Iskierka"
+        if (document.getElementById("inst6").checked) summary = "Zdąrzyć z pomocą"
+        $("#instSummary").html(summary)
 
+        categorySummary();
+    }
 
-        let summary = ""
-        if (document.getElementById("myForm1").checked) {
-            // $("#categorySummary").html(document.getElementById("category1").name)
-            // summary += document.getElementById("myForm1").name.concat(", ")
-           bags += "ZABAWEK ,"
-        }
-        if (document.getElementById("myForm2").checked) {
-            // $("#categorySummary").html(document.getElementById("category2").name)
-            // summary += document.getElementById("myForm2").name.concat(", ")
-            bags += "UBRAŃ ,"
-        }
-        $("#categorySummary").html(bags)
-
-        // let summary =""
-        // if(document.getElementById("category").checked) {
-        //     // $("#categorySummary").html(document.getElementById("category1").name)
-        //    summary += document.getElementById("category").value.concat(", ")
-        // }
-        // $("#categorySummary").html(summary)
+    function categorySummary() {
 
 
+        let summary = '';
+        summary += document.getElementById("quantity").value
+        if (document.getElementById("quantity").value < 2) summary += " worek"
+        else if (document.getElementById("quantity").value >= 2 && document.getElementById("quantity").value < 5) summary += " worki"
+        else summary += " worków"
+
+        if (document.getElementById("myForm1").checked) summary += " Zabawek, "
+        if (document.getElementById("myForm2").checked) summary += " Ubrań nadających się do ponownego użycia, "
+        if (document.getElementById("myForm3").checked) summary += " Ubrań do ponownego użycia, "
+        if (document.getElementById("myForm4").checked) summary += " Ubrań do wyrzucenia, "
+        if (document.getElementById("myForm3").checked) summary += " Innych rzeczy, "
+        $("#categorySummary").html(summary)
     }
 })
-;
+
