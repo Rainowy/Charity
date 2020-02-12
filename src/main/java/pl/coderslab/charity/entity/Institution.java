@@ -33,5 +33,4 @@ public class Institution {
         donations.remove(donation);
         donation.setInstitution(null);
     }
-
 }

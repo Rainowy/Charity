@@ -1,5 +1,7 @@
 package pl.coderslab.charity.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,25 @@ public class HomeController {
         modelAndView.addObject("sumQuantities",donationService.sumQuantities());
         modelAndView.addObject("donationQuantities",donationService.donationQuantities());
         modelAndView.setViewName("index");
+        return modelAndView;
+    }
+
+    @GetMapping("/login")
+    public ModelAndView login(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+    @GetMapping("/courses")
+    public ModelAndView courses(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth.getAuthorities().stream()
+                .forEach(System.out::println);
+        System.out.println(auth.getName());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("courses");
         return modelAndView;
     }
 }
