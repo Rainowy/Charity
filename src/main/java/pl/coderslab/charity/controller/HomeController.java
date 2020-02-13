@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.Repository.InstitutionPartialView;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
+import pl.coderslab.charity.service.HomeService;
 import pl.coderslab.charity.service.InstitutionService;
 
 import javax.validation.Valid;
@@ -21,10 +22,12 @@ public class HomeController {
 
     private InstitutionService institutionService;
     private DonationService donationService;
+    private HomeService homeService;
 
-    public HomeController(InstitutionService institutionService, DonationService donationService) {
+    public HomeController(InstitutionService institutionService, DonationService donationService, HomeService homeService) {
         this.institutionService = institutionService;
         this.donationService = donationService;
+        this.homeService = homeService;
     }
 
     @ModelAttribute("institutions")
@@ -63,6 +66,8 @@ public class HomeController {
                                  BindingResult result,
                                  @RequestParam String password2) {
         ModelAndView model = new ModelAndView();
+
+        homeService.existenceValidator(user, result);
 
         if(!user.getPassword().equals(password2)){
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");

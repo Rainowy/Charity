@@ -51,8 +51,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @NotEmpty(message = "nie pusty")
     private String firstName;
+    @NotEmpty(message = "nie pusty")
     private String lastName;
     @Email
     @NotEmpty(message = "nie pusty")
