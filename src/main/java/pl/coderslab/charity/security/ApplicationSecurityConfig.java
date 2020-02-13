@@ -66,15 +66,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),jwtConfig,secretKey)) //pierwszy filtr JWT rejestrujemy
 //                .addFilterAfter(new JwtTokenVerifier(secretKey,jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)  //drugi filtr JWT rejestrujemy
 
-
-                /**   */
+//        "register"
+//        "/", "index" ,
+        /**   */
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*").permitAll() //wszystkie wymienione będą dopuszczone
+                .antMatchers("/", "/register", "/css/*", "/js/*", "/images/*").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
-                .antMatchers("/courses").hasRole("ADMIN")
+//                .antMatchers("/courses").hasRole("ADMIN")
 //                .antMatchers("/courses").hasAuthority("USER")
-//                .antMatchers("/courses").hasAuthority("READ_PRIVILEGE")
+                .antMatchers("/courses").hasAuthority("WRITE_PRIVILEGE")
 //                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission()) //aby skasować musi mieć permission Course_WRITE czyli tylko ADMIN taką ma
 ////                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
 //                .antMatchers(HttpMethod.POST,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission())

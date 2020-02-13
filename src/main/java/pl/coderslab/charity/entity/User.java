@@ -41,6 +41,8 @@ package pl.coderslab.charity.entity;//package pl.coderslab.charity.entity;
 import pl.coderslab.charity.entity.Role;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 
 @Entity
@@ -52,7 +54,10 @@ public class User {
 
     private String firstName;
     private String lastName;
+    @Email
+    @NotEmpty(message = "nie pusty")
     private String email;
+    @NotEmpty(message = "nie pusty")
     private String password;
     private boolean enabled;
     private boolean tokenExpired;
@@ -128,5 +133,19 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", tokenExpired=" + tokenExpired +
+                ", roles=" + roles +
+                '}';
     }
 }

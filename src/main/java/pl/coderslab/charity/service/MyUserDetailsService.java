@@ -45,11 +45,10 @@ public class MyUserDetailsService implements UserDetailsService {
             return getUserDetails(userByEmail.get());
         } else if (userByName.isPresent()) {
             return getUserDetails(userByName.get());
+        }else{
+//            throw new UsernameNotFoundException(String.format("Username %s not found", userInput));
+            throw new UsernameNotFoundException(String.format("Username %s not found", userInput));
         }
-
-        return new org.springframework.security.core.userdetails.User(
-                " ", " ", true, true, true, true,
-                getAuthorities(null));
     }
 
     private UserDetails getUserDetails(User user) {

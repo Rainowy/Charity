@@ -2,13 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="pl">
 <head th:replace="fragments/general.html :: headerfiles"></head>
-<!--<head>-->
-    <!--<meta charset="UTF-8"/>-->
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
-    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge"/>-->
-    <!--<title>Document</title>-->
-    <!--<link rel="stylesheet" href="css/style.css"/>-->
-<!--</head>-->
 
 <body>
 <header>
@@ -30,17 +23,20 @@
 
 <section class="login-page">
     <h2>Załóż konto</h2>
-    <form>
+    <form autocomplete="off" action="#" th:action="@{/register}" th:object="${user}" method="post">
         <div class="form-group">
-            <input type="email" name="email" placeholder="Email"/>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+               class="validation-message"></p>
+            <input type="text" th:field="*{email}" placeholder="Email" class="form-control"/>
         </div>
         <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło"/>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+               class="validation-message"></p>
+            <input type="password" th:field="*{password}" placeholder="Hasło" class="form-control"/>
         </div>
         <div class="form-group">
-            <input type="password" name="password2" placeholder="Powtórz hasło"/>
+            <input type="password" name="password2" placeholder="Powtórz hasło" class="form-control"/>
         </div>
-
         <div class="form-group form-group--buttons">
             <a href="login.html" class="btn btn--without-border">Zaloguj się</a>
             <button class="btn" type="submit">Załóż konto</button>
@@ -48,41 +44,6 @@
     </form>
 </section>
 
-<!--<footer>-->
-    <!--<div class="contact">-->
-        <!--<h2>Skontaktuj się z nami</h2>-->
-        <!--<h3>Formularz kontaktowy</h3>-->
-        <!--<form>-->
-            <!--<div class="form-group form-group&#45;&#45;50">-->
-                <!--<input type="text" name="name" placeholder="Imię"/>-->
-            <!--</div>-->
-            <!--<div class="form-group form-group&#45;&#45;50">-->
-                <!--<input type="text" name="surname" placeholder="Nazwisko"/>-->
-            <!--</div>-->
-
-            <!--<div class="form-group">-->
-            <!--<textarea-->
-                    <!--name="message"-->
-                    <!--placeholder="Wiadomość"-->
-                    <!--rows="1"-->
-            <!--&gt;</textarea>-->
-            <!--</div>-->
-
-            <!--<button class="btn" type="submit">Wyślij</button>-->
-        <!--</form>-->
-    <!--</div>-->
-    <!--<div class="bottom-line">-->
-        <!--<span class="bottom-line&#45;&#45;copy">Copyright &copy; 2018</span>-->
-        <!--<div class="bottom-line&#45;&#45;icons">-->
-            <!--<a href="#" class="btn btn&#45;&#45;small"-->
-            <!--&gt;<img src="images/icon-facebook.svg"-->
-            <!--/></a>-->
-            <!--<a href="#" class="btn btn&#45;&#45;small"-->
-            <!--&gt;<img src="images/icon-instagram.svg"-->
-            <!--/></a>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</footer>-->
 <footer th:replace="fragments/general.html :: footer"></footer>
 </body>
 </html>
