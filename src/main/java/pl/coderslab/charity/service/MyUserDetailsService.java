@@ -41,7 +41,6 @@ public class MyUserDetailsService implements UserDetailsService {
         Optional<User> userByEmail = userRepository.findByEmail(userInput);
         Optional<User> userByName = userRepository.findByFirstName(userInput);
 
-
         if (userByEmail.isPresent()) {
             return getUserDetails(userByEmail.get());
         } else if (userByName.isPresent()) {
