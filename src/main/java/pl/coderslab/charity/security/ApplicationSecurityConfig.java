@@ -73,9 +73,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/register", "/css/*", "/js/*", "/images/*").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
-//                .antMatchers("/courses").hasRole("ADMIN")
+//                .antMatchers("/courses").hasRole("USER")
 //                .antMatchers("/courses").hasAuthority("USER")
-                .antMatchers("/courses").hasAuthority("WRITE_PRIVILEGE")
+                .antMatchers("/courses").hasAuthority("READ_PRIVILEGE")
 //                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission()) //aby skasować musi mieć permission Course_WRITE czyli tylko ADMIN taką ma
 ////                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
 //                .antMatchers(HttpMethod.POST,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission())

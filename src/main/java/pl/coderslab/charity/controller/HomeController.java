@@ -12,6 +12,7 @@ import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.HomeService;
 import pl.coderslab.charity.service.InstitutionService;
+import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,11 +24,13 @@ public class HomeController {
     private InstitutionService institutionService;
     private DonationService donationService;
     private HomeService homeService;
+    private UserService userService;
 
-    public HomeController(InstitutionService institutionService, DonationService donationService, HomeService homeService) {
+    public HomeController(InstitutionService institutionService, DonationService donationService, HomeService homeService, UserService userService) {
         this.institutionService = institutionService;
         this.donationService = donationService;
         this.homeService = homeService;
+        this.userService = userService;
     }
 
     @ModelAttribute("institutions")
@@ -67,6 +70,8 @@ public class HomeController {
                                  @RequestParam String password2) {
         ModelAndView model = new ModelAndView();
 
+//        user.setId(5L);
+
         homeService.existenceValidator(user, result);
 
         if(!user.getPassword().equals(password2)){
@@ -77,7 +82,8 @@ public class HomeController {
             return model;
         }
 
-        System.out.println(user);
+        userService.saveUser(user);
+
         model.setViewName("register-confirmation");
         return model;
     }
