@@ -16,11 +16,11 @@
 <body>
 
 <ul th:fragment="sections">
-    <li><a href="index.html" class="btn btn--without-border active">Start</a></li>
-    <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
-    <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
-    <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-    <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
+    <li><a th:href="@{/}" class="btn btn--without-border">Start</a></li>
+    <li><a th:href="@{/home/steps}" class="btn btn--without-border">O co chodzi?</a></li>
+    <li><a th:href="@{home/about-us}" class="btn btn--without-border">O nas</a></li>
+    <li><a th:href="@{/home/help}" class="btn btn--without-border">Fundacje i organizacje</a></li>
+    <li><a th:href="@{/home/contact}" class="btn btn--without-border">Kontakt</a></li>
 </ul>
 
 <footer th:fragment="footer">

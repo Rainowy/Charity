@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.charity.Repository.InstitutionPartialView;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
@@ -36,12 +37,12 @@ public class HomeController {
     }
 
     @GetMapping()
-    public ModelAndView home() {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView home(@ModelAttribute("flashSection") String section) {
+        ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("institutions", showAllInstitutionsProjection());
         modelAndView.addObject("sumQuantities", donationService.sumQuantities());
         modelAndView.addObject("donationQuantities", donationService.donationQuantities());
-        modelAndView.setViewName("index");
+        modelAndView.addObject("section",section);
         return modelAndView;
     }
 
@@ -51,10 +52,10 @@ public class HomeController {
         modelAndView.setViewName("login");
         return modelAndView;
     }
-    @GetMapping("/home/{section}")
-    public ModelAndView links(@PathVariable String section){
-        ModelAndView model = new ModelAndView("index");
-        model.addObject("section",section);
+    @GetMapping("home/{section}")
+    public ModelAndView links(@PathVariable String section, RedirectAttributes redirectAttributes){
+        ModelAndView model = new ModelAndView("redirect:/");
+        redirectAttributes.addFlashAttribute("flashSection",section);
         return model;
     }
 
