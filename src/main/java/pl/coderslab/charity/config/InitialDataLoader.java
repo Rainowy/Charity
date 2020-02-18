@@ -59,7 +59,7 @@ public class InitialDataLoader implements
         user.setEmail("test@test.com");
         user.setRoles(Arrays.asList(adminRole));
         user.setEnabled(true);
-        userRepository.save(user);
+//        userRepository.save(user);
 
         alreadySetup = true;
     }

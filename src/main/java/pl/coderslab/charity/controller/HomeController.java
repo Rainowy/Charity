@@ -51,6 +51,12 @@ public class HomeController {
         modelAndView.setViewName("login");
         return modelAndView;
     }
+    @GetMapping("/home/{section}")
+    public ModelAndView links(@PathVariable String section){
+        ModelAndView model = new ModelAndView("index");
+        model.addObject("section",section);
+        return model;
+    }
 
     @GetMapping("/register")
     public ModelAndView register() {
@@ -82,6 +88,8 @@ public class HomeController {
         model.setViewName("register-confirmation");
         return model;
     }
+
+
 
     @GetMapping("/courses")
     public ModelAndView courses() {
