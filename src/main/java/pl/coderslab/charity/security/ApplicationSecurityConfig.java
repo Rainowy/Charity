@@ -47,11 +47,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-//    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, MyUserDetailsService myUserDetailsService) {
-//        this.passwordEncoder = passwordEncoder;
-//        this.myUserDetailsService = myUserDetailsService;
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /** WAŻNE KOLEJNOŚĆ ANT MATCHERS MA ZNACZENIE, JEŻELI WCZEŚNIEJ ZOSTANIE ZABLOKOWANY TO DALEJ NIE PÓJDZIE **/
@@ -67,10 +62,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .addFilterAfter(new JwtTokenVerifier(secretKey,jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)  //drugi filtr JWT rejestrujemy
 
 //        "register"
-//        "/", "index" ,
+//        "/", "index" ,"form" ,
         /**   */
                 .authorizeRequests()
-                .antMatchers("/", "index", "form" , "/donation/*", "/home/*", "/register", "/css/*", "/js/*", "/images/*").permitAll() //wszystkie wymienione będą dopuszczone
+                .antMatchers("/", "index",  "/donation/*", "/home/*", "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
 //                .antMatchers("/courses").hasRole("USER")

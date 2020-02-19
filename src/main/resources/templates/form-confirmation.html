@@ -3,35 +3,31 @@
 <html lang="pl">
 <head th:replace="fragments/general.html :: headerfiles"></head>
 
-  <body>
-  <script>
-      history.replaceState(null,document.title,location.href); //kasuje historię back button, użytkownik nie wyśle jeszcze raz formularza
-  </script>
-    <header class="header--form-page">
-      <nav class="container container--70">
+<body>
+<script>
+    history.replaceState(null, document.title, location.href); //kasuje historię back button, użytkownik nie wyśle jeszcze raz formularza
+</script>
+<header class="header--form-page">
+    <nav class="container container--70">
         <ul class="nav--actions">
-          <li class="logged-user">
-            Witaj Agata
-            <ul class="dropdown">
-              <li><a href="#">Profil</a></li>
-              <li><a href="#">Moje zbiórki</a></li>
-              <li><a href="#">Wyloguj</a></li>
-            </ul>
-          </li>
+            <li class="logged-user">
+                Witaj Agata
+                <ul class="dropdown">
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Moje zbiórki</a></li>
+                    <li><a href="#">Wyloguj</a></li>
+                </ul>
+            </li>
         </ul>
         <ul th:replace="fragments/general.html :: sections"></ul>
-      </nav>
-
-      <div class="slogan container container--90">
-          <h2>
+    </nav>
+    <div class="slogan container container--90">
+        <h2>
             Dziękujemy za przesłanie formularza Na maila prześlemy wszelkie
             informacje o odbiorze.
-          </h2>
-      </div>
-    </header>
-
-    <footer th:replace="fragments/general.html :: footer"></footer>
-
-    <!--<script src="js/app.js"></script>-->
-  </body>
+        </h2>
+    </div>
+</header>
+<footer th:replace="fragments/general.html :: footer"></footer>
+</body>
 </html>
