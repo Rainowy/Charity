@@ -10,7 +10,9 @@
     var section = /*[[${section}]]*/ 'section';
     /*]]>*/
     window.onload = function () {
-        if (section !== null) {
+        console.log(section)
+        if (section) {
+        // && section !== undefined
             document.getElementById(section).scrollIntoView(true);}}
 </script>
 <header class="header--main-page">
@@ -20,6 +22,7 @@
             <li><a th:href="@{/register}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
         </ul>
         <ul th:replace="fragments/general.html :: sections"></ul>
+        <li><a th:href="@{/donation/form}" class="btn btn--without-border">Przekaż dary</a></li>
     </nav>
 
     <div class="slogan container container--90">

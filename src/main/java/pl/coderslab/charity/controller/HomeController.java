@@ -16,6 +16,8 @@ import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @Controller
 @RequestMapping("/")
