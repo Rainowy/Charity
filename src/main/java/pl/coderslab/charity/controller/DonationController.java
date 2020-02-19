@@ -55,6 +55,7 @@ public class DonationController {
         ModelAndView modelAndView = new ModelAndView();
         donationService.saveDonation(donation);
         modelAndView.setViewName("form-confirmation");
+//        modelAndView.setViewName("redirect:/donation/form");
 
         return modelAndView;
     }

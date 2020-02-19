@@ -4,6 +4,9 @@
 <head th:replace="fragments/general.html :: headerfiles"></head>
 
   <body>
+  <script>
+      history.replaceState(null,document.title,location.href); //kasuje historię back button, użytkownik nie wyśle jeszcze raz formularza
+  </script>
     <header class="header--form-page">
       <nav class="container container--70">
         <ul class="nav--actions">

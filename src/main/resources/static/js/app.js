@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.currentStep++;
                     this.updateForm();
                     if (this.currentStep == 5) {
-                        showSummary() // dodane przezemnie
+                        showSummary() // added by me
                     }
                 });
             });
@@ -147,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Form submit
             this.$form.querySelector("form").addEventListener("btnSubmit", e => this.submit(e));
-            console.log("potwierdzam")
         }
 
         /**
