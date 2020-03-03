@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import pl.coderslab.charity.config.UrlAuthenticationSuccessHandler;
 import pl.coderslab.charity.service.MyUserDetailsService;
 
 import javax.crypto.SecretKey;
@@ -46,6 +48,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
+        return new UrlAuthenticationSuccessHandler();
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -70,7 +77,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
 //                .antMatchers("/courses").hasRole("USER")
 //                .antMatchers("/courses").hasAuthority("USER")
-                .antMatchers("/courses").hasAuthority("READ_PRIVILEGE")
+                /** Działa */
+//                .antMatchers("/user/**").hasAuthority("READ_PRIVILEGE")
+//                .antMatchers("/admin/**").hasAuthority("WRITE_PRIVILEGE")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/user/**").hasAuthority("ROLE_USER")
+                /** */
+//
 //                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission()) //aby skasować musi mieć permission Course_WRITE czyli tylko ADMIN taką ma
 ////                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
 //                .antMatchers(HttpMethod.POST,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
@@ -87,7 +101,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin() //form based authentication
                     .loginPage("/login").permitAll()//każdy może wejść na ten adres
-                    .defaultSuccessUrl("/courses", true)
+//                    .defaultSuccessUrl("/courses", true)
+
+                .successHandler(myAuthenticationSuccessHandler())
                 //po wejściu zostanie przekierowany na /courses
                     .passwordParameter("password")// password i username = parametry w HTML  name="password" i  name="username"
                 .usernameParameter("username");

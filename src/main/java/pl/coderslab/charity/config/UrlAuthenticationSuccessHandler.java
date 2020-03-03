@@ -44,11 +44,13 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("USER")) {
+            System.out.println(grantedAuthority.getAuthority());
+            if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
+//            if (grantedAuthority.getAuthority().equals("READ_PRIVILEGE")) {
                 return "user/panel";
 //            } else if (grantedAuthority.getAuthority().equals("CHILD")) {
 //                return "child/panel";
-            } else if (grantedAuthority.getAuthority().equals("ADMIN")) {
+            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
                 return "admin/panel";
             }
         }

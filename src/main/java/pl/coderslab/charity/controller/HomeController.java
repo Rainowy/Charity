@@ -92,17 +92,29 @@ public class HomeController {
         return model;
     }
 
-
-
-    @GetMapping("/courses")
-    public ModelAndView courses() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        auth.getAuthorities().stream()
-                .forEach(System.out::println);
-        System.out.println(auth.getName());
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("courses");
-        return modelAndView;
+    @GetMapping("/user/panel")
+    public ModelAndView user(){
+        ModelAndView model = new ModelAndView("user/user-panel");
+        return model;
     }
+
+    @GetMapping("/admin/panel")
+    public ModelAndView admin(){
+        ModelAndView model = new ModelAndView("admin/admin-panel");
+        return model;
+    }
+
+
+
+//    @GetMapping("/courses")
+//    public ModelAndView courses() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        auth.getAuthorities().stream()
+//                .forEach(System.out::println);
+//        System.out.println(auth.getName());
+//
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("courses");
+//        return modelAndView;
+//    }
 }
