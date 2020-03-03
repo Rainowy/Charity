@@ -82,7 +82,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //                .httpBasic(); //sposób autoryzacji podstawowy, nie można się wylogować
 
-
+//                .failureUrl("/login?error=true")
         //OD TEGO MOMENTU WPROWADZIŁ JWT
                 .and()
                 .formLogin() //form based authentication
