@@ -1,7 +1,10 @@
 package pl.coderslab.charity.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +18,7 @@ import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -93,28 +97,23 @@ public class HomeController {
     }
 
     @GetMapping("/user/panel")
-    public ModelAndView user(){
+    @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
+    public ModelAndView user(Principal principal){
         ModelAndView model = new ModelAndView("user/user-panel");
+        addUserNameToModel(principal, model);
         return model;
     }
 
     @GetMapping("/admin/panel")
-    public ModelAndView admin(){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView admin(Principal principal){
         ModelAndView model = new ModelAndView("admin/admin-panel");
+        addUserNameToModel(principal, model);
         return model;
     }
 
-
-
-//    @GetMapping("/courses")
-//    public ModelAndView courses() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        auth.getAuthorities().stream()
-//                .forEach(System.out::println);
-//        System.out.println(auth.getName());
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("courses");
-//        return modelAndView;
-//    }
+    private void addUserNameToModel(Principal principal, ModelAndView model) {
+        Optional<User> user = userService.userByEmail(principal.getName());
+        user.ifPresent(r ->model.addObject("userName",r.getFirstName()));
+    }
 }

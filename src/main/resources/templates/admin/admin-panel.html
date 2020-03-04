@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Admin-Panel</title>
 </head>
 <body>
-<h2>Admin Panel</h2>
+<h2>ADMIN PANEL</h2>
+<div sec:authorize="isAuthenticated()">
+    Authenticated as <span sec:authentication="name"></span></div>
+<h2 th:text="${userName}">NAME</h2>
+<!--<h2 th:text="${userEmail}">NAME</h2>-->
 </body>
 </html>

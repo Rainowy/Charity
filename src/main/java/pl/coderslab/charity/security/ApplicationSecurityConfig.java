@@ -23,7 +23,7 @@ import javax.crypto.SecretKey;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 //@EnableConfigurationProperties(JwtConfig.class)
 //mówi że ma korzystać z autoryzacji w metodach podpisanych anotacją @PreAuthorize zamiast .antMatchers
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -70,9 +70,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        "register"
 //        "/", "index" ,"form" ,
+//        "/home/*",
         /**   */
                 .authorizeRequests()
-                .antMatchers("/", "index",  "/donation/*", "/home/*", "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll() //wszystkie wymienione będą dopuszczone
+                .antMatchers("/", "index",  "/donation/*",  "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
 //                .antMatchers("/courses").hasRole("USER")
@@ -80,8 +81,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 /** Działa */
 //                .antMatchers("/user/**").hasAuthority("READ_PRIVILEGE")
 //                .antMatchers("/admin/**").hasAuthority("WRITE_PRIVILEGE")
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/user/**").hasRole("USER")
+//                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .antMatchers("/user/**").hasAuthority("ROLE_USER")
                 /** */
 //
