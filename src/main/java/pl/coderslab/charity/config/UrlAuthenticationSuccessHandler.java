@@ -47,7 +47,8 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
             System.out.println(grantedAuthority.getAuthority());
             if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
 //            if (grantedAuthority.getAuthority().equals("READ_PRIVILEGE")) {
-                return "user/panel";
+//                return "user/panel";
+                return "donation/form";
 //            } else if (grantedAuthority.getAuthority().equals("CHILD")) {
 //                return "child/panel";
             } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {

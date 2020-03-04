@@ -96,13 +96,6 @@ public class HomeController {
         return model;
     }
 
-    @GetMapping("/user/panel")
-    @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
-    public ModelAndView user(Principal principal){
-        ModelAndView model = new ModelAndView("user/user-panel");
-        addUserNameToModel(principal, model);
-        return model;
-    }
 
     @GetMapping("/admin/panel")
     @PreAuthorize("hasRole('ADMIN')")
