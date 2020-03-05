@@ -4,17 +4,16 @@
 <head th:replace="fragments/general.html :: headerfiles"></head>
 
 <body>
-<!--<li th:text="Witaj + ' ' + ${userName}"  class="logged-user">-->
-<!--    Witaj-->
+
 <header class="header--form-page">
     <nav class="container container--70">
         <ul class="nav--actions">
             <li class="logged-user">
                 <th:block th:text="Witaj + ' ' + ${userName}"></th:block>
                 <ul class="dropdown">
-                    <li><a href="#">Profil</a></li>
+<!--                    <li><a href="#">Profil</a></li>-->
+                    <li><a th:href="@{/user/panel}">Profil</a></li>
                     <li><a href="#">Moje zbiórki</a></li>
-<!--                    <li><a href="#">Wyloguj</a></li>-->
                     <li><a th:href="@{/logout}">Wyloguj</a></li>
                 </ul>
             </li>
