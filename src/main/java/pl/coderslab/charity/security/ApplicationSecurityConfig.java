@@ -73,7 +73,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //        "/home/*",
         /**   */
                 .authorizeRequests()
-                .antMatchers("/", "index",  "/donation/*",  "/register", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll() //wszystkie wymienione będą dopuszczone
+                .antMatchers("/", "index",  "/donation/*",  "/register", "/css/**", "/js/**", "/images/**", "/webjars/**", "/scss/**", "/vendor/**").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
 //                .antMatchers("/courses").hasRole("USER")

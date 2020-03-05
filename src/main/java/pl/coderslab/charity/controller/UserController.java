@@ -13,7 +13,8 @@ public class UserController {
     @GetMapping("/panel")
     @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
     public ModelAndView userPanel(){
-        ModelAndView model = new ModelAndView("user/user-panel");
+//        ModelAndView model = new ModelAndView("user/user-panel");
+        ModelAndView model = new ModelAndView("user/tables");
         return model;
     }
 }
