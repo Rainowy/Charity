@@ -5,14 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.coderslab.charity.entity.Donation;
 
+import java.util.List;
+
 @Repository
-public interface DonationRepository extends JpaRepository<Donation,Long> {
+public interface DonationRepository extends JpaRepository<Donation, Long> {
 
     @Query(value = "SELECT sum(quantity) FROM Donation ")
-    public Long sumQuantities();
-
-//    long count();
-//    }
-
-
+    Long sumQuantities();
+    List<DonationPartialView> findAllByOrderByIdAsc();
 }

@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 //import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +17,17 @@ import java.util.List;
 @Entity
 @Table(name = "donation")
 public class Donation {
-//    mappedBy = "donation
+    //    mappedBy = "donation
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "donation_id")
     private Long id;
     private int quantity;
     @OneToMany(
-    cascade = CascadeType.ALL,
-    orphanRemoval = true)
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JoinColumn(name = "donation_id")
-    private List<Category> categories =new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
     private Institution institution;
@@ -39,5 +40,13 @@ public class Donation {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime pickUpTime;
     private String pickUpComment;
+    private LocalDateTime created;
+    private boolean received;
+    @PrePersist
+    public void prePersist() {
+        created = LocalDateTime.now();
+    }
 }
+
+
 
