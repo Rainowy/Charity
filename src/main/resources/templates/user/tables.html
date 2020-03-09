@@ -382,7 +382,6 @@
                                     <th>Utworzono</th>
                                     <th>Odebrano</th>
                                     <th>Data odebrania</th>
-                                    <!--                                    <th>Salary</th>-->
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -392,7 +391,6 @@
                                     <th>Utworzono</th>
                                     <th>Odebrano</th>
                                     <th>Data odebrania</th>
-                                    <!--                                    <th>Salary</th>-->
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -400,17 +398,14 @@
 
                                     <td th:text="${donation.id}"></td>
                                     <td th:text="${donation.institution.name}"></td>
-                                    <td th:text="${donation.created}"></td>
+
+<!--                                    <td th:text="${#dates.format(donation.created, 'dd-MM-yyyy HH:mm')}"></td>-->
+                                    <td th:text="${#temporals.format(donation.created, 'dd-MM-yyyy HH:mm')}"></td>
                                     <td>
                                         <input type="checkbox" th:checked="${donation.received}"/>
-                                        <script>
-                                            $(":checkbox").change(function () {
-                                                $(this).closest('td').next('td').find('input:text').prop("disabled", !this.checked);
-                                            });
-                                        </script>
                                     </td>
                                     <td>
-                                        <input type="text" disabled th:value="${donation.created}"/>
+                                        <input type="datetime-local" disabled th:value="${donation.created}"/>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -418,10 +413,14 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- /.container-fluid -->
         </div>
+        <script>
+            $(":checkbox").change(function () {
+                $(this).closest('td').next('td').find('input').prop("disabled", !this.checked);
+            });
+        </script>
         <!-- End of Main Content -->
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
