@@ -1,0 +1,18 @@
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js/}" type="text/javascript"></script>
+</head>
+<body>
+<input type="checkbox"/><input type="text" disabled/>
+<script>
+
+    $(":checkbox").change(function() {
+        $(this).next(":text").prop("disabled", !this.checked);
+    });
+</script>
+</body>
+</html>

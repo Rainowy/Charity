@@ -25,8 +25,7 @@ public class UserController {
         ModelAndView model = new ModelAndView("user/tables");
         donationService.getAllDonationsProjection().stream()
                 .forEach(inst -> System.out.println(inst.getReceived() ));
-
-
+        model.addObject("donations",donationService.getAllDonationsProjection());
         return model;
     }
 }
