@@ -382,6 +382,7 @@
                                     <th>Utworzono</th>
                                     <th>Odebrano</th>
                                     <th>Data odebrania</th>
+                                    <th>Zapisz</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -391,23 +392,22 @@
                                     <th>Utworzono</th>
                                     <th>Odebrano</th>
                                     <th>Data odebrania</th>
+                                    <th>Zapisz</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr class="testuje" th:each="donation : ${donations}">
 
-                                    <td th:text="${donation.id}"></td>
-                                    <td th:text="${donation.institution.name}"></td>
-
-<!--                                    <td th:text="${#dates.format(donation.created, 'dd-MM-yyyy HH:mm')}"></td>-->
-                                    <td th:text="${#temporals.format(donation.created, 'dd-MM-yyyy HH:mm')}"></td>
-                                    <td>
-                                        <input type="checkbox" th:checked="${donation.received}"/>
-                                    </td>
-                                    <td>
-                                        <input type="datetime-local" disabled th:value="${donation.created}"/>
-                                    </td>
+                                <tr th:each="donationView : ${donations}">
+                                    <form autocomplete="off"  th:action="@{/user/table}" th:object="${donation}" method="post">
+                                    <td th:text="${donationView.id}"></td>
+                                    <td th:text="${donationView.institution.name}"></td>
+                                    <td th:text="${#temporals.format(donationView.created, 'dd-MM-yyyy HH:mm')}"></td>
+                                    <td><input type="checkbox" th:checked="${donationView.received}"/></td>
+                                    <td><input type="datetime-local" disabled  th:value="${donationView.datereceived}" name="receiveddate"/></td>
+                                    <td><input type="submit"></td>
+                                    </form>
                                 </tr>
+
                                 </tbody>
                             </table>
                         </div>

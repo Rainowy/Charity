@@ -1,7 +1,9 @@
 package pl.coderslab.charity.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+//@NoArgsConstructor
 @Table(name = "donation")
 public class Donation {
     //    mappedBy = "donation
@@ -41,7 +44,9 @@ public class Donation {
     private LocalTime pickUpTime;
     private String pickUpComment;
     private LocalDateTime created;
+    private LocalDateTime datereceived;
     private boolean received;
+
     @PrePersist
     public void prePersist() {
         created = LocalDateTime.now();
