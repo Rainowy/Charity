@@ -13,7 +13,12 @@ import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.service.DonationService;
 
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/user")
@@ -36,18 +41,31 @@ public class UserController {
         model.addObject("donations",donationService.getAllDonationsProjection());
         return model;
     }
+//    @RequestParam boolean received
+//@RequestParam String receiveddate
 
+//    @RequestParam String receiveddate
     @PostMapping("/table")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView table(@Valid Donation donation, BindingResult result,
-                              @RequestParam String receiveddate){
+                              @RequestParam(required = false) String receiveddate){
         ModelAndView model = new ModelAndView("redirect:/user/panel");
         if (result.hasErrors()) {
             model.setViewName("redirect:/user/panel");
             return model;
         }
-        System.out.println(donation);
+
+        LocalDateTime time = LocalDateTime.parse(receiveddate, DateTimeFormatter.ISO_DATE_TIME);
+
+
+//        LocalDateTime dateTime = getLocalDateTimeFromString(time);
+donation.setDatereceived(time);
+//        donation.setDatereceived(receiveddate);
+        System.out.println("ODEBRANO" + donation.isReceived());
         System.out.println(receiveddate);
+//        System.out.println(date_received);
+//        System.out.println(donation.getDatereceived());
+        System.out.println(donation);
 
         return model;
     }

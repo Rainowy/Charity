@@ -44,12 +44,34 @@ public class Donation {
     private LocalTime pickUpTime;
     private String pickUpComment;
     private LocalDateTime created;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
     private LocalDateTime datereceived;
     private boolean received;
 
     @PrePersist
     public void prePersist() {
         created = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "Donation{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", categories=" + categories +
+                ", institution=" + institution +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", pickUpDate=" + pickUpDate +
+                ", pickUpTime=" + pickUpTime +
+                ", pickUpComment='" + pickUpComment + '\'' +
+                ", created=" + created +
+                ", datereceived=" + datereceived +
+                ", received=" + received +
+                '}';
     }
 }
 
