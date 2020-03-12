@@ -405,8 +405,7 @@
                                         <td th:text="${#temporals.format(donationView.created, 'dd-MM-yyyy HH:mm')}"></td>
                                         <input type="hidden" th:value="${donationView.id}" th:name="id"/>
                                         <td><input type="checkbox" th:checked="${donationView.received}" th:name="received"/></td>
-                                        <td><input type="datetime-local" disabled
-                                                   th:value="${donationView.datereceived}" th:name="receiveddate"/></td>
+                                        <td><input type="datetime-local" disabled th:value="${donationView.dateReceived}" th:name="dateReceived"/></td>
                                         <td><input type="submit" disabled></td>
                                     </form>
                                 </tr>

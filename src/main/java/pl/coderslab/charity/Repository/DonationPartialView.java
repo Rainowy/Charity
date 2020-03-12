@@ -9,5 +9,5 @@ public interface DonationPartialView {
     Institution getInstitution();
     Boolean getReceived();
     LocalDateTime getCreated();
-    LocalDateTime getDatereceived();
+    LocalDateTime getDateReceived();
 }

@@ -45,8 +45,9 @@ public class Donation {
     private String pickUpComment;
     private LocalDateTime created;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
-    private LocalDateTime datereceived;
+    //    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime dateReceived;
     private boolean received;
 
     @PrePersist
@@ -69,7 +70,7 @@ public class Donation {
                 ", pickUpTime=" + pickUpTime +
                 ", pickUpComment='" + pickUpComment + '\'' +
                 ", created=" + created +
-                ", datereceived=" + datereceived +
+                ", datereceived=" + dateReceived +
                 ", received=" + received +
                 '}';
     }

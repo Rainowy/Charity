@@ -8,8 +8,10 @@ import pl.coderslab.charity.Repository.InstitutionPartialView;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
+import pl.coderslab.charity.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DonationService {
@@ -33,10 +35,10 @@ public class DonationService {
         return donationRepository.count();
     }
 
-//    public List<DonationPartialView> getAllDonationsProjection() {
-//        return donationRepository.findAllByOrderByIdAsc();
-//    }
     public List<DonationPartialView> getAllDonationsProjection() {
         return donationRepository.findAllByOrderByIdAsc();
+    }
+    public Optional<Donation> donationById(Long id) {
+        return donationRepository.findDonationById(id);
     }
 }

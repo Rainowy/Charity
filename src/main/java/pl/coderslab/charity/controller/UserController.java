@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.Repository.DonationRepository;
 import pl.coderslab.charity.entity.Donation;
+import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
+import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
 import java.text.DateFormat;
@@ -19,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -36,36 +39,38 @@ public class UserController {
         ModelAndView model = new ModelAndView("user/tables");
         Donation donation = new Donation();
         model.addObject("donation",donation);
-//        donationService.getAllDonationsProjection().stream()
-//                .forEach(inst -> System.out.println(inst.getReceived() ));
         model.addObject("donations",donationService.getAllDonationsProjection());
         return model;
     }
-//    @RequestParam boolean received
-//@RequestParam String receiveddate
 
-//    @RequestParam String receiveddate
+//    ,
+//    @RequestParam(required = false) String receiveddate
     @PostMapping("/table")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView table(@Valid Donation donation, BindingResult result,
-                              @RequestParam(required = false) String receiveddate){
+    public ModelAndView table(@Valid Donation donation, BindingResult result){
         ModelAndView model = new ModelAndView("redirect:/user/panel");
         if (result.hasErrors()) {
             model.setViewName("redirect:/user/panel");
             return model;
         }
+        Optional<Donation> donationById = donationService.donationById(donation.getId());
+        donationById.ifPresent(d ->d.setReceived(donation.isReceived()));
+        donationById.ifPresent(d ->d.setDateReceived(donation.getDateReceived()));
+        donationService.saveDonation(donationById.get());
+//        System.out.println(donation.getInstitution().getDonations());
+        System.out.println(donationById.get().getInstitution().getDonations());
 
-        LocalDateTime time = LocalDateTime.parse(receiveddate, DateTimeFormatter.ISO_DATE_TIME);
+//        LocalDateTime time = LocalDateTime.parse(receiveddate, DateTimeFormatter.ISO_DATE_TIME);
 
 
 //        LocalDateTime dateTime = getLocalDateTimeFromString(time);
-donation.setDatereceived(time);
+//donation.setDatereceived(time);
 //        donation.setDatereceived(receiveddate);
-        System.out.println("ODEBRANO" + donation.isReceived());
-        System.out.println(receiveddate);
-//        System.out.println(date_received);
-//        System.out.println(donation.getDatereceived());
-        System.out.println(donation);
+//        System.out.println("ODEBRANO" + donation.isReceived());
+//        System.out.println(donation.getDateReceived());
+////        System.out.println(date_received);
+////        System.out.println(donation.getDatereceived());
+//        System.out.println(donation);
 
         return model;
     }
