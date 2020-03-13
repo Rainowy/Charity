@@ -373,7 +373,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <td class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -393,10 +393,10 @@
                                     <th>Odebrano</th>
                                     <th>Data odebrania</th>
                                     <th>Zapisz</th>
+                                    <!--                                    <td><input type="checkbox" th:utext="." th:checked="${donationView.received}"></td>-->
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <!--                                th:field="${donation.received}"-->
                                 <tr th:each="donationView : ${donations}">
                                     <form autocomplete="off" th:action="@{/user/table}" th:object="${donation}"
                                           method="post">
@@ -404,38 +404,63 @@
                                         <td th:text="${donationView.institution.name}"></td>
                                         <td th:text="${#temporals.format(donationView.created, 'dd-MM-yyyy HH:mm')}"></td>
                                         <input type="hidden" th:value="${donationView.id}" th:name="id"/>
-                                        <td><input type="checkbox" th:checked="${donationView.received}" th:name="received"/></td>
-                                        <td><input type="datetime-local" disabled th:value="${donationView.dateReceived}" th:name="dateReceived"/></td>
+
+                                        <!--                                        <div th:switch="${donationView.received}">-->
+                                        <!--                                            <td th:case="'true'">TAK</td>-->
+                                        <!--                                            <td th:case="'false'">NIE</td>-->
+                                        <!--                                        </div>-->
+                                        <th:block id ="test" th:if="${donationView.received == true}">
+<label>
+                                        <td><input type="checkbox"  th:checked="${donationView.received}"
+                                                   th:name="received" /><span>Tak</span></td>
+</label>
+                                        </th:block>
+<!--                                        th:text=" nie"-->
+<!--                                        th:text=" tak"-->
+                                        <th:block th:unless="${donationView.received == true}">
+                                        <td><input type="checkbox" th:checked="${donationView.received}"
+                                                   th:name="received" /><span>Nie</span></td>
+
+                                        </th:block>
+
+                                        <!--                                        <td><input type="checkbox" th:checked="${donationView.received}" th:name="received"/></td>-->
+                                        <td><input type="datetime-local" disabled
+                                                   th:value="${donationView.dateReceived}" th:name="dateReceived"/></td>
                                         <td><input type="submit" disabled></td>
                                     </form>
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
                     </div>
                 </div>
             </div>
-            <!-- /.container-fluid -->
         </div>
-        <script>
-            $(":checkbox").change(function () {
-                $(this).closest('td').next('td').find('input').prop("disabled", !this.checked);
-                $(this).closest('td').next('td').next('td').find('input').prop("disabled", !this.checked);
-            });
-        </script>
-        <!-- End of Main Content -->
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2019</span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
-
+        <!-- /.container-fluid -->
     </div>
-    <!-- End of Content Wrapper -->
+    <script>
+        $('td').click(function () {
+            var checked = $('input', this).is(':checked');
+            $('span', this).text(checked ? 'Tak' : 'Nie');
+        });
+        $(":checkbox").change(function () {
+
+            $(this).closest('td').next('td').find('input').prop("disabled", !this.checked);
+            $(this).closest('td').next('td').next('td').find('input').prop("disabled", !this.checked);
+        });
+    </script>
+    <!-- End of Main Content -->
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Your Website 2019</span>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
 
 </div>
 <!-- End of Page Wrapper -->
