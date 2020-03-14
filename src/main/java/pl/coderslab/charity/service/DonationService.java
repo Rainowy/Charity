@@ -38,7 +38,9 @@ public class DonationService {
     public List<DonationPartialView> getAllDonationsProjection() {
         return donationRepository.findAllByOrderByIdAsc();
     }
+    public List<Donation> getAllDonations(){return donationRepository.findAll();}
     public Optional<Donation> donationById(Long id) {
         return donationRepository.findDonationById(id);
     }
+
 }
