@@ -3,10 +3,7 @@ package pl.coderslab.charity.controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.Repository.DonationRepository;
 import pl.coderslab.charity.entity.Donation;
@@ -43,8 +40,6 @@ public class UserController {
         return model;
     }
 
-//    ,
-//    @RequestParam(required = false) String receiveddate
     @PostMapping("/table")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView table(@Valid Donation donation, BindingResult result){
@@ -57,21 +52,14 @@ public class UserController {
         donationById.ifPresent(d ->d.setReceived(donation.isReceived()));
         donationById.ifPresent(d ->d.setDateReceived(donation.getDateReceived()));
         donationService.saveDonation(donationById.get());
-//        System.out.println(donation.getInstitution().getDonations());
-        System.out.println(donationById.get().getInstitution().getDonations());
+        return model;
+    }
 
-//        LocalDateTime time = LocalDateTime.parse(receiveddate, DateTimeFormatter.ISO_DATE_TIME);
-
-
-//        LocalDateTime dateTime = getLocalDateTimeFromString(time);
-//donation.setDatereceived(time);
-//        donation.setDatereceived(receiveddate);
-//        System.out.println("ODEBRANO" + donation.isReceived());
-//        System.out.println(donation.getDateReceived());
-////        System.out.println(date_received);
-////        System.out.println(donation.getDatereceived());
-//        System.out.println(donation);
-
+    @GetMapping("/table_details/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public ModelAndView table_details(@PathVariable String id){
+        ModelAndView model = new ModelAndView("redirect:/user/panel");
+        System.out.println(id);
         return model;
     }
 

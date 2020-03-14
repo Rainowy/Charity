@@ -393,40 +393,28 @@
                                     <th>Odebrano</th>
                                     <th>Data odebrania</th>
                                     <th>Zapisz</th>
-                                    <!--                                    <td><input type="checkbox" th:utext="." th:checked="${donationView.received}"></td>-->
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="donationView : ${donations}">
                                     <form autocomplete="off" th:action="@{/user/table}" th:object="${donation}"
                                           method="post">
-                                        <td th:text="${donationView.id}"></td>
+                                        <td><a th:href="@{'/user/table_details/' + ${donationView.id}}" th:text="${donationView.id} + ' *'"></a></td>
                                         <td th:text="${donationView.institution.name}"></td>
                                         <td th:text="${#temporals.format(donationView.created, 'dd-MM-yyyy HH:mm')}"></td>
                                         <input type="hidden" th:value="${donationView.id}" th:name="id"/>
-
-                                        <!--                                        <div th:switch="${donationView.received}">-->
-                                        <!--                                            <td th:case="'true'">TAK</td>-->
-                                        <!--                                            <td th:case="'false'">NIE</td>-->
-                                        <!--                                        </div>-->
-                                        <th:block id ="test" th:if="${donationView.received == true}">
-<label>
-                                        <td><input type="checkbox"  th:checked="${donationView.received}"
-                                                   th:name="received" /><span>Tak</span></td>
-</label>
+                                        <th:block th:switch="${donationView.received}">
+                                            <td th:case="true"><input type="checkbox"
+                                                                      th:checked="${donationView.received}"
+                                                                      th:name="received"/><span> Tak </span></td>
+                                            <td th:case="false"><input type="checkbox"
+                                                                       th:checked="${donationView.received}"
+                                                                       th:name="received"/><span> Nie </span></td>
                                         </th:block>
-<!--                                        th:text=" nie"-->
-<!--                                        th:text=" tak"-->
-                                        <th:block th:unless="${donationView.received == true}">
-                                        <td><input type="checkbox" th:checked="${donationView.received}"
-                                                   th:name="received" /><span>Nie</span></td>
-
-                                        </th:block>
-
-                                        <!--                                        <td><input type="checkbox" th:checked="${donationView.received}" th:name="received"/></td>-->
                                         <td><input type="datetime-local" disabled
-                                                   th:value="${donationView.dateReceived}" th:name="dateReceived"/></td>
-                                        <td><input type="submit" disabled></td>
+                                                   th:value="${donationView.dateReceived}" th:name="dateReceived"
+                                                   required/></td>
+                                        <td><input type="submit" value="zapisz" disabled></td>
                                     </form>
                                 </tr>
                                 </tbody>
@@ -440,10 +428,9 @@
     <script>
         $('td').click(function () {
             var checked = $('input', this).is(':checked');
-            $('span', this).text(checked ? 'Tak' : 'Nie');
+            $('span', this).text(checked ? ' Tak ' : ' Nie ');
         });
         $(":checkbox").change(function () {
-
             $(this).closest('td').next('td').find('input').prop("disabled", !this.checked);
             $(this).closest('td').next('td').next('td').find('input').prop("disabled", !this.checked);
         });
