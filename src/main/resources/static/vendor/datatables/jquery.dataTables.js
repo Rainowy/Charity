@@ -15082,8 +15082,8 @@
 	
 
 	// jQuery access
-	// $.fn.dataTable = DataTable;
-	$.fn.dataTable2 = DataTable;
+	$.fn.dataTable = DataTable;
+
 
 	// Provide access to the host jQuery object (circular reference)
 	DataTable.$ = $;
@@ -15095,7 +15095,7 @@
 	// With a capital `D` we return a DataTables API instance rather than a
 	// jQuery object
 	$.fn.DataTable = function ( opts ) {
-		return $(this).dataTable2( opts ).api();
+		return $(this).dataTable( opts ).api();
 	};
 
 	// All properties that are available to $.fn.dataTable should also be

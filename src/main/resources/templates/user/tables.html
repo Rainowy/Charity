@@ -374,7 +374,7 @@
                         <button id="hide">Szczegóły</button>
                     </div>
                     <div class="card-body" id="hideFirst">
-                        <td class="table-responsive">
+                        <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -423,118 +423,44 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </td>
-                    </div>
-                    <div class="card-body" id="hideSecond">
-                        <td class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Nr. dotacji</th>
-                                    <th>Instytucja</th>
-                                    <th>Utworzono</th>
-                                    <th>Odebrano</th>
-                                    <th>Data odebrania</th>
-                                    <th>Zapisz</th>
-                                    <th>Data</th>
-                                    <th>Czas</th>
-                                    <th>Miasto</th>
-                                    <th>Ulica</th>
-                                    <th>Kod pocztowy</th>
-                                    <th>Telefon</th>
-                                    <th>Ilość worków</th>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                <tr>
-                                    <th>Nr. dotacji</th>
-                                    <th>Instytucja</th>
-                                    <th>Utworzono</th>
-                                    <th>Odebrano</th>
-                                    <th>Data odebrania</th>
-                                    <th>Zapisz</th>
-                                    <th>Data</th>
-                                    <th>Czas</th>
-                                    <th>Miasto</th>
-                                    <th>Ulica</th>
-                                    <th>Kod pocztowy</th>
-                                    <th>Telefon</th>
-                                    <th>Ilość worków</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                <tr th:each="donationView : ${donations}">
-                                    <form autocomplete="off" th:action="@{/user/table}" th:object="${donation}"
-                                          method="post">
-                                        <td><a th:href="@{'/user/table_details/' + ${donationView.id}}"
-                                               th:text="${donationView.id} + ' *'"></a></td>
-                                        <td th:text="${donationView.institution.name}"></td>
-                                        <td th:text="${#temporals.format(donationView.created, 'dd-MM-yyyy HH:mm')}"></td>
-                                        <input type="hidden" th:value="${donationView.id}" th:name="id"/>
-                                        <th:block th:switch="${donationView.received}">
-                                            <td th:case="true"><input type="checkbox"
-                                                                      th:checked="${donationView.received}"
-                                                                      th:name="received"/><span> Tak </span></td>
-                                            <td th:case="false"><input type="checkbox"
-                                                                       th:checked="${donationView.received}"
-                                                                       th:name="received"/><span> Nie </span></td>
-                                        </th:block>
-                                        <td><input type="datetime-local" disabled
-                                                   th:value="${donationView.dateReceived}" th:name="dateReceived"
-                                                   required/></td>
-                                        <td><input type="submit" value="zapisz" disabled></td>
-                                        <td th:text="${donationView.pickUpDate}"></td>
-                                        <td th:text="${donationView.pickUpTime}"></td>
-                                        <td th:text="${donationView.city}"></td>
-                                        <td th:text="${donationView.street}"></td>
-                                        <td th:text="${donationView.zipCode}"></td>
-                                        <td th:text="${donationView.phoneNumber}"></td>
-                                        <td th:text="${donationView.quantity}"></td>
-                                    </form>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
-    </div>
-    <script>
-        $('#hideSecond').hide();
+<!--    </div>-->
+    <!-- /.container-fluid -->
+<!--</div>-->
+<script>
+    $('#hideSecond').hide();
 
-        $('td').click(function () {
-            var checked = $('input', this).is(':checked');
-            $('span', this).text(checked ? ' Tak ' : ' Nie ');
-        });
-        $(":checkbox").change(function () {
-            $(this).closest('td').next('td').find('input').prop("disabled", !this.checked);
-            $(this).closest('td').next('td').next('td').find('input').prop("disabled", !this.checked);
-        });
+    $('td').click(function () {
+        var checked = $('input', this).is(':checked');
+        $('span', this).text(checked ? ' Tak ' : ' Nie ');
+    });
+    $(":checkbox").change(function () {
+        $(this).closest('td').next('td').find('input').prop("disabled", !this.checked);
+        $(this).closest('td').next('td').next('td').find('input').prop("disabled", !this.checked);
+    });
 
-        $("#hide").click(function () {
-            // $('#dataTable').toggle();
-            // $('#dataTable2').toggle();
+    $("#hide").click(function () {
+        // $('#dataTable').toggle();
+        // $('#dataTable2').toggle();
 
-            $('#hideFirst').toggle();
-            $('#hideSecond').toggle();
-        });
-        $("#show").click(function () {
-            $('#dataTable').show();
-        });
-
-    </script>
-    <!-- End of Main Content -->
-    <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2019</span>
-            </div>
+        $('#hideFirst').toggle();
+        $('#hideSecond').toggle();
+    });
+</script>
+<!-- End of Main Content -->
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2019</span>
         </div>
-    </footer>
-    <!-- End of Footer -->
+    </div>
+</footer>
+<!-- End of Footer -->
 
 </div>
 <!-- End of Content Wrapper -->
@@ -594,3 +520,75 @@
 </body>
 
 </html>
+
+<div class="card-body" id="hideSecond">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Nr. dotacji</th>
+                <th>Instytucja</th>
+                <th>Utworzono</th>
+                <th>Odebrano</th>
+                <th>Data odebrania</th>
+                <th>Zapisz</th>
+                <th>Data</th>
+                <th>Czas</th>
+                <th>Miasto</th>
+                <th>Ulica</th>
+                <th>Kod pocztowy</th>
+                <th>Telefon</th>
+                <th>Ilość worków</th>
+            </thead>
+            <tfoot>
+            <tr>
+            <tr>
+                <th>Nr. dotacji</th>
+                <th>Instytucja</th>
+                <th>Utworzono</th>
+                <th>Odebrano</th>
+                <th>Data odebrania</th>
+                <th>Zapisz</th>
+                <th>Data</th>
+                <th>Czas</th>
+                <th>Miasto</th>
+                <th>Ulica</th>
+                <th>Kod pocztowy</th>
+                <th>Telefon</th>
+                <th>Ilość worków</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr th:each="donationView : ${donations}">
+                <form autocomplete="off" th:action="@{/user/table}" th:object="${donation}"
+                      method="post">
+                    <td><a th:href="@{'/user/table_details/' + ${donationView.id}}"
+                           th:text="${donationView.id} + ' *'"></a></td>
+                    <td th:text="${donationView.institution.name}"></td>
+                    <td th:text="${#temporals.format(donationView.created, 'dd-MM-yyyy HH:mm')}"></td>
+                    <input type="hidden" th:value="${donationView.id}" th:name="id"/>
+                    <th:block th:switch="${donationView.received}">
+                        <td th:case="true"><input type="checkbox"
+                                                  th:checked="${donationView.received}"
+                                                  th:name="received"/><span> Tak </span></td>
+                        <td th:case="false"><input type="checkbox"
+                                                   th:checked="${donationView.received}"
+                                                   th:name="received"/><span> Nie </span></td>
+                    </th:block>
+                    <td><input type="datetime-local" disabled
+                               th:value="${donationView.dateReceived}" th:name="dateReceived"
+                               required/></td>
+                    <td><input type="submit" value="zapisz" disabled></td>
+                    <td th:text="${donationView.pickUpDate}"></td>
+                    <td th:text="${donationView.pickUpTime}"></td>
+                    <td th:text="${donationView.city}"></td>
+                    <td th:text="${donationView.street}"></td>
+                    <td th:text="${donationView.zipCode}"></td>
+                    <td th:text="${donationView.phoneNumber}"></td>
+                    <td th:text="${donationView.quantity}"></td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
