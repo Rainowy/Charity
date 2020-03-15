@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping("/panel")
     @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
     public ModelAndView userPanel(){
-        ModelAndView model = new ModelAndView("user/tables");
+        ModelAndView model = new ModelAndView("user/tables2");
         Donation donation = new Donation();
         model.addObject("donation",donation);
 //        model.addObject("donations",donationService.getAllDonationsProjection());

@@ -373,9 +373,9 @@
                         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                         <button id="hide">Szczegóły</button>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="hideFirst">
                         <td class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Nr. dotacji</th>
@@ -424,8 +424,10 @@
                                 </tbody>
                             </table>
                         </td>
+                    </div>
+                    <div class="card-body" id="hideSecond">
                         <td class="table-responsive">
-                            <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Nr. dotacji</th>
@@ -500,7 +502,7 @@
         <!-- /.container-fluid -->
     </div>
     <script>
-        $('#dataTable2').hide();
+        $('#hideSecond').hide();
 
         $('td').click(function () {
             var checked = $('input', this).is(':checked');
@@ -512,8 +514,11 @@
         });
 
         $("#hide").click(function () {
-            $('#dataTable').toggle();
-            $('#dataTable2').toggle();
+            // $('#dataTable').toggle();
+            // $('#dataTable2').toggle();
+
+            $('#hideFirst').toggle();
+            $('#hideSecond').toggle();
         });
         $("#show").click(function () {
             $('#dataTable').show();
@@ -577,7 +582,8 @@
 <script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
 <!-- Page level plugins -->
 <!--  <script src="vendor/datatables/jquery.dataTables.min.js"></script>-->
-<script type="text/javascript" th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+<!--<script type="text/javascript" th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>-->
+<script type="text/javascript" th:src="@{/vendor/datatables/jquery.dataTables.js}"></script>
 <!--  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>-->
 <script type="text/javascript" th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 
