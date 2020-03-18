@@ -64,6 +64,29 @@ public class UserController {
         return model;
     }
 
+    @PostMapping("/edit_profile")
+    @PreAuthorize("hasRole('USER')")
+    public ModelAndView profile(@Valid User user,
+                                BindingResult result,
+                                @RequestParam String password2) {
+        ModelAndView model = new ModelAndView();
+
+        userService.existenceValidator(user, result);
+
+        if (!user.getPassword().equals(password2)) {
+            result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
+        }
+        if (result.hasErrors()) {
+            model.setViewName("redirect:/user/profile");
+            model.setViewName("user/profile");
+            return model;
+        }
+
+        System.out.println(user);
+
+        return model;
+    }
+
     @GetMapping("/table_details/{id}")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView table_details(@PathVariable String id){
