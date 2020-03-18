@@ -1,5 +1,8 @@
 package pl.coderslab.charity.service;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -21,9 +24,11 @@ public class UserService {
     public Optional<User> userByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public Optional<User> userByFirstName(String name) {
         return userRepository.findByFirstName(name);
     }
+
     public Optional<User> userById(Long id) {
         return userRepository.findUserById(id);
     }
@@ -34,7 +39,12 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User saveUser(User user){
+    public String getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         user.setEnabled(true); /** must be enabled to login */
@@ -46,10 +56,12 @@ public class UserService {
         Optional<Long> userId = Optional.ofNullable(user.getId());
         userId.ifPresentOrElse(var -> userNotEmpty(user, result), () -> userEmpty(user, result));
     }
+
     public void userEmpty(User user, BindingResult result) {
         userByEmail(user.getEmail()).ifPresent(r -> result.rejectValue("email", "error.user", "Istnieje już osoba o podanym emailu"));
         userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu"));
     }
+
     public void userNotEmpty(User user, BindingResult result) {
     }
 }

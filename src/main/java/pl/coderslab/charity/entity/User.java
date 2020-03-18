@@ -59,6 +59,8 @@ public class User {
     @NotEmpty(message = "nie pusty")
     private String email;
     @NotEmpty(message = "nie pusty")
+    private String phone;
+    @NotEmpty(message = "nie pusty")
     private String password;
     private boolean enabled;
     private boolean tokenExpired;
@@ -134,6 +136,14 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

@@ -12,12 +12,6 @@ import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -25,15 +19,17 @@ import java.util.Optional;
 public class UserController {
 
   DonationService donationService;
+  UserService userService;
 
-    public UserController(DonationService donationService) {
+    public UserController(DonationService donationService, UserService userService) {
         this.donationService = donationService;
+        this.userService = userService;
     }
 
-    @GetMapping("/panel")
+    @GetMapping("/donations")
     @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
     public ModelAndView userPanel(){
-        ModelAndView model = new ModelAndView("user/tables2");
+        ModelAndView model = new ModelAndView("user/donations");
         Donation donation = new Donation();
         model.addObject("donation",donation);
 //        model.addObject("donations",donationService.getAllDonationsProjection());
@@ -45,9 +41,9 @@ public class UserController {
     @PostMapping("/table")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView table(@Valid Donation donation, BindingResult result){
-        ModelAndView model = new ModelAndView("redirect:/user/panel");
+        ModelAndView model = new ModelAndView("redirect:/user/donations");
         if (result.hasErrors()) {
-            model.setViewName("redirect:/user/panel");
+            model.setViewName("redirect:/user/donations");
             return model;
         }
         Optional<Donation> donationById = donationService.donationById(donation.getId());
@@ -58,11 +54,21 @@ public class UserController {
         return model;
     }
 
+    @GetMapping("/profile")
+    @PreAuthorize("hasRole('USER')")
+    public ModelAndView profile(){
+        ModelAndView model = new ModelAndView("user/profile");
+        String currentUserEmail = userService.getCurrentUser();
+        Optional<User> currentUser = userService.userByEmail(currentUserEmail);
+        model.addObject("user",currentUser.get());
+        return model;
+    }
+
     @GetMapping("/table_details/{id}")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView table_details(@PathVariable String id){
         Optional<Donation> donationById = donationService.donationById(Long.parseLong(id));
-        ModelAndView model = new ModelAndView("user/tables");
+        ModelAndView model = new ModelAndView("user/donations");
 
         model.addObject("details","true");
         System.out.println(id);

@@ -1,6 +1,6 @@
 package pl.coderslab.charity.service;
 
-import org.springframework.data.jpa.repository.Query;
+
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.Repository.DonationPartialView;
 import pl.coderslab.charity.Repository.DonationRepository;
@@ -25,6 +25,7 @@ public class DonationService {
     public Donation saveDonation(Donation donation) {
         Institution institution = donation.getInstitution();
         institution.addDonation(donation);
+
         return donationRepository.save(donation);
     }
     public Long sumQuantities() {
