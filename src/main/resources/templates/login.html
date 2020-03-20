@@ -19,10 +19,10 @@
     <h2>Zaloguj się</h2>
     <form method="post" action="/login">
         <div class="form-group">
-            <input type="text" name="username" placeholder="Imię lub Email"/>
+            <input type="text" name="username" placeholder="Imię lub Email" value="Kasia"/>
         </div>
         <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło"/>
+            <input type="password" name="password" placeholder="Hasło" value="kasiaczek"/>
             <a href="#" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
         </div>
         <div align="center" th:if="${param.error}">
