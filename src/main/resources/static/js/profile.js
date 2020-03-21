@@ -1,5 +1,5 @@
 //Maps your button click event to the File Upload click event
-$(function(){
+$(function () {
     $(".avatar").click(function () {
         $("#file1").trigger('click');
     });
@@ -8,6 +8,9 @@ $(function(){
 $(document).ready(function () {
     $('#up-different').hide();
 
+    if (editEnabled) {
+        toggleDisabled()
+    }
     var readURL = function (input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -18,14 +21,16 @@ $(document).ready(function () {
             reader.readAsDataURL(input.files[0]);
         }
     }
-
     $(".file-upload").on('change', function () {
         readURL(this);
     });
 });
 
 $("#edit").click(function () {
-    //Select all inputs insted of button, also  submit, reset can exists
+    toggleDisabled();
+});
+
+function toggleDisabled() {
     var inputs = $('input, textarea, select')
         .not(':input[type=button]');
     $(inputs).prop("disabled", (_, val) => !val);
@@ -33,7 +38,4 @@ $("#edit").click(function () {
     $('#submit').prop("disabled", (_, val) => !val)
     //Wybierz inne zdjęcie message hidden toggle
     $('#up-different').toggle();
-
-
-});
-// :input[type=submit],
+}

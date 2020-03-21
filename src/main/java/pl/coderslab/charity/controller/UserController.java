@@ -73,12 +73,11 @@ public class UserController {
                                 @RequestParam(required = false) String password2) {
         ModelAndView model = new ModelAndView();
 
-        System.out.println(user);
         userService.existenceValidator(user, result);
 
         if (result.hasErrors()) {
             model.setViewName("/user/profile");
-                        model.addObject("editEnabled","true");
+            model.addObject("editEnabled", "true");
             return model;
         }
 

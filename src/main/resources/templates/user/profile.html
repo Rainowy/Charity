@@ -28,28 +28,11 @@
 </head>
 
 <body id="page-top">
+
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var edited = /*[[${editEnabled}]]*/ 'editEnabled';
-    console.log(edited)
+    var editEnabled = /*[[${editEnabled}]]*/ 'editEnabled';
     /*]]>*/
-
-
-        //     console.log(edited)
-        //     // if (section) {
-        //     //     document.getElementById(section).scrollIntoView(true);}}
-        if (edited) {
-            window.onload = function () {
-            var inputs = $('input, textarea, select')
-                .not(':input[type=button]');
-            $(inputs).prop("disabled", (_, val) => !val);
-            //Submit button disabled toggle
-            $('#submit').prop("disabled", (_, val) => !val)
-            //Wybierz inne zdjęcie message hidden toggle
-            $('#up-different').toggle();
-        }
-    }
-    // }
 </script>
 
 <!-- Page Wrapper -->
