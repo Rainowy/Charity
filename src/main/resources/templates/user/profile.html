@@ -28,6 +28,29 @@
 </head>
 
 <body id="page-top">
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var edited = /*[[${editEnabled}]]*/ 'editEnabled';
+    console.log(edited)
+    /*]]>*/
+
+
+        //     console.log(edited)
+        //     // if (section) {
+        //     //     document.getElementById(section).scrollIntoView(true);}}
+        if (edited) {
+            window.onload = function () {
+            var inputs = $('input, textarea, select')
+                .not(':input[type=button]');
+            $(inputs).prop("disabled", (_, val) => !val);
+            //Submit button disabled toggle
+            $('#submit').prop("disabled", (_, val) => !val)
+            //Wybierz inne zdjęcie message hidden toggle
+            $('#up-different').toggle();
+        }
+    }
+    // }
+</script>
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -470,7 +493,7 @@
 
                                         <div class="col-xs-6">
                                             <label for="email"><h4>Email</h4></label>
-                                            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{email}"
+                                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
                                                class="validation-message"></p>
                                             <input type="email" class="form-control" th:value="${user.email}" id="email"
                                                    th:name="email" title="wprowadź email" disabled>
