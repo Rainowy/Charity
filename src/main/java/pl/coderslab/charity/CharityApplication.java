@@ -10,3 +10,5 @@ public class CharityApplication {
         SpringApplication.run(CharityApplication.class, args);
     }
 }
+
+//TODO uzupełnić zakładanie konta o phone bo wywala błędem, bo jest validation not empty ustawione

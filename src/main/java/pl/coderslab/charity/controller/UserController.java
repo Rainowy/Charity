@@ -3,13 +3,14 @@ package pl.coderslab.charity.controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import pl.coderslab.charity.Repository.DonationRepository;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
+import pl.coderslab.charity.validation.ValidationStepTwo;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -68,12 +69,16 @@ public class UserController {
 
     @PostMapping("/editprofile")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView profile(@Valid User user,
+    public ModelAndView profile(@Validated(ValidationStepTwo.class) User user,
                                 BindingResult result,
                                 @RequestParam(required = false) String password2) {
         ModelAndView model = new ModelAndView();
 
         userService.existenceValidator(user, result);
+
+        if(Optional.ofNullable(password2).isPresent() && (!user.getPassword().equals(password2))){
+            result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
+        }
 
         if (result.hasErrors()) {
             model.setViewName("/user/profile");
@@ -81,22 +86,7 @@ public class UserController {
             return model;
         }
 
-//        if(Optional.ofNullable(password2).isPresent()){
-//            if (!user.getPassword().equals(password2)) {
-//                result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
-////                model.addObject("editEnabled","true");
-//            }
-//        }
-
-
-//        if (result.hasErrors()) {
-////            model.setViewName("redirect:/user/profile");
-//            model.setViewName("/user/profile");
-////            model.addObject("editEnabled","true");
-//            return model;
-//        }
-
-//        model.setViewName("redirect:/user/profile");
+        model.setViewName("redirect:/user/profile");
         System.out.println(user);
 
         return model;

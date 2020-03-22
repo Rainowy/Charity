@@ -1,13 +1,9 @@
 package pl.coderslab.charity.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,12 +12,11 @@ import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
+import pl.coderslab.charity.validation.ValidationStepOne;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @Controller
 @RequestMapping("/")
@@ -75,7 +70,7 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public ModelAndView register(@Valid User user,
+    public ModelAndView register(@Validated(ValidationStepOne.class) User user,
                                  BindingResult result,
                                  @RequestParam String password2) {
         ModelAndView model = new ModelAndView();

@@ -38,10 +38,13 @@ package pl.coderslab.charity.entity;//package pl.coderslab.charity.entity;
 //    private Set<Role> roles = new HashSet<>();
 //}
 
-import pl.coderslab.charity.entity.Role;
+import pl.coderslab.charity.validation.ValidPassword;
+import pl.coderslab.charity.validation.ValidationStepOne;
+import pl.coderslab.charity.validation.ValidationStepTwo;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 
@@ -58,9 +61,10 @@ public class User {
     @Email
     @NotEmpty(message = "nie pusty")
     private String email;
-    @NotEmpty(message = "nie pusty")
+//    @NotEmpty(message = "nie pusty")
     private String phone;
-    @NotEmpty(message = "nie pusty")
+    @NotBlank(groups = ValidationStepOne.class, message = "nie pusty")
+    @ValidPassword(groups = ValidationStepTwo.class, message = "0 lub 8")
     private String password;
     private boolean enabled;
     private boolean tokenExpired;
