@@ -1,11 +1,14 @@
 package pl.coderslab.charity.validation;
 
+import lombok.SneakyThrows;
 import org.passay.*;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
+import java.io.FileInputStream;
+import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
@@ -14,36 +17,27 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
     public void initialize(ValidPassword arg0) {
     }
 
+    @SneakyThrows
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
+
         LengthComplexityRule lengthComplexityRule = new LengthComplexityRule();
         lengthComplexityRule.addRules("[0,0]", new LengthRule(0));
-        lengthComplexityRule.addRules("[3,10]" , new LengthRule(3,10));
-        PasswordValidator validator = new PasswordValidator(Arrays.asList(
-                // at least 8 characters
-//                new LengthRule(0)
-//                new LengthRule(8, 30)
-                lengthComplexityRule
+        lengthComplexityRule.addRules("[3,10]", new LengthRule(3, 10));
 
+        URL resource = this.getClass().getClassLoader().getResource("messages_pl.properties");
+        Properties props = new Properties();
+        props.load(new FileInputStream(resource.getPath()));
+        MessageResolver resolver = new PropertiesMessageResolver(props);
 
+        /**Same in different way */
+//        Properties props = new Properties();
+//        props.load(new FileInputStream("/home/tomek/Workspace/Portfolio/Charity/src/main/resources/messages_pl.properties"));
+//        MessageResolver resolver = new PropertiesMessageResolver(props);
+        /***/
 
+        PasswordValidator validator = new PasswordValidator(resolver, lengthComplexityRule);
 
-                // at least one upper-case character
-//                new CharacterRule(EnglishCharacterData.UpperCase, 1),
-//
-//                // at least one lower-case character
-//                new CharacterRule(EnglishCharacterData.LowerCase, 1),
-//
-//                // at least one digit character
-//                new CharacterRule(EnglishCharacterData.Digit, 1),
-//
-//                // at least one symbol (special character)
-//                new CharacterRule(EnglishCharacterData.Special, 1),
-//
-//                // no whitespace
-//                new WhitespaceRule()
-
-        ));
         RuleResult result = validator.validate(new PasswordData(password));
         if (result.isValid()) {
             return true;

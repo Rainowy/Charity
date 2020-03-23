@@ -54,17 +54,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotEmpty(message = "nie pusty")
+    @NotBlank (groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
     private String firstName;
-    @NotEmpty(message = "nie pusty")
+    @NotBlank (groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
     private String lastName;
-    @Email
-    @NotEmpty(message = "nie pusty")
+    @Email(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.regular}")
+    @NotEmpty(groups = {ValidationStepOne.class, ValidationStepTwo.class},  message = "{email.notempty}")
     private String email;
-//    @NotEmpty(message = "nie pusty")
+//    @NotBlank(message = "nie pusty")
     private String phone;
-    @NotBlank(groups = ValidationStepOne.class, message = "nie pusty")
-    @ValidPassword(groups = ValidationStepTwo.class, message = "0 lub 8")
+    @NotBlank(groups = ValidationStepOne.class, message = "{password.notempty}")
+    @ValidPassword(groups = ValidationStepTwo.class)
+//    , message = "{password.notEmptyOrLonger5}"
     private String password;
     private boolean enabled;
     private boolean tokenExpired;
