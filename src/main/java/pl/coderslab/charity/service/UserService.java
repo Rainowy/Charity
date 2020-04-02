@@ -1,6 +1,5 @@
 package pl.coderslab.charity.service;
 
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,7 +51,6 @@ public class UserService {
     }
 
     public void existenceValidator(@Valid User user, BindingResult result) {
-
         Optional<Long> userId = Optional.ofNullable(user.getId());
         userId.ifPresentOrElse(var -> userNotEmpty(user, result), () -> userEmpty(user, result));
     }
@@ -60,8 +58,13 @@ public class UserService {
     public void userEmpty(User user, BindingResult result) {
         userByEmail(user.getEmail()).ifPresent(r -> result.rejectValue("email", "error.user", "Istnieje już osoba o podanym emailu"));
         userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu"));
-    }
 
+    }
     public void userNotEmpty(User user, BindingResult result) {
+        Optional<User> userById = userById(user.getId());
+        if (!userById.get().getEmail().equals(user.getEmail())) {
+            userByEmail(user.getEmail()).ifPresent(r -> result.rejectValue("email", "error.user", "Istnieje już osoba o podanym emailu")); }
+        if (!userById.get().getFirstName().equals(user.getFirstName())) {
+            userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu")); }
     }
 }
