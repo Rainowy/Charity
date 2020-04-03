@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
@@ -67,12 +68,29 @@ public class UserController {
         return model;
     }
 
+    private static String  UPLOADED_FOLDER = "/home/tomek";
     @PostMapping("/editprofile")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile(@Validated(ValidationStepTwo.class) User user,
                                 BindingResult result,
+                                @RequestParam(value = "file") MultipartFile file,
                                 @RequestParam(required = false) String password2) {
         ModelAndView model = new ModelAndView();
+
+        System.out.println(file);
+//        try {
+//
+//            // Get the file and save it somewhere
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+//            Files.write(path, bytes);
+//
+////            redirectAttributes.addFlashAttribute("message",
+////                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         userService.existenceValidator(user, result);
 
@@ -85,6 +103,11 @@ public class UserController {
             model.addObject("editEnabled", "true");
             return model;
         }
+
+
+
+
+
 
         model.setViewName("redirect:/user/profile");
         System.out.println(user);
