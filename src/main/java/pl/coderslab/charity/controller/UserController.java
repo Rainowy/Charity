@@ -14,6 +14,10 @@ import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.validation.ValidationStepTwo;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Controller
@@ -68,29 +72,15 @@ public class UserController {
         return model;
     }
 
-    private static String  UPLOADED_FOLDER = "/home/tomek";
+    private static String UPLOADED_FOLDER = "/home/tomek/Documents//";
+
     @PostMapping("/editprofile")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile(@Validated(ValidationStepTwo.class) User user,
                                 BindingResult result,
-                                @RequestParam(value = "file") MultipartFile file,
+                                @RequestParam(value = "file", required = false) MultipartFile file,
                                 @RequestParam(required = false) String password2) {
         ModelAndView model = new ModelAndView();
-
-        System.out.println(file);
-//        try {
-//
-//            // Get the file and save it somewhere
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-//            Files.write(path, bytes);
-//
-////            redirectAttributes.addFlashAttribute("message",
-////                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         userService.existenceValidator(user, result);
 
@@ -104,9 +94,24 @@ public class UserController {
             return model;
         }
 
+        System.out.println(file.getOriginalFilename() + " TUTAJJJJ");
+        System.out.println(file);
+        if (file.isEmpty()) {
+            System.out.println("JEST PUSTY");
+        }
+        try {
 
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path, bytes);
 
+//            redirectAttributes.addFlashAttribute("message",
+//                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         model.setViewName("redirect:/user/profile");
