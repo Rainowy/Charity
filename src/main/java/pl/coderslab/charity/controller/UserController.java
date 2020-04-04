@@ -72,7 +72,8 @@ public class UserController {
         return model;
     }
 
-    private static String UPLOADED_FOLDER = "/home/tomek/Documents//";
+//    private static String UPLOADED_FOLDER = "/home/tomek/Documents//";
+    private static String UPLOADED_FOLDER = "/opt/files//";
 
     @PostMapping("/editprofile")
     @PreAuthorize("hasRole('USER')")
@@ -82,23 +83,7 @@ public class UserController {
                                 @RequestParam(required = false) String password2) {
         ModelAndView model = new ModelAndView();
 
-        userService.existenceValidator(user, result);
-
-        if(Optional.ofNullable(password2).isPresent() && (!user.getPassword().equals(password2))){
-            result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
-        }
-
-        if (result.hasErrors()) {
-            model.setViewName("/user/profile");
-            model.addObject("editEnabled", "true");
-            return model;
-        }
-
-        System.out.println(file.getOriginalFilename() + " TUTAJJJJ");
-        System.out.println(file);
-        if (file.isEmpty()) {
-            System.out.println("JEST PUSTY");
-        }
+        //TODO pobrać nazwę pliku i zapisać w bazie
         try {
 
             // Get the file and save it somewhere
@@ -112,6 +97,37 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        userService.existenceValidator(user, result);
+
+        if(Optional.ofNullable(password2).isPresent() && (!user.getPassword().equals(password2))){
+            result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
+        }
+
+        if (result.hasErrors()) {
+            model.setViewName("/user/profile");
+            model.addObject("editEnabled", "true");
+            return model;
+        }
+
+//        System.out.println(file.getOriginalFilename() + " TUTAJJJJ");
+//        System.out.println(file);
+//        if (file.isEmpty()) {
+//            System.out.println("JEST PUSTY");
+//        }
+//        try {
+//
+//            // Get the file and save it somewhere
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+//            Files.write(path, bytes);
+//
+////            redirectAttributes.addFlashAttribute("message",
+////                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 
         model.setViewName("redirect:/user/profile");

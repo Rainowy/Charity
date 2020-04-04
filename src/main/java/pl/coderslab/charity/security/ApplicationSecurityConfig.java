@@ -1,7 +1,6 @@
 package pl.coderslab.charity.security;
 
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,14 +9,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import pl.coderslab.charity.config.UrlAuthenticationSuccessHandler;
 import pl.coderslab.charity.service.MyUserDetailsService;
-
-import javax.crypto.SecretKey;
 
 
 
@@ -54,6 +50,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /** WAŻNE KOLEJNOŚĆ ANT MATCHERS MA ZNACZENIE, JEŻELI WCZEŚNIEJ ZOSTANIE ZABLOKOWANY TO DALEJ NIE PÓJDZIE **/
@@ -72,8 +69,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //        "/", "index" ,"form" ,
 //        "/home/*",
         /**   */
+
                 .authorizeRequests()
-                .antMatchers("/", "index",  "/donation/*",  "/register", "/css/**", "/js/**", "/images/**", "/webjars/**", "/scss/**", "/vendor/**").permitAll() //wszystkie wymienione będą dopuszczone
+                .antMatchers("/", "index",  "/donation/*",  "/register", "/static/**","/resources/**", "/css/**", "/js/**", "/images/**", "/webjars/**", "/scss/**", "/vendor/**", "/opt/**", "/files/**", "/home/**", "/tomek/**" , "/Desktop/**", "/pages/**").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
 //                .antMatchers("/courses").hasRole("USER")
