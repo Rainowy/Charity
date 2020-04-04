@@ -73,7 +73,7 @@ public class UserController {
     }
 
 //    private static String UPLOADED_FOLDER = "/home/tomek/Documents//";
-    private static String UPLOADED_FOLDER = "/opt/files//";
+    private static String UPLOADED_FOLDER = "/opt/files/";
 
     @PostMapping("/editprofile")
     @PreAuthorize("hasRole('USER')")
