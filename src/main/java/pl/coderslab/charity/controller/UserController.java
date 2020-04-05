@@ -24,12 +24,14 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
-    DonationService donationService;
-    UserService userService;
+    private DonationService donationService;
+    private UserService userService;
+    private String currentAvatar;
 
     public UserController(DonationService donationService, UserService userService) {
         this.donationService = donationService;
         this.userService = userService;
+        this.currentAvatar ="";
     }
 
     @GetMapping("/donations")
@@ -63,6 +65,13 @@ public class UserController {
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile() {
+            /*
+        Todo:
+        1. Check if avatar column not empty
+        2. Put img name into String variable currentAvatar
+        3. If avatar empty, show default avatar in profile
+
+    */
 //        ModelAndView model = new ModelAndView("user/profile");
         ModelAndView model = new ModelAndView();
         String currentUserEmail = userService.getCurrentUser();
@@ -72,7 +81,7 @@ public class UserController {
         return model;
     }
 
-//    private static String UPLOADED_FOLDER = "/home/tomek/Documents//";
+    //    private static String UPLOADED_FOLDER = "/home/tomek/Documents//";
     private static String UPLOADED_FOLDER = "/opt/files/";
 
     @PostMapping("/editprofile")
@@ -82,8 +91,22 @@ public class UserController {
                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                 @RequestParam(required = false) String password2) {
         ModelAndView model = new ModelAndView();
+        /*
+        Todo:
+        1.Check if file not empty
+        2.Put name into currentAvatar variable
+        3.Move saving image method to userservice
+        4.Save image to disk
+        5.If result has errors, add currentAvatar var and send to view
+        6.If validated put currentAvatar to Avatar field in User and send to editChild in service
+        7.In editChild add else of variables and save.
+         */
 
         //TODO pobrać nazwę pliku i zapisać w bazie
+        Optional<MultipartFile> avatarImage = Optional.ofNullable(file);
+//        avatarImage.ifPresent();
+
+
         try {
 
             // Get the file and save it somewhere
@@ -100,7 +123,7 @@ public class UserController {
 
         userService.existenceValidator(user, result);
 
-        if(Optional.ofNullable(password2).isPresent() && (!user.getPassword().equals(password2))){
+        if (Optional.ofNullable(password2).isPresent() && (!user.getPassword().equals(password2))) {
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
         }
 

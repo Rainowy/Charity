@@ -389,11 +389,9 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-3"><!--left col-->
-<!--                            ${someobject.someAttribute}}-->
-<!--                            peppa_pig_by_momo_chan832_d9fz9v1-fullview.jpg-->
                             <div class="text-center">
-<!--                                <img th:src="@{'/opt/files/peppa_pig_by_momo_chan832_d9fz9v1-fullview.jpg/'} "class="avatar img-circle img-thumbnail" alt="avatar" style="cursor:pointer"/>-->
-                                <img th:src="@{/red-five-dribs.png/}" class="avatar img-circle img-thumbnail" alt="avatar" style="cursor:pointer"/>
+<!--                                <img th:src="@{/red-five-dribs.png/}" class="avatar img-circle img-thumbnail" alt="avatar" style="cursor:pointer"/>-->
+                                <img th:src="@{${'/files/' + user.avatar}}" class="avatar img-circle img-thumbnail" alt="avatar" style="cursor:pointer"/>
 <!--                                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"-->
 <!--                                <img src="http://localhost:8080/opt/files/red-five-dribs.png" class="avatar img-circle img-thumbnail" alt="avatar" style="cursor:pointer">-->
 
