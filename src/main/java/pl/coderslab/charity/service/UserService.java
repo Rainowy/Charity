@@ -24,6 +24,15 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public String currentUserEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    public User getCurrentUser(){
+        return userByEmail(currentUserEmail()).get();
+    }
+
     public Optional<User> userByFirstName(String name) {
         return userRepository.findByFirstName(name);
     }
@@ -38,13 +47,25 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
-    }
-
     public User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(getCurrentUser().getPassword() + " TO HASŁO !!!");
+        Optional.ofNullable(user.getPassword()).ifPresentOrElse(
+                password -> user.setPassword(passwordEncoder.encode(password)), () -> {
+                   User currentUser = getCurrentUser();
+                   currentUser.setAvatar(user.getAvatar());
+                   currentUser.setFirstName(user.getFirstName());
+                   currentUser.setLastName(user.getLastName());
+                   currentUser.setEmail(user.getEmail());
+                   currentUser.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+                   currentUser.setEnabled(true); /** must be enabled to login */
+                   userRepository.save(currentUser);
+                } );
+
+//        Optional.ofNullable(user.getPassword()).ifPresent(
+//                password -> user.setPassword(passwordEncoder.encode(password))
+//        );
+
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         user.setEnabled(true); /** must be enabled to login */
         return userRepository.save(user);

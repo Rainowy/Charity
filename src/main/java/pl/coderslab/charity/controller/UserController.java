@@ -26,12 +26,12 @@ public class UserController {
 
     private DonationService donationService;
     private UserService userService;
-    private String currentAvatar;
+    private String userAvatar;
 
     public UserController(DonationService donationService, UserService userService) {
         this.donationService = donationService;
         this.userService = userService;
-        this.currentAvatar = "";
+        this.userAvatar = "";
     }
 
     @GetMapping("/donations")
@@ -72,15 +72,10 @@ public class UserController {
         3. If avatar empty, show default avatar in profile
 
     */
-//        ModelAndView model = new ModelAndView("user/profile");
-        ModelAndView model = new ModelAndView();
-
-        String currentUserEmail = userService.getCurrentUser();
-        Optional<User> currentUser = userService.userByEmail(currentUserEmail);
-        model.addObject("user", currentUser.get());
-        currentAvatar = currentUser.get().getAvatar();
-        model.addObject("userAvatar", currentAvatar);
-        model.setViewName("user/profile");
+        ModelAndView model = new ModelAndView("user/profile");
+        model.addObject("user", userService.getCurrentUser());
+        userAvatar = userService.getCurrentUser().getAvatar();
+        model.addObject("userAvatar", userAvatar);
         return model;
     }
 
@@ -107,13 +102,12 @@ public class UserController {
 
         Optional.ofNullable(file)
                 .stream()
-                .filter(image -> !image.isEmpty() && !image.getOriginalFilename().equals(currentAvatar)) //if true, the rest of the stream will run
+                .filter(image -> !image.isEmpty() && !image.getOriginalFilename().equals(userAvatar)) //if true, the rest of the stream will run
                 .peek(this::saveAvatar)
                 .map(MultipartFile::getOriginalFilename)
-                .forEach(m -> currentAvatar = m);
+                .forEach(imgName -> userAvatar = imgName);
 
-
-        System.out.println("CURRENT AVATAR TO " + currentAvatar);
+        System.out.println("CURRENT AVATAR TO " + userAvatar);
 
         userService.existenceValidator(user, result);
 
@@ -124,12 +118,20 @@ public class UserController {
         if (result.hasErrors()) {
             model.setViewName("/user/profile");
             model.addObject("editEnabled", "true");
-            model.addObject("userAvatar", currentAvatar);
-//            String currentUserEmail = userService.getCurrentUser();
-//            Optional<User> currentUser = userService.userByEmail(currentUserEmail);
-//            model.addObject("user", currentUser.get());
+            model.addObject("userAvatar", userAvatar);
             return model;
         }
+        if(!user.getPassword().isEmpty()){
+            System.out.println("PASSWORD " + user.getPassword() + " SECOND " + password2);
+        }
+        else System.out.println(" PUSSSSTEETT");
+
+        
+
+        user.setAvatar(userAvatar);
+        userService.saveUser(user);
+
+
 
 //        System.out.println(file.getOriginalFilename() + " TUTAJJJJ");
 //        System.out.println(file);
