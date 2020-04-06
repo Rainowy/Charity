@@ -31,7 +31,7 @@ public class UserController {
     public UserController(DonationService donationService, UserService userService) {
         this.donationService = donationService;
         this.userService = userService;
-        this.currentAvatar ="";
+        this.currentAvatar = "";
     }
 
     @GetMapping("/donations")
@@ -74,9 +74,12 @@ public class UserController {
     */
 //        ModelAndView model = new ModelAndView("user/profile");
         ModelAndView model = new ModelAndView();
+
         String currentUserEmail = userService.getCurrentUser();
         Optional<User> currentUser = userService.userByEmail(currentUserEmail);
         model.addObject("user", currentUser.get());
+        currentAvatar = currentUser.get().getAvatar();
+        model.addObject("userAvatar", currentAvatar);
         model.setViewName("user/profile");
         return model;
     }
@@ -93,33 +96,24 @@ public class UserController {
         ModelAndView model = new ModelAndView();
         /*
         Todo:
-        1.Check if file not empty
-        2.Put name into currentAvatar variable
+//        1.Check if file not empty
+//        2.Put name into currentAvatar variable
         3.Move saving image method to userservice
-        4.Save image to disk
+//        4.Save image to disk
         5.If result has errors, add currentAvatar var and send to view
         6.If validated put currentAvatar to Avatar field in User and send to editChild in service
         7.In editChild add else of variables and save.
          */
 
-        //TODO pobrać nazwę pliku i zapisać w bazie
-        Optional<MultipartFile> avatarImage = Optional.ofNullable(file);
-//        avatarImage.ifPresent();
+        Optional.ofNullable(file)
+                .stream()
+                .filter(image -> !image.isEmpty() && !image.getOriginalFilename().equals(currentAvatar)) //if true, the rest of the stream will run
+                .peek(this::saveAvatar)
+                .map(MultipartFile::getOriginalFilename)
+                .forEach(m -> currentAvatar = m);
 
 
-        try {
-
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-//            redirectAttributes.addFlashAttribute("message",
-//                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("CURRENT AVATAR TO " + currentAvatar);
 
         userService.existenceValidator(user, result);
 
@@ -130,6 +124,10 @@ public class UserController {
         if (result.hasErrors()) {
             model.setViewName("/user/profile");
             model.addObject("editEnabled", "true");
+            model.addObject("userAvatar", currentAvatar);
+//            String currentUserEmail = userService.getCurrentUser();
+//            Optional<User> currentUser = userService.userByEmail(currentUserEmail);
+//            model.addObject("user", currentUser.get());
             return model;
         }
 
@@ -157,6 +155,23 @@ public class UserController {
         System.out.println(user);
 
         return model;
+    }
+
+    private void saveAvatar(@RequestParam(value = "file", required = false) MultipartFile file) {
+        try {
+
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path, bytes);
+            System.out.println("SEJVING !!!");
+
+//            redirectAttributes.addFlashAttribute("message",
+//                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping("/table_details/{id}")
