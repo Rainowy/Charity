@@ -48,22 +48,45 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        System.out.println(getCurrentUser().getPassword() + " TO HASŁO !!!");
-        Optional.ofNullable(user.getPassword()).ifPresentOrElse(
-                password -> user.setPassword(passwordEncoder.encode(password)), () -> {
-                   User currentUser = getCurrentUser();
-                   currentUser.setAvatar(user.getAvatar());
-                   currentUser.setFirstName(user.getFirstName());
-                   currentUser.setLastName(user.getLastName());
-                   currentUser.setEmail(user.getEmail());
-                   currentUser.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-                   currentUser.setEnabled(true); /** must be enabled to login */
-                   userRepository.save(currentUser);
-                } );
+//        System.out.println(getCurrentUser().getPassword() + " TO HASŁO !!!");
+//        Optional.ofNullable(user.getPassword()).ifPresentOrElse(
+//                password -> user.setPassword(passwordEncoder.encode(password)), () -> {
+//                   User currentUser = getCurrentUser();
+//                   currentUser.setAvatar(user.getAvatar());
+//                   currentUser.setFirstName(user.getFirstName());
+//                   currentUser.setLastName(user.getLastName());
+//                   currentUser.setEmail(user.getEmail());
+//                   currentUser.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+//                   currentUser.setEnabled(true); /** must be enabled to login */
+//                   userRepository.save(currentUser);
+//                } );
 
+
+        Optional<String> formPassword = Optional.ofNullable(user.getPassword());
+
+        if(formPassword.isPresent()){
+            System.out.println("IS PRESENT");
+        }
+        else System.out.println("NOT PRESENT");
+
+
+        if(!user.getPassword().isEmpty()){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        else user.setPassword(getCurrentUser().getPassword());
+//        DZIAŁA !!!
+
+
+
+//                formPassword.ifPresentOrElse(
+//                password -> user.setPassword(passwordEncoder.encode(password)), () -> user.setPassword(getCurrentUser().getPassword()));
+//        $2a$10$vfyYrqmjtYOE8g0FeYWmAu0Uidd/AEvYVUl4J8eq13QH/7iLv8VQC
+        System.out.println("TAKIE HASŁO PO ZAPISANIU " + user.getPassword());
 //        Optional.ofNullable(user.getPassword()).ifPresent(
 //                password -> user.setPassword(passwordEncoder.encode(password))
 //        );
+//
+//        Optional.empty().ifPresent(password -> user.setPassword(getCurrentUser().getPassword()));
 
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));

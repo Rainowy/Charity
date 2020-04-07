@@ -126,7 +126,7 @@ public class UserController {
         }
         else System.out.println(" PUSSSSTEETT");
 
-        
+
 
         user.setAvatar(userAvatar);
         userService.saveUser(user);
