@@ -21,7 +21,7 @@ import java.util.List;
 public class InitialDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
 
-    boolean alreadySetup = false;
+    boolean alreadySetup = true;
 
     @Autowired
     private UserRepository userRepository;
@@ -59,7 +59,7 @@ public class InitialDataLoader implements
         user.setEmail("test@test.com");
         user.setRoles(Arrays.asList(adminRole));
         user.setEnabled(true);
-//        userRepository.save(user);
+        userRepository.save(user);
 
         alreadySetup = true;
     }
