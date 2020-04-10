@@ -1,6 +1,7 @@
 package pl.coderslab.charity.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -67,11 +68,9 @@ public class UserController {
     public ModelAndView profile() {
             /*
         Todo:
-        1. Check if avatar column not empty
-        2. Put img name into String variable currentAvatar
-        3. If avatar empty, show default avatar in profile
 
     */
+
         ModelAndView model = new ModelAndView("user/profile");
         model.addObject("user", userService.getCurrentUser());
         userAvatar = userService.getCurrentUser().getAvatar();
@@ -91,14 +90,16 @@ public class UserController {
         ModelAndView model = new ModelAndView();
         /*
         Todo:
-//        1.Check if file not empty
-//        2.Put name into currentAvatar variable
+
         3.Move saving image method to userservice
-//        4.Save image to disk
-        5.If result has errors, add currentAvatar var and send to view
-        6.If validated put currentAvatar to Avatar field in User and send to editChild in service
-        7.In editChild add else of variables and save.
+
          */
+//        User user1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(user1.getEmail());
+//        System.out.println(user1.getId());
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("PRINCIPAL " + principal);
 
         Optional.ofNullable(file)
                 .stream()
@@ -107,55 +108,21 @@ public class UserController {
                 .map(MultipartFile::getOriginalFilename)
                 .forEach(imgName -> userAvatar = imgName);
 
-        System.out.println("CURRENT AVATAR TO " + userAvatar);
-
         userService.existenceValidator(user, result);
 
         if (Optional.ofNullable(password2).isPresent() && (!user.getPassword().equals(password2))) {
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
         }
-
         if (result.hasErrors()) {
             model.setViewName("/user/profile");
             model.addObject("editEnabled", "true");
             model.addObject("userAvatar", userAvatar);
             return model;
         }
-        if(!user.getPassword().isEmpty()){
-            System.out.println("PASSWORD " + user.getPassword() + " SECOND " + password2);
-        }
-        else System.out.println(" PUSSSSTEETT");
-
-
-
         user.setAvatar(userAvatar);
         userService.saveUser(user);
 
-
-
-//        System.out.println(file.getOriginalFilename() + " TUTAJJJJ");
-//        System.out.println(file);
-//        if (file.isEmpty()) {
-//            System.out.println("JEST PUSTY");
-//        }
-//        try {
-//
-//            // Get the file and save it somewhere
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-//            Files.write(path, bytes);
-//
-////            redirectAttributes.addFlashAttribute("message",
-////                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
         model.setViewName("redirect:/user/profile");
-        System.out.println(user);
-
         return model;
     }
 

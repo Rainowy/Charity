@@ -1,11 +1,15 @@
 package pl.coderslab.charity.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import pl.coderslab.charity.Repository.UserRepository;
+import pl.coderslab.charity.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Autowired
+    private UserRepository userRepository;
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -24,6 +32,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
             throws IOException {
 
         handle(request, response, authentication);
+        addUserIdToSession(request, authentication); //dodaje userId do sesji
         clearAuthenticationAttributes(request);
     }
     protected void handle(HttpServletRequest request,
@@ -44,7 +53,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            System.out.println(grantedAuthority.getAuthority());
+//            System.out.println(grantedAuthority.getAuthority());
             if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
 //            if (grantedAuthority.getAuthority().equals("READ_PRIVILEGE")) {
 //                return "user/panel";
@@ -58,6 +67,14 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         throw new IllegalStateException();
     }
 
+    protected  void addUserIdToSession(HttpServletRequest request, Authentication authentication){
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            Optional<User> currentUser = userRepository.findByEmail(authentication.getName());
+            session.setAttribute("currentId",currentUser.get().getId());
+        }
+    }
+
     protected void clearAuthenticationAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -65,4 +82,6 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
+
+
 }

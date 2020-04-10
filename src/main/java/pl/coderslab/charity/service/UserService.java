@@ -1,5 +1,6 @@
 package pl.coderslab.charity.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +10,9 @@ import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.entity.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Optional;
@@ -16,9 +20,17 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    UserRepository userRepository;
-    RoleRepository roleRepository;
-    PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
+    private HttpServletRequest request;
+
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, HttpServletRequest request) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.request = request;
+    }
 
     public Optional<User> userByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -30,8 +42,20 @@ public class UserService {
     }
 
     public User getCurrentUser(){
-        return userByEmail(currentUserEmail()).get();
+        HttpSession session = request.getSession(false);
+        Long currentId = (Long) session.getAttribute("currentId");
+//        System.out.println("CURRENT IDz pomocna " + currentId);
+        return userById(currentId).get();
     }
+
+//    public User getCurrentUser() {
+////        HttpServletRequest request
+////        HttpSession session = request.getSession();
+////        Object currentId = session.getAttribute("currentId");
+////        return userById((Long) currentId).get();
+//return pomocna(request);
+//        return userByEmail(currentUserEmail()).get();
+//    }
 
     public Optional<User> userByFirstName(String name) {
         return userRepository.findByFirstName(name);
@@ -41,11 +65,11 @@ public class UserService {
         return userRepository.findUserById(id);
     }
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+//    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+//        this.userRepository = userRepository;
+//        this.roleRepository = roleRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     public User saveUser(User user) {
         Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
@@ -58,6 +82,21 @@ public class UserService {
         return userRepository.save(user);
     }
 
+//    public void saveAvatar(MultipartFile file) {
+//        String UPLOADED_FOLDER = "/opt/files/";
+//        try {
+//            // Get the file and save it somewhere
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+//            Files.write(path, bytes);
+////            redirectAttributes.addFlashAttribute("message",
+////                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     public void existenceValidator(@Valid User user, BindingResult result) {
         Optional<Long> userId = Optional.ofNullable(user.getId());
         userId.ifPresentOrElse(var -> userNotEmpty(user, result), () -> userEmpty(user, result));
@@ -68,11 +107,14 @@ public class UserService {
         userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu"));
 
     }
+
     public void userNotEmpty(User user, BindingResult result) {
         Optional<User> userById = userById(user.getId());
         if (!userById.get().getEmail().equals(user.getEmail())) {
-            userByEmail(user.getEmail()).ifPresent(r -> result.rejectValue("email", "error.user", "Istnieje już osoba o podanym emailu")); }
+            userByEmail(user.getEmail()).ifPresent(r -> result.rejectValue("email", "error.user", "Istnieje już osoba o podanym emailu"));
+        }
         if (!userById.get().getFirstName().equals(user.getFirstName())) {
-            userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu")); }
+            userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu"));
+        }
     }
 }
