@@ -2,9 +2,9 @@ package pl.coderslab.charity.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +15,15 @@ import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.userStore.ActiveUserStore;
+import pl.coderslab.charity.userStore.CurrentUser;
 import pl.coderslab.charity.validation.ValidationStepTwo;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
+//import org.apache.commons.codec.digest.DigestUtils;
+
+import static org.apache.commons.codec.digest.DigestUtils.*;
 
 @Controller
 @RequestMapping("/user")
@@ -73,13 +73,27 @@ public class UserController {
 
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView profile() {
+    public ModelAndView profile(@SessionAttribute("currentUser")CurrentUser currentUser) {
             /*
         Todo:
 
     */
 
+        String mailToHash = currentUser.getUsername().trim().toLowerCase();
+//        String hash = mailToHash;
+        String password = mailToHash;
+                System.out.println(mailToHash);
+//        String md5Hex = DigestUtils.md5Hex(password).toUpperCase();
+        String md5Hex =  md5Hex(password).toLowerCase();
+
+        System.out.println("ZAKODOWANE HASELKO " + md5Hex);
+//        assertThat(md5Hex.equals(hash)).isTrue();
+
+
         ModelAndView model = new ModelAndView("user/profile");
+
+        model.addObject("gravatar", md5Hex);
+
         model.addObject("user", userService.getCurrentUser());
         userAvatar = userService.getCurrentUser().getAvatar();
         model.addObject("userAvatar", userAvatar);
@@ -102,17 +116,11 @@ public class UserController {
         3.Move saving image method to userservice
 
          */
-//        User user1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        System.out.println(user1.getEmail());
-//        System.out.println(user1.getId());
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("PRINCIPAL " + principal);
 
         Optional.ofNullable(file)
                 .stream()
                 .filter(image -> !image.isEmpty() && !image.getOriginalFilename().equals(userAvatar)) //if true, the rest of the stream will run
-                .peek(this::saveAvatar)
+                .peek(userService::saveAvatar)
                 .map(MultipartFile::getOriginalFilename)
                 .forEach(imgName -> userAvatar = imgName);
 
@@ -132,23 +140,6 @@ public class UserController {
 
         model.setViewName("redirect:/user/profile");
         return model;
-    }
-
-    private void saveAvatar(@RequestParam(value = "file", required = false) MultipartFile file) {
-        try {
-
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
-            System.out.println("SEJVING !!!");
-
-//            redirectAttributes.addFlashAttribute("message",
-//                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @GetMapping("/table_details/{id}")

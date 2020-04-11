@@ -1,7 +1,6 @@
 package pl.coderslab.charity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -11,9 +10,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.userStore.ActiveUserStore;
-import pl.coderslab.charity.userStore.LoggedUser;
+import pl.coderslab.charity.userStore.CurrentUser;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,7 +35,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
             throws IOException {
 
         handle(request, response, authentication);
-        addUserIdToSession(request, authentication); //dodaje userId do sesji
+        addCurrentUserToSessionAndStore(request, authentication);
         clearAuthenticationAttributes(request);
     }
     protected void handle(HttpServletRequest request,
@@ -58,7 +56,6 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-//            System.out.println(grantedAuthority.getAuthority());
             if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
 //            if (grantedAuthority.getAuthority().equals("READ_PRIVILEGE")) {
 //                return "user/panel";
@@ -72,14 +69,12 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         throw new IllegalStateException();
     }
 
-    protected  void addUserIdToSession(HttpServletRequest request, Authentication authentication) throws IOException{
+    protected void addCurrentUserToSessionAndStore(HttpServletRequest request, Authentication authentication) throws IOException{
         HttpSession session = request.getSession(false);
         if(session != null) {
-            Optional<User> currentUser = userRepository.findByEmail(authentication.getName());
-            LoggedUser user =new LoggedUser(authentication.getName(),currentUser.get().getId(),activeUserStore);
-            session.setAttribute("loggedUser", user);
-
-//            session.setAttribute("currentId",currentUser.get().getId());
+            Optional<User> user = userRepository.findByEmail(authentication.getName());
+            CurrentUser currentUser =new CurrentUser(authentication.getName(),user.get().getId(),activeUserStore);
+            session.setAttribute("currentUser", currentUser);
         }
     }
 
@@ -90,6 +85,4 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
-
-
 }

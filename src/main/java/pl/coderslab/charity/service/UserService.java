@@ -1,25 +1,30 @@
 package pl.coderslab.charity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.userStore.LoggedUser;
+import pl.coderslab.charity.userStore.CurrentUser;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private String UPLOADED_FOLDER = "/opt/files/";
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -42,22 +47,11 @@ public class UserService {
         return authentication.getName();
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         HttpSession session = request.getSession(false);
-//        Long currentId = (Long) session.getAttribute("currentId");
-        LoggedUser loggedUser = (LoggedUser) session.getAttribute("loggedUser");
-//        System.out.println("CURRENT IDz pomocna " + currentId);
-        return userById(loggedUser.getUserId()).get();
+        CurrentUser currentUser = (CurrentUser) session.getAttribute("currentUser");
+        return userById(currentUser.getUserId()).get();
     }
-
-//    public User getCurrentUser() {
-////        HttpServletRequest request
-////        HttpSession session = request.getSession();
-////        Object currentId = session.getAttribute("currentId");
-////        return userById((Long) currentId).get();
-//return pomocna(request);
-//        return userByEmail(currentUserEmail()).get();
-//    }
 
     public Optional<User> userByFirstName(String name) {
         return userRepository.findByFirstName(name);
@@ -66,12 +60,6 @@ public class UserService {
     public Optional<User> userById(Long id) {
         return userRepository.findUserById(id);
     }
-
-//    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-//        this.userRepository = userRepository;
-//        this.roleRepository = roleRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
 
     public User saveUser(User user) {
         Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
@@ -84,20 +72,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
-//    public void saveAvatar(MultipartFile file) {
-//        String UPLOADED_FOLDER = "/opt/files/";
-//        try {
-//            // Get the file and save it somewhere
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-//            Files.write(path, bytes);
-////            redirectAttributes.addFlashAttribute("message",
-////                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void saveAvatar(MultipartFile file) {
+        try {
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path, bytes);
+//            redirectAttributes.addFlashAttribute("message",
+//                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void existenceValidator(@Valid User user, BindingResult result) {
         Optional<Long> userId = Optional.ofNullable(user.getId());
