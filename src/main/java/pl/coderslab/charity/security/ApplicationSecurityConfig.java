@@ -104,20 +104,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(myAuthenticationSuccessHandler())
                 //po wejściu zostanie przekierowany na /courses
                 .passwordParameter("password")// password i username = parametry w HTML  name="password" i  name="username"
-                .usernameParameter("username");
+                .usernameParameter("username")
 //                .and()
 //                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
 ////                    .userDetailsService(applicationUserService)  //u amigosa nie musi podawać tej linijki tak jakby UserDetailService się auto rejestrował, u mnie musiałem podać ręcznie implementację, ok naprawion, userdetailservice musi się też tak nazywać żeby nadpisać
 //                .key("uniqueAndSecret")// defaults to 2 weeks(be    z parametrów) z parametrem tokenValidity rozszerzone do 21 dni oraz z kluczem do hashowania (username oraz expiration time)
 //                .rememberMeParameter("remember-me") //parametr w HTMLgit
-//                .and()
-//                .logout()
+                .and()
+                .logout()
 //                .logoutUrl("/logout")
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) //Gdy CSRF wyłączony możemy użyć GET, gdy włączony możemy ją skasowaś i defaultowo będzie używany POST
-//                .clearAuthentication(true)
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID", "remember-me")
-//                .logoutSuccessUrl("/login");
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) //Gdy CSRF wyłączony możemy użyć GET, gdy włączony możemy ją skasowaś i defaultowo będzie używany POST
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutSuccessUrl("/login");
     }
 
     //    konfigurujemy podłączenie

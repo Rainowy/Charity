@@ -14,8 +14,6 @@ public class LoggedUser implements HttpSessionBindingListener {
     private String username;
     private Long userId;
     private ActiveUserStore activeUserStore;
-//    private UserRepository userRepository;
-
 
     public LoggedUser(String username, Long userId, ActiveUserStore activeUserStore) {
         this.username = username;
@@ -31,10 +29,6 @@ public class LoggedUser implements HttpSessionBindingListener {
         if (!users.contains(user.getUsername())) {
             users.add(user.getUsername());
         }
-//        Optional<User> byEmail = userRepository.findByEmail(user.getUsername());
-//        if (!usersId.contains(byEmail.get().getId())) {
-//            usersId.add(byEmail.get().getId());
-//        }
         if (!usersId.contains(user.getUserId())){
             usersId.add(user.getUserId());
         }
@@ -48,10 +42,6 @@ public class LoggedUser implements HttpSessionBindingListener {
         if (users.contains(user.getUsername())) {
             users.remove(user.getUsername());
         }
-//        Optional<User> byEmail = userRepository.findByEmail(user.getUsername());
-//        if (usersId.contains(byEmail.get().getId())) {
-//            usersId.remove(byEmail.get().getId());
-//        }
         if (usersId.contains(user.getUserId())){
             usersId.remove(user.getUserId());
         }

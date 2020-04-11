@@ -10,8 +10,8 @@ public class ActiveUserStore {
     public List<String> users;
 
     public ActiveUserStore() {
-        usersId = new ArrayList<Long>();
-        users = new ArrayList<String>();
+        usersId = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
     public List<Long> getUsersId() {

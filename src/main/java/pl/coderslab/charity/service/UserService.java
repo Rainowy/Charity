@@ -45,9 +45,9 @@ public class UserService {
     public User getCurrentUser(){
         HttpSession session = request.getSession(false);
 //        Long currentId = (Long) session.getAttribute("currentId");
-        LoggedUser aktywny = (LoggedUser) session.getAttribute("currentUser");
+        LoggedUser loggedUser = (LoggedUser) session.getAttribute("loggedUser");
 //        System.out.println("CURRENT IDz pomocna " + currentId);
-        return userById(aktywny.getUserId()).get();
+        return userById(loggedUser.getUserId()).get();
     }
 
 //    public User getCurrentUser() {

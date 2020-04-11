@@ -77,7 +77,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         if(session != null) {
             Optional<User> currentUser = userRepository.findByEmail(authentication.getName());
             LoggedUser user =new LoggedUser(authentication.getName(),currentUser.get().getId(),activeUserStore);
-            session.setAttribute("currentUser", user);
+            session.setAttribute("loggedUser", user);
 
 //            session.setAttribute("currentId",currentUser.get().getId());
         }
