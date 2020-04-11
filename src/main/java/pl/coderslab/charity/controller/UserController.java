@@ -1,8 +1,10 @@
 package pl.coderslab.charity.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
+import pl.coderslab.charity.userStore.ActiveUserStore;
 import pl.coderslab.charity.validation.ValidationStepTwo;
 
 import javax.validation.Valid;
@@ -19,11 +22,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    ActiveUserStore activeUserStore;
+
 
     private DonationService donationService;
     private UserService userService;
@@ -152,6 +160,14 @@ public class UserController {
         model.addObject("details", "true");
         System.out.println(id);
         return model;
+    }
+
+    @GetMapping("/loggedUsers")
+    @PreAuthorize("hasRole('USER')")
+    public String getLoggedUsers(Locale locale, Model model) {
+        model.addAttribute("users", activeUserStore.getUsers());
+        model.addAttribute("usersId", activeUserStore.getUsersId());
+        return "user/users";
     }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import pl.coderslab.charity.userStore.ActiveUserStore;
 
 @Configuration
 //@EnableWebMvc
@@ -28,6 +29,11 @@ public class WebMvcConfig {
         return bean;
     }
     /** */
+
+    @Bean
+    public ActiveUserStore activeUserStore(){
+        return new ActiveUserStore();
+    }
 
 //    @Bean
 //    public BCryptPasswordEncoder passwordEncoder() {

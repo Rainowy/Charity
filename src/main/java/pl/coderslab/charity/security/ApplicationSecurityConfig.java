@@ -12,9 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.coderslab.charity.config.UrlAuthenticationSuccessHandler;
 import pl.coderslab.charity.service.MyUserDetailsService;
-
 
 
 @Configuration
@@ -24,8 +24,8 @@ import pl.coderslab.charity.service.MyUserDetailsService;
 //mówi że ma korzystać z autoryzacji w metodach podpisanych anotacją @PreAuthorize zamiast .antMatchers
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private  final PasswordEncoder passwordEncoder;
-//    private final ApplicationUserService applicationUserService;
+    private final PasswordEncoder passwordEncoder;
+    //    private final ApplicationUserService applicationUserService;
 //    private MyUserDetailsService myUserDetailsService;
 //    private final SecretKey secretKey;
 //    private final JwtConfig jwtConfig;
@@ -50,7 +50,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /** WAŻNE KOLEJNOŚĆ ANT MATCHERS MA ZNACZENIE, JEŻELI WCZEŚNIEJ ZOSTANIE ZABLOKOWANY TO DALEJ NIE PÓJDZIE **/
@@ -68,10 +67,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //        "register"
 //        "/", "index" ,"form" ,
 //        "/home/*",
-        /**   */
+                /**   */
 
                 .authorizeRequests()
-                .antMatchers("/", "index",  "/donation/*",  "/register", "/css/**", "/js/**", "/images/**", "/webjars/**", "/scss/**", "/vendor/**").permitAll() //wszystkie wymienione będą dopuszczone
+                .antMatchers("/", "index", "/donation/*", "/register", "/css/**", "/js/**", "/images/**", "/webjars/**", "/scss/**", "/vendor/**").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
 //                .antMatchers("/courses").hasRole("USER")
@@ -96,15 +95,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .httpBasic(); //sposób autoryzacji podstawowy, nie można się wylogować
 
 //                .failureUrl("/login?error=true")
-        //OD TEGO MOMENTU WPROWADZIŁ JWT
+                //OD TEGO MOMENTU WPROWADZIŁ JWT
                 .and()
                 .formLogin() //form based authentication
-                    .loginPage("/login").permitAll()//każdy może wejść na ten adres
+                .loginPage("/login").permitAll()//każdy może wejść na ten adres
 //                    .defaultSuccessUrl("/courses", true)
 
                 .successHandler(myAuthenticationSuccessHandler())
                 //po wejściu zostanie przekierowany na /courses
-                    .passwordParameter("password")// password i username = parametry w HTML  name="password" i  name="username"
+                .passwordParameter("password")// password i username = parametry w HTML  name="password" i  name="username"
                 .usernameParameter("username");
 //                .and()
 //                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
@@ -121,12 +120,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutSuccessUrl("/login");
     }
 
-//    konfigurujemy podłączenie
+    //    konfigurujemy podłączenie
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
-//    provider
+
+    //    provider
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

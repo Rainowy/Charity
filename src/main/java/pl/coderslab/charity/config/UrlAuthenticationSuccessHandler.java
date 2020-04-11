@@ -10,6 +10,8 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.userStore.ActiveUserStore;
+import pl.coderslab.charity.userStore.LoggedUser;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,9 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    ActiveUserStore activeUserStore;
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -67,11 +72,14 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         throw new IllegalStateException();
     }
 
-    protected  void addUserIdToSession(HttpServletRequest request, Authentication authentication){
+    protected  void addUserIdToSession(HttpServletRequest request, Authentication authentication) throws IOException{
         HttpSession session = request.getSession(false);
         if(session != null) {
             Optional<User> currentUser = userRepository.findByEmail(authentication.getName());
-            session.setAttribute("currentId",currentUser.get().getId());
+            LoggedUser user =new LoggedUser(authentication.getName(),currentUser.get().getId(),activeUserStore);
+            session.setAttribute("currentUser", user);
+
+//            session.setAttribute("currentId",currentUser.get().getId());
         }
     }
 

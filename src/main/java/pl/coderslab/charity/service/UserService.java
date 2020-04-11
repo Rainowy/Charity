@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.userStore.LoggedUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,9 +44,10 @@ public class UserService {
 
     public User getCurrentUser(){
         HttpSession session = request.getSession(false);
-        Long currentId = (Long) session.getAttribute("currentId");
+//        Long currentId = (Long) session.getAttribute("currentId");
+        LoggedUser aktywny = (LoggedUser) session.getAttribute("currentUser");
 //        System.out.println("CURRENT IDz pomocna " + currentId);
-        return userById(currentId).get();
+        return userById(aktywny.getUserId()).get();
     }
 
 //    public User getCurrentUser() {
