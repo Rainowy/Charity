@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.userStore.ActiveUserStore;
-import pl.coderslab.charity.userStore.CurrentUser;
+import pl.coderslab.charity.userStore.LoggedUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,9 +35,10 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
             throws IOException {
 
         handle(request, response, authentication);
-        addCurrentUserToSessionAndStore(request, authentication);
+        addLoggedUserToSessionAndStore(request, authentication);
         clearAuthenticationAttributes(request);
     }
+
     protected void handle(HttpServletRequest request,
                           HttpServletResponse response, Authentication authentication)
             throws IOException {
@@ -52,6 +53,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
 //        }
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
+
     protected String determineTargetUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
@@ -69,12 +71,12 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         throw new IllegalStateException();
     }
 
-    protected void addCurrentUserToSessionAndStore(HttpServletRequest request, Authentication authentication) throws IOException{
+    protected void addLoggedUserToSessionAndStore(HttpServletRequest request, Authentication authentication) throws IOException {
         HttpSession session = request.getSession(false);
-        if(session != null) {
+        if (session != null) {
             Optional<User> user = userRepository.findByEmail(authentication.getName());
-            CurrentUser currentUser =new CurrentUser(authentication.getName(),user.get().getId(),activeUserStore);
-            session.setAttribute("currentUser", currentUser);
+            LoggedUser loggedUser = new LoggedUser(authentication.getName(), user.get().getId(), activeUserStore);
+            session.setAttribute("loggedUser", loggedUser);
         }
     }
 

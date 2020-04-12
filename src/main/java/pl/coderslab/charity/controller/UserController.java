@@ -1,10 +1,10 @@
 package pl.coderslab.charity.controller;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.DigestUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.userStore.ActiveUserStore;
-import pl.coderslab.charity.userStore.CurrentUser;
+import pl.coderslab.charity.userStore.LoggedUser;
 import pl.coderslab.charity.validation.ValidationStepTwo;
 
 import javax.validation.Valid;
@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Optional;
 //import org.apache.commons.codec.digest.DigestUtils;
 
-import static org.apache.commons.codec.digest.DigestUtils.*;
+//import static org.apache.commons.codec.digest.DigestUtils.*;
 
 @Controller
 @RequestMapping("/user")
@@ -31,8 +31,6 @@ public class UserController {
 
     @Autowired
     ActiveUserStore activeUserStore;
-
-
     private DonationService donationService;
     private UserService userService;
     private String userAvatar;
@@ -73,35 +71,19 @@ public class UserController {
 
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView profile(@SessionAttribute("currentUser")CurrentUser currentUser) {
+    public ModelAndView profile() {
             /*
         Todo:
 
     */
 
-        String mailToHash = currentUser.getUsername().trim().toLowerCase();
-//        String hash = mailToHash;
-        String password = mailToHash;
-                System.out.println(mailToHash);
-//        String md5Hex = DigestUtils.md5Hex(password).toUpperCase();
-        String md5Hex =  md5Hex(password).toLowerCase();
-
-        System.out.println("ZAKODOWANE HASELKO " + md5Hex);
-//        assertThat(md5Hex.equals(hash)).isTrue();
-
 
         ModelAndView model = new ModelAndView("user/profile");
-
-        model.addObject("gravatar", md5Hex);
-
+        model.addObject("gravatar", userService.mailHash());
         model.addObject("user", userService.getCurrentUser());
-        userAvatar = userService.getCurrentUser().getAvatar();
-        model.addObject("userAvatar", userAvatar);
+        model.addObject("userAvatar",userService.getCurrentUser().getAvatar());
         return model;
     }
-
-    //    private static String UPLOADED_FOLDER = "/home/tomek/Documents//";
-    private static String UPLOADED_FOLDER = "/opt/files/";
 
     @PostMapping("/editprofile")
     @PreAuthorize("hasRole('USER')")
@@ -160,5 +142,4 @@ public class UserController {
         model.addAttribute("usersId", activeUserStore.getUsersId());
         return "user/users";
     }
-
 }

@@ -5,11 +5,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.userStore.CurrentUser;
+import pl.coderslab.charity.userStore.LoggedUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,11 +23,12 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
+
 @Service
 public class UserService {
 
     private String UPLOADED_FOLDER = "/opt/files/";
-
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
@@ -47,10 +50,19 @@ public class UserService {
         return authentication.getName();
     }
 
-    public User getCurrentUser() {
+    private LoggedUser getLoggedUser() {
         HttpSession session = request.getSession(false);
-        CurrentUser currentUser = (CurrentUser) session.getAttribute("currentUser");
-        return userById(currentUser.getUserId()).get();
+        return (LoggedUser) session.getAttribute("loggedUser");
+    }
+
+    public User getCurrentUser() {
+        LoggedUser loggedUser = getLoggedUser();
+        return userById(loggedUser.getUserId()).get();
+    }
+
+    public String mailHash() {
+        String mailToHash = getLoggedUser().getUsername().trim();
+        return md5Hex(mailToHash).toLowerCase();
     }
 
     public Optional<User> userByFirstName(String name) {
