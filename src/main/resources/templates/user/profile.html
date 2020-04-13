@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 
@@ -38,7 +39,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="user-panel.html">
@@ -337,9 +338,10 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                            <img th:src="@{${'http://www.gravatar.com/avatar/' + gravatar}}" class="img-profile rounded-circle" >
-                        </a>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small" span
+                                  sec:authentication="name"></span>
+                            <img th:src="@{${'http://www.gravatar.com/avatar/' + gravatar}}"
+                                 class="img-profile rounded-circle"></a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
@@ -351,10 +353,10 @@
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Settings
                             </a>
-<!--                            <a class="dropdown-item" href="#">-->
-<!--                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>-->
-<!--                                Activity Log-->
-<!--                            </a>-->
+                            <!--                            <a class="dropdown-item" href="#">-->
+                            <!--                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>-->
+                            <!--                                Activity Log-->
+                            <!--                            </a>-->
                             <a class="dropdown-item" th:href="@{/donation/form}">
                                 <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Oddaj rzeczy
@@ -385,11 +387,11 @@
                 <div class="container bootstrap snippet">
                     <div class="row">
                         <div class="col-sm-10"><h1>Twoje dane</h1></div>
-<!--                        <div class="col-sm-2"><a href="/users" class="pull-right">-->
-<!--                            <img th:src="@{${'http://www.gravatar.com/avatar/' + gravatar}}" title="profile image"-->
-<!--                                 class="img-circle img-responsive"></a>-->
+                        <!--                        <div class="col-sm-2"><a href="/users" class="pull-right">-->
+                        <!--                            <img th:src="@{${'http://www.gravatar.com/avatar/' + gravatar}}" title="profile image"-->
+                        <!--                                 class="img-circle img-responsive"></a>-->
 
-<!--                        </div>-->
+                        <!--                        </div>-->
                     </div>
                     <div class="row">
                         <div class="col-sm-3"><!--left col-->
