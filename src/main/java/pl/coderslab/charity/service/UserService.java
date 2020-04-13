@@ -110,6 +110,7 @@ public class UserService {
 
     public void userNotEmpty(User user, BindingResult result) {
         Optional<User> userById = userById(user.getId());
+
         if (!userById.get().getEmail().equals(user.getEmail())) {
             userByEmail(user.getEmail()).ifPresent(r -> result.rejectValue("email", "error.user", "Istnieje już osoba o podanym emailu"));
         }

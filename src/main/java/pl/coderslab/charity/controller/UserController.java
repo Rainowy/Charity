@@ -34,11 +34,13 @@ public class UserController {
     private DonationService donationService;
     private UserService userService;
     private String userAvatar;
+    private String mailHash;
 
     public UserController(DonationService donationService, UserService userService) {
         this.donationService = donationService;
         this.userService = userService;
         this.userAvatar = "";
+        this.mailHash = "";
     }
 
     @GetMapping("/donations")
@@ -79,9 +81,11 @@ public class UserController {
 
 
         ModelAndView model = new ModelAndView("user/profile");
-        model.addObject("gravatar", userService.mailHash());
+        userAvatar = userService.getCurrentUser().getAvatar();
+        mailHash = userService.mailHash();
         model.addObject("user", userService.getCurrentUser());
-        model.addObject("userAvatar",userService.getCurrentUser().getAvatar());
+        model.addObject("gravatar", mailHash);
+        model.addObject("userAvatar", userAvatar);
         return model;
     }
 
@@ -115,6 +119,7 @@ public class UserController {
             model.setViewName("/user/profile");
             model.addObject("editEnabled", "true");
             model.addObject("userAvatar", userAvatar);
+            model.addObject("gravatar",mailHash);
             return model;
         }
         user.setAvatar(userAvatar);
