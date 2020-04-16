@@ -4,8 +4,6 @@ import be.ceau.chart.BarChart;
 import be.ceau.chart.color.Color;
 import be.ceau.chart.data.BarData;
 import be.ceau.chart.dataset.BarDataset;
-import be.ceau.chart.options.BarOptions;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -23,6 +21,7 @@ import pl.coderslab.charity.validation.ValidationStepOne;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -105,6 +104,15 @@ public class HomeController {
         ModelAndView model = new ModelAndView("admin/admin-panel");
         addUserNameToModel(principal, model);
 
+        List<String> institutionName = showAllInstitutionsProjection()
+                .stream()
+                .map(InstitutionPartialView::getName)
+                .collect(Collectors.toList());
+
+        model.addObject("institutionName",institutionName);
+        model.addObject("allQuantities",donationService.allQuantities());
+
+
 //        BarDataset dataset = new BarDataset()
 //                .setLabel("doughnut")
 //                .setData(55, 30, 15)
@@ -114,6 +122,8 @@ public class HomeController {
 //        BarData data = new BarData()
 //                .addLabels("Direct", "Referral", "Social")
 //                .addDataset(dataset);
+
+
 
         BarDataset dataset = new BarDataset()
                 .setLabel("sample chart")
@@ -128,7 +138,8 @@ public class HomeController {
 
         System.out.println(BarChart.data().toString());
 //        return new BarChart(data).toJson();
-        model.addObject("chart", new BarChart(data).toJson());
+//        model.addObject("chart", new BarChart(data).toJson());
+//        model.addObject("chart", ale);
 
         return model;
     }

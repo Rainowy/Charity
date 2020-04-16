@@ -4,11 +4,8 @@ package pl.coderslab.charity.service;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.Repository.DonationPartialView;
 import pl.coderslab.charity.Repository.DonationRepository;
-import pl.coderslab.charity.Repository.InstitutionPartialView;
-import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
-import pl.coderslab.charity.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +29,8 @@ public class DonationService {
         return donationRepository.sumQuantities();
     }
 
+    public List<String> allQuantities() { return donationRepository.allQuantities(); }
+
     public Long donationQuantities() {
         return donationRepository.count();
     }
@@ -43,5 +42,4 @@ public class DonationService {
     public Optional<Donation> donationById(Long id) {
         return donationRepository.findDonationById(id);
     }
-
 }
