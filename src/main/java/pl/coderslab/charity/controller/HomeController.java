@@ -1,5 +1,11 @@
 package pl.coderslab.charity.controller;
 
+import be.ceau.chart.BarChart;
+import be.ceau.chart.color.Color;
+import be.ceau.chart.data.BarData;
+import be.ceau.chart.dataset.BarDataset;
+import be.ceau.chart.options.BarOptions;
+import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -43,7 +49,7 @@ public class HomeController {
         modelAndView.addObject("institutions", showAllInstitutionsProjection());
         modelAndView.addObject("sumQuantities", donationService.sumQuantities());
         modelAndView.addObject("donationQuantities", donationService.donationQuantities());
-        modelAndView.addObject("section",section);
+        modelAndView.addObject("section", section);
         return modelAndView;
     }
 
@@ -53,10 +59,11 @@ public class HomeController {
         modelAndView.setViewName("login");
         return modelAndView;
     }
+
     @GetMapping("home/{section}")
-    public ModelAndView links(@PathVariable String section, RedirectAttributes redirectAttributes){
+    public ModelAndView links(@PathVariable String section, RedirectAttributes redirectAttributes) {
         ModelAndView model = new ModelAndView("redirect:/");
-        redirectAttributes.addFlashAttribute("flashSection",section);
+        redirectAttributes.addFlashAttribute("flashSection", section);
         return model;
     }
 
@@ -94,14 +101,58 @@ public class HomeController {
 
     @GetMapping("/admin/panel")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView admin(Principal principal){
+    public ModelAndView admin(Principal principal) {
         ModelAndView model = new ModelAndView("admin/admin-panel");
         addUserNameToModel(principal, model);
+
+//        BarDataset dataset = new BarDataset()
+//                .setLabel("doughnut")
+//                .setData(55, 30, 15)
+//                .addBackgroundColors(Color.RED, Color.GREEN, Color.BLUE);
+////                .setBorderWidth(2);
+//
+//        BarData data = new BarData()
+//                .addLabels("Direct", "Referral", "Social")
+//                .addDataset(dataset);
+
+        BarDataset dataset = new BarDataset()
+                .setLabel("sample chart")
+                .setData(65, 59, 80, 81, 56, 55, 40)
+                .addBackgroundColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.GRAY, Color.BLACK)
+                .setBorderWidth(2);
+
+        BarData data = new BarData()
+                .addLabels("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+                .addDataset(dataset);
+
+
+        System.out.println(BarChart.data().toString());
+//        return new BarChart(data).toJson();
+        model.addObject("chart", new BarChart(data).toJson());
+
         return model;
     }
 
+//    @ResponseBody
+//    @GetMapping("/admin/panel")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public String chartbar() {
+//        BarDataset dataset = new BarDataset()
+//                .setLabel("sample chart")
+//                .setData(65, 59, 80, 81, 56, 55, 40)
+//                .addBackgroundColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.GRAY, Color.BLACK)
+//                .setBorderWidth(2);
+//
+//        BarData data = new BarData()
+//                .addLabels("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+//                .addDataset(dataset);
+//
+//        return new BarChart(data).toJson();
+//    }
+
+
     private void addUserNameToModel(Principal principal, ModelAndView model) {
         Optional<User> user = userService.userByEmail(principal.getName());
-        user.ifPresent(r ->model.addObject("userName",r.getFirstName()));
+        user.ifPresent(r -> model.addObject("userName", r.getFirstName()));
     }
 }

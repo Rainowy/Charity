@@ -47,6 +47,21 @@
 
 <body id="page-top">
 
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var chart = /*[[${chart}]]*/ 'chart';
+    console.log(chart)
+
+    /*]]>*/
+</script>
+<!--<script>-->
+<!--    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';-->
+<!--    Chart.defaults.global.defaultFontColor = '#858796';-->
+<!--    var ctx = document.getElementById("myPieChart");-->
+<!--    var myPieChart = new Chart(ctx, charts);-->
+<!--</script>-->
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -492,8 +507,8 @@
 <!--Charts-->
 <script type="text/javascript" th:src="@{/vendor/chart.js/Chart.js}"></script>
 <script type="text/javascript" th:src="@{/js/demo/chart-pie-demo.js}"></script>
-<script type="text/javascript" th:src="@{/js/demo/chart-bar-demo.js}"></script>
-<script type="text/javascript" th:src="@{/js/demo/chart-area-demo.js}"></script>
+<!--<script type="text/javascript" th:src="@{/js/demo/chart-bar-demo.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/js/demo/chart-area-demo.js}"></script>-->
 </body>
 </html>
 
