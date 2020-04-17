@@ -1,9 +1,5 @@
 package pl.coderslab.charity.controller;
 
-import be.ceau.chart.BarChart;
-import be.ceau.chart.color.Color;
-import be.ceau.chart.data.BarData;
-import be.ceau.chart.dataset.BarDataset;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,6 +15,7 @@ import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.validation.ValidationStepOne;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,58 +106,14 @@ public class HomeController {
                 .map(InstitutionPartialView::getName)
                 .collect(Collectors.toList());
 
+        List<String> colors = Arrays.asList("#4e73df", "#1cc88a", "#36b9cc", "orange", "red", "violet");
+
+        model.addObject("colors",colors);
         model.addObject("institutionName",institutionName);
         model.addObject("allQuantities",donationService.allQuantities());
 
-
-//        BarDataset dataset = new BarDataset()
-//                .setLabel("doughnut")
-//                .setData(55, 30, 15)
-//                .addBackgroundColors(Color.RED, Color.GREEN, Color.BLUE);
-////                .setBorderWidth(2);
-//
-//        BarData data = new BarData()
-//                .addLabels("Direct", "Referral", "Social")
-//                .addDataset(dataset);
-
-
-
-        BarDataset dataset = new BarDataset()
-                .setLabel("sample chart")
-                .setData(65, 59, 80, 81, 56, 55, 40)
-                .addBackgroundColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.GRAY, Color.BLACK)
-                .setBorderWidth(2);
-
-        BarData data = new BarData()
-                .addLabels("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-                .addDataset(dataset);
-
-
-        System.out.println(BarChart.data().toString());
-//        return new BarChart(data).toJson();
-//        model.addObject("chart", new BarChart(data).toJson());
-//        model.addObject("chart", ale);
-
         return model;
     }
-
-//    @ResponseBody
-//    @GetMapping("/admin/panel")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public String chartbar() {
-//        BarDataset dataset = new BarDataset()
-//                .setLabel("sample chart")
-//                .setData(65, 59, 80, 81, 56, 55, 40)
-//                .addBackgroundColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.GRAY, Color.BLACK)
-//                .setBorderWidth(2);
-//
-//        BarData data = new BarData()
-//                .addLabels("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-//                .addDataset(dataset);
-//
-//        return new BarChart(data).toJson();
-//    }
-
 
     private void addUserNameToModel(Principal principal, ModelAndView model) {
         Optional<User> user = userService.userByEmail(principal.getName());

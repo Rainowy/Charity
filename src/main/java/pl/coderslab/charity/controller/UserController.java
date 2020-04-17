@@ -1,6 +1,5 @@
 package pl.coderslab.charity.controller;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.userStore.ActiveUserStore;
-import pl.coderslab.charity.userStore.LoggedUser;
 import pl.coderslab.charity.validation.ValidationStepTwo;
 
 import javax.validation.Valid;
@@ -99,7 +97,7 @@ public class UserController {
         /*
         Todo:
 
-        3.Move saving image method to userservice
+
 
          */
 
