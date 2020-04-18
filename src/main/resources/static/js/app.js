@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("działa hehe")
 
     /**
      * Form Select
