@@ -397,8 +397,8 @@
                                           method="post">
                                         <input type="hidden" th:value="${current.id}" th:name="id"/>
                                         <td th:text="${institution.id}"></td>
-                                        <td><input class="nazwa" type="text" th:name="name" th:value="${institution.name}" ></td>
-                                        <td><input type="text" th:name="description"
+                                        <td><input id="name" type="text" th:name="name" th:value="${institution.name}" ></td>
+                                        <td><input id="description" type="text" th:name="description"
                                                    th:value="${institution.description}" size="55"></td>
                                         <td>  <button class="btn btn-lg" type="button" id="edit"><i
                                                 class="glyphicon glyphicon-repeat"></i> Edytuj
