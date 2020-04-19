@@ -363,11 +363,21 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <button id="hide">Szczegóły</button>
+                        <button id="hide">Dodaj nową</button>
                     </div>
-                    <div class="card-body" id="hideFirst">
+                    <div class="card-body" id="hideNew">
+                        <form autocomplete="off" th:action="@{/admin/editInstitution}"
+                              th:object="${current}"
+                              method="post">
+                            <td><input id="name" type="text" th:name="name" placeholder="Nazwa"></td>
+                            <td><input id="description" type="text" th:name="description" size="55"
+                                       placeholder="Opis"></td>
+                            <td><input type="submit" value="zapisz"></td>
+                        </form>
+                    </div>
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Nr. instytucji</th>
@@ -392,26 +402,30 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="institution : ${institutions}">
+                                    <!--                                    <th:block>-->
                                     <form autocomplete="off" th:action="@{/admin/editInstitution}"
                                           th:object="${current}"
                                           method="post">
                                         <input type="hidden" th:value="${current.id}" th:name="id"/>
                                         <td th:text="${institution.id}"></td>
-                                        <td><input id="name" type="text" th:name="name" th:value="${institution.name}" ></td>
+                                        <td><input id="name" type="text" th:name="name"
+                                                   th:value="${institution.name}"></td>
                                         <td><input id="description" type="text" th:name="description"
                                                    th:value="${institution.description}" size="55"></td>
-                                        <td>  <button class="btn btn-lg" type="button" id="edit"><i
-                                                class="glyphicon glyphicon-repeat"></i> Edytuj
-                                        </button></td>
-                                        <td><input type="submit" value="zapisz" ></td>
-                                        <td><input type="submit" value="usuń" ></td>
+                                        <td>
+                                            <button class="btn btn-lg" type="button" id="edit"><i
+                                            ></i> Edytuj
+                                            </button>
+                                        </td>
+                                        <td><input type="submit" value="zapisz"></td>
+                                        <td><input type="submit" value="usuń"></td>
                                     </form>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <!--                    -->
+
+
                 </div>
             </div>
             <!-- /.container-fluid -->

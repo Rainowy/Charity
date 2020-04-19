@@ -5,3 +5,7 @@ editButtons.forEach(function (currentBtn) {
         $(this).closest('tr').find('input#description').prop("disabled", (_, val) => !val);
     })
 });
+$("#hide").click(function () {
+    $('#hideNew').toggle();
+    // $('#hideSecond').toggle();
+});
