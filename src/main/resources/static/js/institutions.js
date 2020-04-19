@@ -1,3 +1,5 @@
+// $('#hideNew').hide();
+
 const editButtons = document.querySelectorAll('#edit')
 editButtons.forEach(function (currentBtn) {
     currentBtn.addEventListener('click', function () {
@@ -7,5 +9,4 @@ editButtons.forEach(function (currentBtn) {
 });
 $("#hide").click(function () {
     $('#hideNew').toggle();
-    // $('#hideSecond').toggle();
 });

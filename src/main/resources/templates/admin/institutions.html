@@ -361,73 +361,106 @@
                 <!--                        DataTables documentation</a>.</p>-->
 
                 <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <button id="hide">Dodaj nową</button>
-                    </div>
-                    <div class="card-body" id="hideNew">
-                        <form autocomplete="off" th:action="@{/admin/editInstitution}"
-                              th:object="${current}"
-                              method="post">
-                            <td><input id="name" type="text" th:name="name" placeholder="Nazwa"></td>
-                            <td><input id="description" type="text" th:name="description" size="55"
-                                       placeholder="Opis"></td>
-                            <td><input type="submit" value="zapisz"></td>
-                        </form>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Nr. instytucji</th>
-                                    <th>Nazwa instytucji</th>
-                                    <th>Opis instytucji</th>
-                                    <th>Edytuj</th>
-                                    <th>Usuń</th>
-                                    <th>Zapisz</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                <tr>
-                                    <th>Nr. instytucji</th>
-                                    <th>Nazwa instytucji</th>
-                                    <th>Opis instytucji</th>
-                                    <th>Edytuj</th>
-                                    <th>Usuń</th>
-                                    <th>Zapisz</th>
-                                </tr>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                <tr th:each="institution : ${institutions}">
-                                    <!--                                    <th:block>-->
-                                    <form autocomplete="off" th:action="@{/admin/editInstitution}"
-                                          th:object="${current}"
-                                          method="post">
-                                        <input type="hidden" th:value="${current.id}" th:name="id"/>
-                                        <td th:text="${institution.id}"></td>
-                                        <td><input id="name" type="text" th:name="name"
-                                                   th:value="${institution.name}"></td>
-                                        <td><input id="description" type="text" th:name="description"
-                                                   th:value="${institution.description}" size="55"></td>
-                                        <td>
-                                            <button class="btn btn-lg" type="button" id="edit"><i
-                                            ></i> Edytuj
-                                            </button>
-                                        </td>
-                                        <td><input type="submit" value="zapisz"></td>
-                                        <td><input type="submit" value="usuń"></td>
-                                    </form>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-
-                </div>
+                <!--                <div class="card shadow mb-4">-->
+                <!--                    <div class="card-header py-3">-->
+                <button id="hide">Dodaj instytucję</button>
             </div>
+            <!--                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
+            <!--                       class="validation-message"></p>-->
+            <!--                    <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"-->
+            <!--                       class="validation-message"></p>-->
+            <!--                    <div class="card-body" id="hideNew">-->
+            <!--                                            <div class="form-group">-->
+            <!--                                                <div class="col-xs-6">-->
+            <!--                                                    <label for="first_name"><h4>Imię</h4></label>-->
+            <!--                                                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
+            <!--                                                       class="validation-message"></p>-->
+            <!--                                                    <input type="text" class="form-control" th:value="${user.firstName}"-->
+            <!--                                                           id="first_name"-->
+            <!--                                                           th:name="firstName" title="wprowadź imię" disabled>-->
+            <!--                                                </div>-->
+            <!--                                            </div>-->
+            <form autocomplete="off" th:action="@{/admin}" th:object="${nowy}" method="post">
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <!--                                    <label for="first_name"><h4>Imię</h4></label>-->
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                           class="validation-message"></p>
+                        <input type="text" class="form-control" th:value="${nowy.name}"
+
+                               th:name="name" title="wprowadź imię" >
+                        <input type="submit" value="zapisz">
+                    </div>
+                </div>
+
+
+                <!--                            <p th:if="${#fields.hasErrors('name')}" th:errors="*{getName()}"-->
+                <!--                               class="validation-message"></p>-->
+                <!--                            <p th:if="${#fields.hasErrors('description')}" th:errors="*{getDescription()}"-->
+                <!--                               class="validation-message"></p>-->
+                <!--                            <input type="text" th:field="*{name}" placeholder="Nazwa">-->
+
+                <!--                            <input type="text" th:field="*{description}" size="55" placeholder="Opis">-->
+
+                <!--                            <input type="submit" value="zapisz">-->
+                <!--                            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
+                <!--                                class="validation-message"></td>-->
+                <!--                            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"-->
+                <!--                                class="validation-message"></td>-->
+            </form>
+            <!--                    </div>-->
+            <!--                    <div class="card-body">-->
+            <!--                        <div class="table-responsive">-->
+            <!--                            <table class="table table-bordered" width="100%" cellspacing="0">-->
+            <!--                                <thead>-->
+            <!--                                <tr>-->
+            <!--                                    <th>Nr. instytucji</th>-->
+            <!--                                    <th>Nazwa instytucji</th>-->
+            <!--                                    <th>Opis instytucji</th>-->
+            <!--                                    <th>Edytuj</th>-->
+            <!--                                    <th>Usuń</th>-->
+            <!--                                    <th>Zapisz</th>-->
+            <!--                                </tr>-->
+            <!--                                </thead>-->
+            <!--                                <tfoot>-->
+            <!--                                <tr>-->
+            <!--                                <tr>-->
+            <!--                                    <th>Nr. instytucji</th>-->
+            <!--                                    <th>Nazwa instytucji</th>-->
+            <!--                                    <th>Opis instytucji</th>-->
+            <!--                                    <th>Edytuj</th>-->
+            <!--                                    <th>Usuń</th>-->
+            <!--                                    <th>Zapisz</th>-->
+            <!--                                </tr>-->
+            <!--                                </tr>-->
+            <!--                                </tfoot>-->
+            <!--                                <tbody>-->
+            <!--                                <tr th:each="institution : ${institutions}">-->
+            <!--                                    <form autocomplete="off" th:action="@{/admin}"-->
+            <!--                                          th:object="${currentInstitution}"-->
+            <!--                                          method="post">-->
+            <!--                                        <input type="hidden" th:value="${institution.id}" th:name="id"/>-->
+            <!--                                        <td th:text="${institution.id}"></td>-->
+            <!--                                        <td><input id="name" type="text" th:name="name"-->
+            <!--                                                   th:value="${institution.name}" disabled></td>-->
+            <!--                                        <td><input id="description" type="text" th:name="description"-->
+            <!--                                                   th:value="${institution.description}" size="55" disabled></td>-->
+            <!--                                        <td>-->
+            <!--                                            <button class="btn btn-lg" type="button" id="edit"><i-->
+            <!--                                            ></i> Edytuj-->
+            <!--                                            </button>-->
+            <!--                                        </td>-->
+            <!--                                        <td><input type="submit" value="zapisz"></td>-->
+            <!--                                        <td><input type="submit" value="usuń"></td>-->
+            <!--                                    </form>-->
+            <!--                                </tbody>-->
+            <!--                            </table>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+
+
+            <!--                </div>-->
+            <!--            </div>-->
             <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
