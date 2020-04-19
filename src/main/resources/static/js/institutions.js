@@ -1,4 +1,4 @@
-// $('#hideNew').hide();
+$('#hideNew').hide();
 
 const editButtons = document.querySelectorAll('#edit')
 editButtons.forEach(function (currentBtn) {

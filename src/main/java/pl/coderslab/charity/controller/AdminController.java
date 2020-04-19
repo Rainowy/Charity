@@ -33,7 +33,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView institutions() {
 //        ModelAndView model = new ModelAndView("admin/institutions");
-        ModelAndView model = new ModelAndView("admin/testowe");
+        ModelAndView model = new ModelAndView("admin/institutions");
         Institution institution = new Institution();
         model.addObject("institution", institution);
 //        model.addObject("currentInstitution", new Institution());
@@ -65,7 +65,7 @@ public class AdminController {
 //            model.addObject("newInstitution", new Institution());
 //            Institution nowyk = new Institution();
 //            model.addObject("nowy", nowy);
-            model.setViewName("admin/testowe");
+            model.setViewName("admin/institutions");
             return model;
         }
 //        return model;

@@ -21,7 +21,7 @@ public class Institution {
 //    @NotBlank(message = "dupa")
     private String name;
 //    @Length(min=3 ,groups = {ValidationStepOne.class}, message =  "ZA KRÓTKIE")
-//    @NotBlank (groups = {ValidationStepOne.class}, message = "{field.notempty}")
+    @NotEmpty(message = "{field.notempty}")
     private String description;
     @OneToMany(mappedBy = "institution",
             cascade = CascadeType.ALL,
