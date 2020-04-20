@@ -41,13 +41,11 @@ public class AdminController {
         return model;
     }
 
-    @PostMapping("/inst")
+    @PostMapping("/addInstitution")
     @PreAuthorize("hasRole('ADMIN')")
 //    public ModelAndView editInstitutions(@Validated(ValidationStepOne.class) Institution nowy, BindingResult result) {
-    public ModelAndView editInstitutions(@Valid Institution institution, BindingResult result) {
+    public ModelAndView addInstitutions(@Valid Institution institution, BindingResult result) {
         ModelAndView model = new ModelAndView();
-
-//        result.rejectValue("name", "messageCode", "Hasła muszą być takie same");
 
         System.out.println(institution);
 
@@ -56,20 +54,32 @@ public class AdminController {
 
 
         if (result.hasErrors()) {
-
-            System.out.println("jest błąd !!!");
-//                    result.rejectValue("name", "messageCode", "Hasła muszą być takie same");
-//            result.rejectValue("name", "messageCode", "Hasła muszą być takie same");
-//            result.rejectValue("description", "messageCode", "Hasła muszą być takie same");
-//            ModelAndView model = new ModelAndView("admin/institutions");
-//            model.addObject("newInstitution", new Institution());
-//            Institution nowyk = new Institution();
-//            model.addObject("nowy", nowy);
+            System.out.println("jest błąd z DODAWANIA!!!");
             model.addObject("unhide","true");
             model.setViewName("admin/institutions");
             return model;
         }
-//        return model;
+
+        return new ModelAndView("admin/institutions");
+    }
+    @PostMapping("/editInstitution")
+    @PreAuthorize("hasRole('ADMIN')")
+//    public ModelAndView editInstitutions(@Validated(ValidationStepOne.class) Institution nowy, BindingResult result) {
+    public ModelAndView editInstitutions(@Valid Institution institution, BindingResult result) {
+        ModelAndView model = new ModelAndView();
+
+        System.out.println(institution);
+
+        System.out.println(institution.getName());
+        System.out.println(institution.getDescription());
+
+
+        if (result.hasErrors()) {
+            System.out.println("jest błąd z edyCJI!!!");
+            model.addObject("unhide","false");
+            model.setViewName("admin/institutions");
+            return model;
+        }
 
         return new ModelAndView("admin/institutions");
     }

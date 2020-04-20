@@ -358,23 +358,23 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                
+
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <button id="hide">Dodaj instytucję</button>
                     </div>
-                    <div class="card-body" id="hideNew">
-                        <form autocomplete="off" th:action="@{/admin/inst}" th:object="${institution}" method="post">
+                    <div class="card-body" id="hideNew" >
+                        <form autocomplete="off" th:action="@{/admin/addInstitution}" th:object="${institution}" method="post">
                             <div class="form-group">
-                                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                <p th:if="${#fields.hasErrors('name') && (unhide.equals('true'))}"  th:errors="*{name}"
                                    class="validation-message"></p>
-                                <input type="text" th:field="*{name}" placeholder="Nazwa">
+                                <input type="text" th:value="${''}"  th:name="name" value="kupa" placeholder="Nazwa">
                             </div>
                             <div class="form-group">
-                                <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                                <p th:if="${#fields.hasErrors('description') && (unhide.equals('true'))}" th:errors="*{description}"
                                    class="validation-message"></p>
-                                <input type="text" th:field="*{description}" size="55" placeholder="Opis">
+                                <input type="text" value=""  th:name="description" size="55" placeholder="Opis">
                             </div>
                             <input type="submit" value="zapisz">
                         </form>
@@ -405,16 +405,20 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="institution : ${institutions}">
-                                    <form autocomplete="off" th:action="@{/admin}"
-                                          th:object="${currentInstitution}"
+                                <tr th:each="currentInst : ${institutions}">
+                                    <form autocomplete="off" th:action="@{/admin/editInstitution}"
+                                          th:object="${institution}"
                                           method="post">
-                                        <input type="hidden" th:value="${institution.id}" th:name="id"/>
-                                        <td th:text="${institution.id}"></td>
-                                        <td><input id="name" type="text" th:name="name"
-                                                   th:value="${institution.name}" disabled></td>
-                                        <td><input id="description" type="text" th:name="description"
-                                                   th:value="${institution.description}" size="55" disabled></td>
+                                        <input type="hidden" th:value="${currentInst.id}" th:name="id"/>
+                                        <td th:text="${currentInst.id}"></td>
+                                        <td><p th:if="${#fields.hasErrors('name') && (unhide.equals('false')) && (currentInstStat.index +1 == institution.id)}"  th:errors="*{name}"
+                                               class="validation-message"></p>
+                                            <input id="name" type="text" th:name="name"
+                                                   th:value="${currentInst.name}" disabled></td>
+                                        <td><p th:if="${#fields.hasErrors('description') && (unhide.equals('false')) && (currentInstStat.index +1 == institution.id)}"  th:errors="*{description}"
+                                               class="validation-message"></p>
+                                            <input id="description" type="text" th:name="description"
+                                                   th:value="${currentInst.description}" size="55" disabled></td>
                                         <td>
                                             <button class="btn btn-lg" type="button" id="edit"><i
                                             ></i> Edytuj
@@ -427,8 +431,6 @@
                             </table>
                         </div>
                     </div>
-
-
                 </div>
             </div>
             <!--                     /.container-fluid -->

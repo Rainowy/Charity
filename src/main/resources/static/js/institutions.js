@@ -1,4 +1,5 @@
-if(!unhide){
+if(unhide !== "true"){
+    console.log(unhide)
     $('#hideNew').hide();
 }
 
