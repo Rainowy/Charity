@@ -94,12 +94,6 @@ public class UserController {
                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                 @RequestParam(required = false) String password2) {
         ModelAndView model = new ModelAndView();
-        /*
-        Todo:
-
-
-
-         */
 
         Optional.ofNullable(file)
                 .stream()

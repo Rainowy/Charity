@@ -65,6 +65,7 @@ public class AdminController {
 //            model.addObject("newInstitution", new Institution());
 //            Institution nowyk = new Institution();
 //            model.addObject("nowy", nowy);
+            model.addObject("unhide","true");
             model.setViewName("admin/institutions");
             return model;
         }

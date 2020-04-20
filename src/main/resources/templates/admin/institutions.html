@@ -27,6 +27,12 @@
 
 <body id="page-top">
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var unhide = /*[[${unhide}]]*/ 'unhide';
+    /*]]>*/
+</script>
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -352,166 +358,130 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-
-                <!--                &lt;!&ndash; Page Heading &ndash;&gt;-->
-                <!--                <h1 class="h3 mb-2 text-gray-800">Tables</h1>-->
-                <!--                <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For-->
-                <!--                    more information about DataTables, please visit the <a target="_blank"-->
-                <!--                                                                           href="https://datatables.net">official-->
-                <!--                        DataTables documentation</a>.</p>-->
-
+                
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <button id="hide">Dodaj instytucję</button>
                     </div>
-                    <!--            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
-                    <!--               class="validation-message"></p>-->
-                    <!--            <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"-->
-                    <!--               class="validation-message"></p>-->
                     <div class="card-body" id="hideNew">
-                        <!--                <div class="form-group">-->
-                        <!--                    <div class="col-xs-6">-->
-                        <!--                        <label for="first_name"><h4>Imię</h4></label>-->
-                        <!--                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
-                        <!--                           class="validation-message"></p>-->
-                        <!--                        <input type="text" class="form-control" th:value="${user.firstName}"-->
-                        <!--                               id="first_name"-->
-                        <!--                               th:name="firstName" title="wprowadź imię" disabled>-->
-                        <!--                    </div>-->
-                        <!--                </div>-->
                         <form autocomplete="off" th:action="@{/admin/inst}" th:object="${institution}" method="post">
-                            <!--                <div class="form-group">-->
-                            <!--                    <div class="col-xs-6">-->
-                            <!--                        &lt;!&ndash;                                    <label for="first_name"><h4>Imię</h4></label>&ndash;&gt;-->
-                            <!--                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
-                            <!--                           class="validation-message"></p>-->
-                            <!--                        <input type="text" class="form-control" th:value="${nowy.name}"-->
-
-                            <!--                               th:name="name" title="wprowadź imię" >-->
-                            <!--                        <input type="submit" value="zapisz">-->
-                            <!--                    </div>-->
-                            <!--                </div>-->
-
-
-                            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                               class="validation-message"></p>
-                            <input type="text" th:field="*{name}" placeholder="Nazwa">
-
-                            <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
-                               class="validation-message"></p>
-                            <input type="text" th:field="*{description}" size="55" placeholder="Opis">
-
+                            <div class="form-group">
+                                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                   class="validation-message"></p>
+                                <input type="text" th:field="*{name}" placeholder="Nazwa">
+                            </div>
+                            <div class="form-group">
+                                <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                                   class="validation-message"></p>
+                                <input type="text" th:field="*{description}" size="55" placeholder="Opis">
+                            </div>
                             <input type="submit" value="zapisz">
-                            <!--                        <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
-                            <!--                            class="validation-message"></td>-->
-                            <!--                        <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"-->
-                            <!--                            class="validation-message"></td>-->
                         </form>
                     </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered" width="100%" cellspacing="0">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Nr. instytucji</th>
-                                                        <th>Nazwa instytucji</th>
-                                                        <th>Opis instytucji</th>
-                                                        <th>Edytuj</th>
-                                                        <th>Usuń</th>
-                                                        <th>Zapisz</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tfoot>
-                                                    <tr>
-                                                    <tr>
-                                                        <th>Nr. instytucji</th>
-                                                        <th>Nazwa instytucji</th>
-                                                        <th>Opis instytucji</th>
-                                                        <th>Edytuj</th>
-                                                        <th>Usuń</th>
-                                                        <th>Zapisz</th>
-                                                    </tr>
-                                                    </tr>
-                                                    </tfoot>
-                                                    <tbody>
-                                                    <tr th:each="institution : ${institutions}">
-                                                        <form autocomplete="off" th:action="@{/admin}"
-                                                              th:object="${currentInstitution}"
-                                                              method="post">
-                                                            <input type="hidden" th:value="${institution.id}" th:name="id"/>
-                                                            <td th:text="${institution.id}"></td>
-                                                            <td><input id="name" type="text" th:name="name"
-                                                                       th:value="${institution.name}" disabled></td>
-                                                            <td><input id="description" type="text" th:name="description"
-                                                                       th:value="${institution.description}" size="55" disabled></td>
-                                                            <td>
-                                                                <button class="btn btn-lg" type="button" id="edit"><i
-                                                                ></i> Edytuj
-                                                                </button>
-                                                            </td>
-                                                            <td><input type="submit" value="zapisz"></td>
-                                                            <td><input type="submit" value="usuń"></td>
-                                                        </form>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-<!--                     /.container-fluid -->
-                </div>
-                <!-- End of Main Content -->
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2019</span>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Nr. instytucji</th>
+                                    <th>Nazwa instytucji</th>
+                                    <th>Opis instytucji</th>
+                                    <th>Edytuj</th>
+                                    <th>Usuń</th>
+                                    <th>Zapisz</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                <tr>
+                                    <th>Nr. instytucji</th>
+                                    <th>Nazwa instytucji</th>
+                                    <th>Opis instytucji</th>
+                                    <th>Edytuj</th>
+                                    <th>Usuń</th>
+                                    <th>Zapisz</th>
+                                </tr>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:each="institution : ${institutions}">
+                                    <form autocomplete="off" th:action="@{/admin}"
+                                          th:object="${currentInstitution}"
+                                          method="post">
+                                        <input type="hidden" th:value="${institution.id}" th:name="id"/>
+                                        <td th:text="${institution.id}"></td>
+                                        <td><input id="name" type="text" th:name="name"
+                                                   th:value="${institution.name}" disabled></td>
+                                        <td><input id="description" type="text" th:name="description"
+                                                   th:value="${institution.description}" size="55" disabled></td>
+                                        <td>
+                                            <button class="btn btn-lg" type="button" id="edit"><i
+                                            ></i> Edytuj
+                                            </button>
+                                        </td>
+                                        <td><input type="submit" value="zapisz"></td>
+                                        <td><input type="submit" value="usuń"></td>
+                                    </form>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </footer>
-                <!-- End of Footer -->
-            </div>
-            <!-- End of Content Wrapper -->
 
-        </div>
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
 
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Gotowy aby wyjść?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Wybierz "Wyloguj" aby zakończyć obecną sesję.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Anuluj</button>
-                        <a class="btn btn-primary" th:href="@{/logout}">Wyloguj</a>
-                    </div>
                 </div>
             </div>
+            <!--                     /.container-fluid -->
         </div>
-        <!-- Page level custom scripts -->
-        <script type="text/javascript" th:src="@{/js/institutions.js}"></script>
+        <!-- End of Main Content -->
 
-        <script type="text/javascript" th:src="@{/vendor/jquery/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-        <!-- Core plugin JavaScript-->
-        <script type="text/javascript" th:src="@{/vendor/jquery-easing/jquery.easing.js}"></script>
-        <!-- Custom scripts for all pages-->
-        <script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
-        <!-- Page level plugins -->
-        <script type="text/javascript" th:src="@{/vendor/datatables/jquery.dataTables.js}"></script>
-        <script type="text/javascript" th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2019</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Gotowy aby wyjść?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Wybierz "Wyloguj" aby zakończyć obecną sesję.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Anuluj</button>
+                <a class="btn btn-primary" th:href="@{/logout}">Wyloguj</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page level custom scripts -->
+<script type="text/javascript" th:src="@{/js/institutions.js}"></script>
+
+<script type="text/javascript" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- Core plugin JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery-easing/jquery.easing.js}"></script>
+<!-- Custom scripts for all pages-->
+<script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
+<!-- Page level plugins -->
+<script type="text/javascript" th:src="@{/vendor/datatables/jquery.dataTables.js}"></script>
+<script type="text/javascript" th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 </body>
 </html>

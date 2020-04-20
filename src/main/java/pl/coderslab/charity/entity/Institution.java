@@ -1,7 +1,9 @@
 package pl.coderslab.charity.entity;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +17,11 @@ public class Institution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "institution_id")
     private Long id;
-//    @Length(min=3, message ="{field.notempty}")
-//    @NotEmpty(groups = {ValidationStepOne.class}, message = "{field.notempty}")
-    @NotEmpty(message = "{field.notempty}")
-//    @NotBlank(message = "dupa")
+    @Length(min=3, message ="{field.nameToShort}")
+    @NotBlank(message = "{field.notempty}")
     private String name;
-//    @Length(min=3 ,groups = {ValidationStepOne.class}, message =  "ZA KRÓTKIE")
-    @NotEmpty(message = "{field.notempty}")
+    @Length(min=5 , message = "{field.descToShort}")
+    @NotBlank(message = "{field.notempty}")
     private String description;
     @OneToMany(mappedBy = "institution",
             cascade = CascadeType.ALL,
