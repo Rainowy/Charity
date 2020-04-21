@@ -38,15 +38,15 @@ public class Institution {
         donation.setInstitution(null);
     }
 
-    @Override
-    public String toString() {
-        return "Institution{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", donations=" + donations +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Institution{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", description='" + description + '\'' +
+//                ", donations=" + donations +
+//                '}';
+//    }
 
     public Long getId() {
         return id;

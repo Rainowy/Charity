@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import pl.coderslab.charity.entity.Institution;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface InstitutionRepository extends JpaRepository<Institution, Long> {
@@ -13,5 +14,6 @@ public interface InstitutionRepository extends JpaRepository<Institution, Long> 
 
     List<Institution> findAll();
 
+    Optional <Institution> findById(Long id);
 
 }

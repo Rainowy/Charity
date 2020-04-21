@@ -365,7 +365,7 @@
                         <button id="hide">Dodaj instytucję</button>
                     </div>
                     <div class="card-body" id="hideNew" >
-                        <form autocomplete="off" th:action="@{/admin/addInstitution}" th:object="${institution}" method="post">
+                        <form autocomplete="off" th:action="@{/admin/addOrEditInstitution}" th:object="${institution}" method="post">
                             <div class="form-group">
                                 <p th:if="${#fields.hasErrors('name') && (unhide.equals('true'))}"  th:errors="*{name}"
                                    class="validation-message"></p>
@@ -406,16 +406,16 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="currentInst : ${institutions}">
-                                    <form autocomplete="off" th:action="@{/admin/editInstitution}"
+                                    <form autocomplete="off" th:action="@{/admin/addOrEditInstitution}"
                                           th:object="${institution}"
                                           method="post">
                                         <input type="hidden" th:value="${currentInst.id}" th:name="id"/>
-                                        <td th:text="${currentInst.id}"></td>
-                                        <td><p th:if="${#fields.hasErrors('name') && (unhide.equals('false')) && (currentInstStat.index +1 == institution.id)}"  th:errors="*{name}"
+                                        <td th:text="${currentInstStat.current.id}"></td>
+                                        <td><p th:if="${#fields.hasErrors('name') && (unhide.equals('false')) && (currentInstStat.current.id   == institution.id )}"  th:errors="*{name}"
                                                class="validation-message"></p>
                                             <input id="name" type="text" th:name="name"
                                                    th:value="${currentInst.name}" disabled></td>
-                                        <td><p th:if="${#fields.hasErrors('description') && (unhide.equals('false')) && (currentInstStat.index +1 == institution.id)}"  th:errors="*{description}"
+                                        <td><p th:if="${#fields.hasErrors('description') && (unhide.equals('false')) && (currentInstStat.current.id  == institution.id )}"  th:errors="*{description}"
                                                class="validation-message"></p>
                                             <input id="description" type="text" th:name="description"
                                                    th:value="${currentInst.description}" size="55" disabled></td>

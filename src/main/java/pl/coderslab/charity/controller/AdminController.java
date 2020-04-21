@@ -13,6 +13,7 @@ import pl.coderslab.charity.service.InstitutionService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -32,55 +33,26 @@ public class AdminController {
     @GetMapping("/inst")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView institutions() {
-//        ModelAndView model = new ModelAndView("admin/institutions");
         ModelAndView model = new ModelAndView("admin/institutions");
         Institution institution = new Institution();
         model.addObject("institution", institution);
-//        model.addObject("currentInstitution", new Institution());
         model.addObject("institutions");
         return model;
     }
 
-    @PostMapping("/addInstitution")
+    @PostMapping("/addOrEditInstitution")
     @PreAuthorize("hasRole('ADMIN')")
-//    public ModelAndView editInstitutions(@Validated(ValidationStepOne.class) Institution nowy, BindingResult result) {
     public ModelAndView addInstitutions(@Valid Institution institution, BindingResult result) {
-        ModelAndView model = new ModelAndView();
-
-        System.out.println(institution);
-
-        System.out.println(institution.getName());
-        System.out.println(institution.getDescription());
-
+        ModelAndView model = new ModelAndView("redirect:/admin/inst");
+        Optional<Long> id = Optional.ofNullable(institution.getId());
 
         if (result.hasErrors()) {
-            System.out.println("jest błąd z DODAWANIA!!!");
-            model.addObject("unhide","true");
+            id.ifPresentOrElse(i -> model.addObject("unhide","false"),
+                    ( () -> model.addObject("unhide", "true")));
             model.setViewName("admin/institutions");
             return model;
         }
-
-        return new ModelAndView("admin/institutions");
-    }
-    @PostMapping("/editInstitution")
-    @PreAuthorize("hasRole('ADMIN')")
-//    public ModelAndView editInstitutions(@Validated(ValidationStepOne.class) Institution nowy, BindingResult result) {
-    public ModelAndView editInstitutions(@Valid Institution institution, BindingResult result) {
-        ModelAndView model = new ModelAndView();
-
-        System.out.println(institution);
-
-        System.out.println(institution.getName());
-        System.out.println(institution.getDescription());
-
-
-        if (result.hasErrors()) {
-            System.out.println("jest błąd z edyCJI!!!");
-            model.addObject("unhide","false");
-            model.setViewName("admin/institutions");
-            return model;
-        }
-
-        return new ModelAndView("admin/institutions");
+        institutionService.saveInstitution(institution);
+        return model;
     }
 }
