@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.charity.Repository.InstitutionPartialView;
+import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
@@ -15,9 +16,7 @@ import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.validation.ValidationStepOne;
 
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -101,20 +100,23 @@ public class HomeController {
         ModelAndView model = new ModelAndView("admin/admin-panel");
         addUserNameToModel(principal, model);
 
-        List<String> institutionName = showAllInstitutionsProjection()
+        Map<String, Integer> collect = donationService.getAllDonations()
                 .stream()
-                .map(InstitutionPartialView::getName)
+                .collect(Collectors.toMap(d -> d.getInstitution().getName(), Donation::getQuantity));
+
+        List<String> instName = new ArrayList(collect.keySet());
+        List<String> instQuantity = new ArrayList(collect.values());
+
+        List<String> randomColor = instName.stream()
+                .map(i -> String.format("#%06x", new Random().nextInt(0xffffff + 1)))
                 .collect(Collectors.toList());
 
-        List<String> colors = Arrays.asList("#4e73df", "#1cc88a", "#36b9cc", "orange", "red", "violet");
-
-        model.addObject("colors",colors);
-        model.addObject("institutionName",institutionName);
-        model.addObject("allQuantities",donationService.allQuantities());
-
+        model.addObject("colors", randomColor);
+        model.addObject("institutionName", instName);
+        model.addObject("allQuantities", instQuantity);
         return model;
     }
-
+    
     private void addUserNameToModel(Principal principal, ModelAndView model) {
         Optional<User> user = userService.userByEmail(principal.getName());
         user.ifPresent(r -> model.addObject("userName", r.getFirstName()));
