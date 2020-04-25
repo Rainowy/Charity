@@ -60,9 +60,10 @@ if (unhide !== "true") {
     $('#hideNew').hide();
 }
 
-
 // if ($('#newInstName').val().length == 0 && $('#newInstDescription').val().length == 0) {
 //     console.log("OBA zero")
+
+var b = ''
 
 const editButtons = document.querySelectorAll('#edit')
 editButtons.forEach(function (currentBtn) {
@@ -70,6 +71,8 @@ editButtons.forEach(function (currentBtn) {
         $(this).closest('tr').find('input#name').prop("disabled", (_, val) => !val);
         $(this).closest('tr').find('input#description').prop("disabled", (_, val) => !val);
         // $(this).closest('tr').find('input#submit').prop("disabled", (_, val) => !val);
+        $(b).closest('tr').find('input#submit').prop("disabled", true)
+        b = ''
     })
 })
 
@@ -86,29 +89,42 @@ $("#hide").click(function () {
 //     })
 // })
 
+// let elementNodeListOf = document.querySelectorAll('#name');
+//
+// elementNodeListOf.forEach(function (currentBtn) {
 let elementNodeListOf = document.querySelectorAll('#name');
+elementNodeListOf.forEach(item => {
+    item.addEventListener('click', function () {
+// elementNodeListOf.forEach(function () {
+//     elementNodeListOf.addEventListener('change', function () {
 
 
-// document.querySelectorAll('#name').forEach(item => {
-for (const el of elementNodeListOf) {
-    el.oldValue = el.value + el.checked;
-}
-
-var setEnabled;
-(setEnabled = function () {
-    var e = true;
-    for (const el of elementNodeListOf) {
-        if (el.oldValue !== (el.value + el.checked) && $('#sendButton').attr('disabled') !== undefined) {
-            e = false;
-            break;
+        for (const el of elementNodeListOf) {
+            el.oldValue = el.value + el.checked;
         }
-    }//todo zrobić żeby ten blisko elementlist sie odpalal
-    document.querySelector("#submit").disabled = e;
-    // $(this).closest('tr').find('input#submit').prop("disabled", e);
-})();
 
-// }
-document.oninput = setEnabled;
+        var setEnabled;
+        (setEnabled = function () {
+
+            var e = true;
+            for (const el of elementNodeListOf) {
+                if (el.oldValue !== (el.value + el.checked) && $('#sendButton').attr('disabled') !== undefined) {
+                    e = false;
+                    b = el;
+                    // $("name").closest('tr').find('input#submit').prop("disabled", e);
+                    // $(el).closest('tr').find('input#submit').prop("disabled", e)
+                    break;
+                }
+            }//todo zrobić żeby ten blisko elementlist sie odpalal
+            $(b).closest('tr').find('input#submit').prop("disabled", e)
+            // document.querySelector("#submit").disabled = e;
+            // $(' el.oldValue').closest('tr').find('input#submit').prop("disabled", e);
+        })();
+        document.oninput = setEnabled;
+    })
+})
+
+// document.oninput = setEnabled;
 // document.onchange = setEnabled;
 // const inputs = document.querySelectorAll('#name')
 // inputs.forEach(addEventListener('change', (event) => { {
