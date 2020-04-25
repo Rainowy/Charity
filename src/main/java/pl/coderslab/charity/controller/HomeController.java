@@ -116,7 +116,7 @@ public class HomeController {
         model.addObject("allQuantities", instQuantity);
         return model;
     }
-    
+
     private void addUserNameToModel(Principal principal, ModelAndView model) {
         Optional<User> user = userService.userByEmail(principal.getName());
         user.ifPresent(r -> model.addObject("userName", r.getFirstName()));

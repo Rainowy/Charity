@@ -369,14 +369,14 @@
                             <div class="form-group">
                                 <p th:if="${#fields.hasErrors('name') && (unhide.equals('true'))}"  th:errors="*{name}"
                                    class="validation-message"></p>
-                                <input type="text" th:value="${''}"  th:name="name" value="kupa" placeholder="Nazwa">
+                                <input type="text" id="newInstName"  th:value="${''}"  th:name="name" placeholder="Nazwa">
                             </div>
                             <div class="form-group">
                                 <p th:if="${#fields.hasErrors('description') && (unhide.equals('true'))}" th:errors="*{description}"
                                    class="validation-message"></p>
-                                <input type="text" value=""  th:name="description" size="55" placeholder="Opis">
+                                <input type="text" id="newInstDescription" value=""  th:name="description" size="55" placeholder="Opis">
                             </div>
-                            <input type="submit" value="zapisz">
+                            <input type="submit" id="sendButton" value="zapisz">
                         </form>
                     </div>
                     <div class="card-body">
@@ -424,8 +424,8 @@
                                             ></i> Edytuj
                                             </button>
                                         </td>
-                                        <td><input type="submit" value="zapisz"></td>
-                                        <td><input type="submit" value="usuń"></td>
+                                        <td><input type="submit" class="sub" value="Zapisz" id="submit"></td>
+                                        <td><input type="button" value="Kasuj" data-toggle="modal" data-target="#deleteModal"/></td>
                                     </form>
                                 </tbody>
                             </table>
@@ -473,6 +473,27 @@
         </div>
     </div>
 </div>
+
+<!--Delete modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Czy skasować instytucję?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Wybierz "Skasuj" aby skasować Instytucję</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Anuluj</button>
+                <a class="btn btn-primary" th:href="@{/admin/deleteInst}">Skasuj</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Page level custom scripts -->
 <script type="text/javascript" th:src="@{/js/institutions.js}"></script>
 
