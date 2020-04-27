@@ -1,3 +1,5 @@
+let checkedItem = ''
+
 $(document).ready(function () {
 
     $('#sendButton').attr('disabled', true);
@@ -6,76 +8,50 @@ $(document).ready(function () {
     $('#newInstName').keyup(function () {
         if ($(this).val().length != 0 && $('#newInstDescription').val().length != 0) {
             $('#sendButton').attr('disabled', false);
-            disableSubmit();
+            disableAllSubmit();
         } else {
             $('#sendButton').attr('disabled', true)
+            disableCurrentSubmit();
         }
     })
     $('#newInstDescription').keyup(function () {
         if ($(this).val().length != 0 && $('#newInstName').val().length != 0) {
             $('#sendButton').attr('disabled', false);
-            disableSubmit()
+            disableAllSubmit()
         } else {
             $('#sendButton').attr('disabled', true);
+            disableCurrentSubmit();
         }
     })
 })
 
-function disableSubmit() {
+function disableCurrentSubmit() {
+    if ($(checkedItem).closest('tr').find('input#name').attr('disabled') !== undefined) {
+        $(checkedItem).closest('tr').find('input#submit').prop("disabled", true);
+    }
+}
+
+function disableAllSubmit() {
     const submitButtons = document.querySelectorAll('#submit')
     submitButtons.forEach(function (currentBtn) {
         currentBtn.disabled = true;
     })
 }
 
-// document.getElementById("sendButton").addEventListener("change", function () {
-//     console.log("ZMIENANAFD SIĘ")
-//     // if ($('#sendButton').attr('disabled')) {
-//     turno()
-//
-// });
-
-
-// function turno() {
-//     // document.querySelectorAll('#submit').forEach(function () {
-//     //     // //     document.getElementById('#submit').attr('disabled', false)
-//     //     $(this).attr('disabled', true)
-//     //     //     // item.attr('disabled', true);
-//     const editButtons = document.querySelectorAll('#submit')
-//     editButtons.forEach(function (currentBtn) {
-//         currentBtn.disabled = true;
-//
-//     })
-// }
-
-// $('#sendButton').change(() => {
-//     if ($('#sendButton').attr('disabled')) {
-//         turno()
-//     }
-// });
-
-
 if (unhide !== "true") {
     console.log(unhide)
     $('#hideNew').hide();
 }
-
-// if ($('#newInstName').val().length == 0 && $('#newInstDescription').val().length == 0) {
-//     console.log("OBA zero")
-
-var b = ''
 
 const editButtons = document.querySelectorAll('#edit')
 editButtons.forEach(function (currentBtn) {
     currentBtn.addEventListener('click', function () {
         $(this).closest('tr').find('input#name').prop("disabled", (_, val) => !val);
         $(this).closest('tr').find('input#description').prop("disabled", (_, val) => !val);
-        // $(this).closest('tr').find('input#submit').prop("disabled", (_, val) => !val);
-        $(b).closest('tr').find('input#submit').prop("disabled", true)
-        b = ''
+        $(checkedItem).closest('tr').find('input#submit').prop("disabled", true)
+        checkedItem = ''
     })
 })
-
 
 $("#hide").click(function () {
     $('#hideNew').toggle();
@@ -89,74 +65,35 @@ $("#hide").click(function () {
 //     })
 // })
 
-// let elementNodeListOf = document.querySelectorAll('#name');
-//
-// elementNodeListOf.forEach(function (currentBtn) {
-let elementNodeListOf = document.querySelectorAll('#name');
-elementNodeListOf.forEach(item => {
+let allNames = document.querySelectorAll('#name');
+allNames.forEach(item => {
     item.addEventListener('click', function () {
-// elementNodeListOf.forEach(function () {
-//     elementNodeListOf.addEventListener('change', function () {
-
-
-        for (const el of elementNodeListOf) {
-            el.oldValue = el.value + el.checked;
-        }
-
-        var setEnabled;
-        (setEnabled = function () {
-
-            var e = true;
-            for (const el of elementNodeListOf) {
-                if (el.oldValue !== (el.value + el.checked) && $('#sendButton').attr('disabled') !== undefined) {
-                    e = false;
-                    b = el;
-                    // $("name").closest('tr').find('input#submit').prop("disabled", e);
-                    // $(el).closest('tr').find('input#submit').prop("disabled", e)
-                    break;
-                }
-            }//todo zrobić żeby ten blisko elementlist sie odpalal
-            $(b).closest('tr').find('input#submit').prop("disabled", e)
-            // document.querySelector("#submit").disabled = e;
-            // $(' el.oldValue').closest('tr').find('input#submit').prop("disabled", e);
-        })();
-        document.oninput = setEnabled;
+        valueChanged(allNames);
     })
 })
 
-// document.oninput = setEnabled;
-// document.onchange = setEnabled;
-// const inputs = document.querySelectorAll('#name')
-// inputs.forEach(addEventListener('change', (event) => { {
-//
-//
-//
-// }
-//     currentBtn.addEventListener('change', function () {
-//         document.querySelector("#submit").disabled = false;
-//         // for (const el of inputs) {
-//         //     el.oldValue = el.value + el.checked;
-//         // }
-//     })
-//
-// });
+let allDescriptions = document.querySelectorAll('#description');
+allDescriptions.forEach(item => {
+    item.addEventListener('click', function () {
+        valueChanged(allDescriptions);
+    })
+})
 
-// const inputs = $('input, textarea, select')
-// for (const el of inputs) {
-//     el.oldValue = el.value + el.checked;
-// }
-
-// var setEnabled;
-// (setEnabled = function () {
-//     var e = true;
-//     for (const el of inputs) {
-//         if (el.oldValue !== (el.value + el.checked)) {
-//             e = false;
-//             break;
-//         }
-//     }
-//     document.querySelector("#submit").disabled = e;
-// })();
-//
-// document.oninput = setEnabled;
-// document.onchange = setEnabled;
+function valueChanged(items) {
+    for (const el of items) {
+        el.oldValue = el.value + el.checked;
+    }
+    var setEnabled;
+    (setEnabled = function () {
+        var e = true;
+        for (const el of items) {
+            if (el.oldValue !== (el.value + el.checked) && $('#sendButton').attr('disabled') !== undefined) {
+                e = false;
+                checkedItem = el;
+                break;
+            }
+        }
+        $(checkedItem).closest('tr').find('input#submit').prop("disabled", e)
+    })();
+    document.oninput = setEnabled;
+}
