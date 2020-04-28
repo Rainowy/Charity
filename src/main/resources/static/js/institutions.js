@@ -8,18 +8,22 @@ $(document).ready(function () {
     $('#newInstName').keyup(function () {
         if ($(this).val().length != 0 && $('#newInstDescription').val().length != 0) {
             $('#sendButton').attr('disabled', false);
+            $('#hide').attr('disabled', true);
             disableAllSubmit();
         } else {
             $('#sendButton').attr('disabled', true)
+            $('#hide').attr('disabled', false);
             disableCurrentSubmit();
         }
     })
     $('#newInstDescription').keyup(function () {
         if ($(this).val().length != 0 && $('#newInstName').val().length != 0) {
             $('#sendButton').attr('disabled', false);
+            $('#hide').attr('disabled', true);
             disableAllSubmit()
         } else {
-            $('#sendButton').attr('disabled', true);
+            $('#sendButton').attr('disabled', true)
+            $('#hide').attr('disabled', false);
             disableCurrentSubmit();
         }
     })
