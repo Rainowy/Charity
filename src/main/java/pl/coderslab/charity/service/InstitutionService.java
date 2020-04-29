@@ -21,6 +21,7 @@ public class InstitutionService {
         return institutionRepository.findAllByOrderByIdAsc();
     }
 
+
     public List<Institution> getAllInstitutions() {
         return institutionRepository.findAll();
     }
@@ -33,6 +34,10 @@ public class InstitutionService {
         Optional.ofNullable(institution.getId()).ifPresent(i ->
                 institution.setDonations(getById(i).get().getDonations()));
         return institutionRepository.save(institution);
+    }
+
+    public void deleteById(Long id){
+        institutionRepository.deleteById(id);
     }
 }
 

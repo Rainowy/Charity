@@ -3,10 +3,7 @@ package pl.coderslab.charity.controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.InstitutionService;
@@ -53,6 +50,15 @@ public class AdminController {
             return model;
         }
         institutionService.saveInstitution(institution);
+        return model;
+    }
+
+    @GetMapping("/deleteInst/{id}")
+    public ModelAndView deleteInstitution(@PathVariable Long id) {
+        ModelAndView model = new ModelAndView("redirect:/admin/inst");
+        System.out.println("ID do kasacji " + id);
+        institutionService.deleteById(id);
+
         return model;
     }
 

@@ -26,9 +26,9 @@ public class Donation {
     @Column(name = "donation_id")
     private Long id;
     private int quantity;
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany()
+//            cascade = CascadeType.ALL)
+//            orphanRemoval = true)
     @JoinColumn(name = "donation_id")
     private List<Category> categories = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
