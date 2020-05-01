@@ -54,6 +54,7 @@ public class AdminController {
     }
 
     @GetMapping("/deleteInst/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteInstitution(@PathVariable Long id) {
         ModelAndView model = new ModelAndView("redirect:/admin/inst");
         System.out.println("ID do kasacji " + id);

@@ -1,7 +1,18 @@
 let checkedItem = ''
 
+$.fn.dataTableExt.ofnSearch['html-input'] = function(value) {
+    return $(value).val();
+};
+
+var table = $("#dataTable").DataTable({
+    columnDefs: [
+        { "type": "html-input", "targets": [1, 2, 3] }
+    ]
+});
+
 $(document).ready(function () {
 
+    $('#dataTable').DataTable(); //necessary for dataTables to work
     $('#sendButton').attr('disabled', true);
     $('.sub').attr('disabled', true);
 
@@ -101,3 +112,5 @@ function valueChanged(items) {
     })();
     document.oninput = setEnabled;
 }
+
+
