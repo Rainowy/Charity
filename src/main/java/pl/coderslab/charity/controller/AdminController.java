@@ -63,6 +63,14 @@ public class AdminController {
         return model;
     }
 
+    @GetMapping("/admins")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView admins(){
+        ModelAndView model = new ModelAndView("admin/administrators");
+
+        return model;
+    }
+
 
 
 

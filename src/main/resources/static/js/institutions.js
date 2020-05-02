@@ -1,5 +1,6 @@
 let checkedItem = ''
 
+//Custom dataTable search(input="text")
 $.fn.dataTableExt.ofnSearch['html-input'] = function(value) {
     return $(value).val();
 };
@@ -8,6 +9,22 @@ var table = $("#dataTable").DataTable({
     columnDefs: [
         { "type": "html-input", "targets": [1, 2, 3] }
     ]
+});
+//invalidate old value when editing for proper search
+$("#dataTable td input").on('change', function() {
+    var $td = $(this).parent();
+    $td.find('input').attr('value', this.value);
+    table.cell($td).invalidate().draw();
+});
+//invalidate old select value when editing for proper search
+$("#dataTable td select").on('change', function() {
+    var $td = $(this).parent();
+    var value = this.value;
+    $td.find('option').each(function(i, o) {
+        $(o).removeAttr('selected');
+        if ($(o).val() == value) $(o).attr('selected', true);
+    })
+    table.cell($td).invalidate().draw();
 });
 
 $(document).ready(function () {

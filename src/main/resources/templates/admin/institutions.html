@@ -52,7 +52,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" th:href="@{/admin/panel}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -131,9 +131,9 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Charts</span></a>
+            <a class="nav-link" th:href="@{/admin/admins}">
+                <i class="fas fa-user"></i>
+                <span>Administratorzy</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
@@ -391,8 +391,8 @@
                                     <th>Nazwa instytucji</th>
                                     <th>Opis instytucji</th>
                                     <th>Edytuj</th>
-                                    <th>Usuń</th>
                                     <th>Zapisz</th>
+                                    <th>Usuń</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -402,8 +402,9 @@
                                     <th>Nazwa instytucji</th>
                                     <th>Opis instytucji</th>
                                     <th>Edytuj</th>
-                                    <th>Usuń</th>
                                     <th>Zapisz</th>
+                                    <th>Usuń</th>
+
                                 </tr>
                                 </tr>
                                 </tfoot>
@@ -431,11 +432,11 @@
                                             ></i> Edytuj
                                             </button>
                                         </td>
-                                        <td><input type="submit" class="sub" value="Zapisz" id="submit"></td>
+                                        <td><input type="submit" class="sub" value="Zapisz" id="submit">
+                                            <i class="fas fa-save"></i></td>
                                         <td><input type="button" value="Kasuj" data-toggle="modal"
                                                    th:attr="data-target='#deleteModal'+${currentInst.id}">
-                                            <span
-                                                    class="glyphicon glyphicon-trash"></span></td>
+                                            <i class="fa fa-trash" aria-hidden="true"></i></td>
                                     </form>
 
                                     <div class="modal modal-warning fade in" th:id="deleteModal+${currentInst.id}">
