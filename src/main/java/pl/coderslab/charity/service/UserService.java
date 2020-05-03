@@ -5,8 +5,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
@@ -21,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
@@ -105,7 +104,6 @@ public class UserService {
     public void userEmpty(User user, BindingResult result) {
         userByEmail(user.getEmail()).ifPresent(r -> result.rejectValue("email", "error.user", "Istnieje już osoba o podanym emailu"));
         userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu"));
-
     }
 
     public void userNotEmpty(User user, BindingResult result) {
@@ -117,5 +115,9 @@ public class UserService {
         if (!userById.get().getFirstName().equals(user.getFirstName())) {
             userByFirstName(user.getFirstName()).ifPresent(r -> result.rejectValue("firstName", "error.user", "Istnieje już osoba o podanym imieniu"));
         }
+    }
+
+    public List<User> findAllAdmins (){
+        return userRepository.findAllByRoles(roleRepository.findByName("ROLE_ADMIN"));
     }
 }

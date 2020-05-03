@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.InstitutionService;
+import pl.coderslab.charity.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class AdminController {
 
     InstitutionService institutionService;
+    UserService userService;
 
-    public AdminController(InstitutionService institutionService) {
+    public AdminController(InstitutionService institutionService, UserService userService) {
         this.institutionService = institutionService;
+        this.userService = userService;
     }
 
     @ModelAttribute("institutions")
@@ -67,6 +70,9 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView admins(){
         ModelAndView model = new ModelAndView("admin/administrators");
+
+        System.out.println(userService.findAllAdmins());
+
 
         return model;
     }
