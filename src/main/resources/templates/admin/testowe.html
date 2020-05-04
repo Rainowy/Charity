@@ -1,0 +1,40 @@
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/sb-admin-2.css}"/>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<form autocomplete="off" th:action="@{/admin/inst}" th:object="${institution}" method="post">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <!--                                    <label for="first_name"><h4>Imię</h4></label>-->
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+               class="validation-message"></p>
+            <input type="text" class="form-control" th:value="${institution.name}"
+
+                   th:name="name" title="wprowadź imię" >
+            <input type="submit" value="zapisz">
+        </div>
+    </div>
+
+
+    <!--                            <p th:if="${#fields.hasErrors('name')}" th:errors="*{getName()}"-->
+    <!--                               class="validation-message"></p>-->
+    <!--                            <p th:if="${#fields.hasErrors('description')}" th:errors="*{getDescription()}"-->
+    <!--                               class="validation-message"></p>-->
+    <!--                            <input type="text" th:field="*{name}" placeholder="Nazwa">-->
+
+    <!--                            <input type="text" th:field="*{description}" size="55" placeholder="Opis">-->
+
+    <!--                            <input type="submit" value="zapisz">-->
+    <!--                            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
+    <!--                                class="validation-message"></td>-->
+    <!--                            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"-->
+    <!--                                class="validation-message"></td>-->
+</form>
+</body>
+</html>

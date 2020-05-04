@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pl">
+<head th:replace="fragments/general.html :: headerfiles"></head>
+
+<body>
+<script>
+    history.replaceState(null, document.title, location.href); //kasuje historię back button, użytkownik nie wyśle jeszcze raz formularza
+</script>
+<header class="header--form-page">
+    <nav class="container container--70">
+        <ul class="nav--actions">
+            <li><a th:href="@{/login}" class="btn btn--small btn--without-border">Zaloguj</a></li>
+            <!--<li class="logged-user">-->
+                <!--Witaj Agata-->
+                <!--<ul class="dropdown">-->
+                    <!--<li><a href="#">Profil</a></li>-->
+                    <!--<li><a href="#">Moje zbiórki</a></li>-->
+                    <!--<li><a href="#">Wyloguj</a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
+        </ul>
+        <ul th:replace="fragments/general.html :: sections"></ul>
+    </nav>
+    <div class="slogan container container--90">
+        <h2>
+            Użytkownik został zarejestrowany
+        </h2>
+    </div>
+</header>
+<footer th:replace="fragments/general.html :: footer"></footer>
+</body>
+</html>

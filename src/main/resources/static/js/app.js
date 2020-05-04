@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("działa hehe")
 
     /**
      * Form Select
@@ -130,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.currentStep++;
                     this.updateForm();
                     if (this.currentStep == 5) {
-                        showSummary() // dodane przezemnie
+                        showSummary() // added by me
                     }
                 });
             });
@@ -147,7 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Form submit
             this.$form.querySelector("form").addEventListener("btnSubmit", e => this.submit(e));
-            console.log("potwierdzam")
         }
 
         /**
@@ -213,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (document.getElementById("myForm2").checked) summary += " Ubrań nadających się do ponownego użycia, "
         if (document.getElementById("myForm3").checked) summary += " Ubrań do ponownego użycia, "
         if (document.getElementById("myForm4").checked) summary += " Ubrań do wyrzucenia, "
-        if (document.getElementById("myForm3").checked) summary += " Innych rzeczy, "
+        if (document.getElementById("myForm5").checked) summary += " Innych rzeczy, "
         $("#categorySummary").html(summary)
     }
 })
