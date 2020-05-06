@@ -90,6 +90,11 @@ public class UserService {
                 password -> user.setPassword(passwordEncoder.encode(password)),
                 () -> user.setPassword(getCurrentUser().getPassword()));
 
+//        Optional<Long> userId = Optional.ofNullable(user.getId());
+////        userId.ifPresent(UserService::setUserRoleAndSendMail);
+//        userId.ifPresent(u -> user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER"))));
+
+
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
 //        user.setEnabled(true);  /** must be enabled to login */
 
@@ -99,6 +104,14 @@ public class UserService {
                 request.getLocale(), appUrl));
 
         return registered;
+    }
+
+//   public static void setUserRoleAndSendMail(Long userId){
+//        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+//    }
+
+    public void update (User user){
+        userRepository.save(user);
     }
 
     public void saveAvatar(MultipartFile file) {
@@ -143,5 +156,8 @@ public class UserService {
     public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
+    }
+    public VerificationToken getVerificationToken(String VerificationToken) {
+        return tokenRepository.findByToken(VerificationToken);
     }
 }

@@ -1,15 +1,20 @@
 package pl.coderslab.charity.controller;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.charity.Repository.InstitutionPartialView;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.entity.VerificationToken;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
@@ -26,11 +31,13 @@ public class HomeController {
     private InstitutionService institutionService;
     private DonationService donationService;
     private UserService userService;
+    private MessageSource messages;
 
-    public HomeController(InstitutionService institutionService, DonationService donationService, UserService userService) {
+    public HomeController(InstitutionService institutionService, DonationService donationService, UserService userService, @Qualifier("messageSource") MessageSource messages) {
         this.institutionService = institutionService;
         this.donationService = donationService;
         this.userService = userService;
+        this.messages = messages;
     }
 
     @ModelAttribute("institutions")
@@ -91,6 +98,42 @@ public class HomeController {
 
         model.setViewName("register-confirmation");
         return model;
+    }
+
+//    @Autowired
+//    private IUserService service;
+
+
+    @GetMapping("/regitrationConfirm")
+    public String confirmRegistration
+            (WebRequest request, Model model, @RequestParam("token") String token) {
+
+        System.out.println("KURDE CO JEST");
+        Locale locale = request.getLocale();
+
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+
+        if (verificationToken == null) {
+            System.out.println("JEST NULL  ");
+            String message = messages.getMessage("auth.message.invalidToken", null, locale);
+            model.addAttribute("message", message);
+//            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+        }
+
+        User user = verificationToken.getUser();
+        System.out.println("VERI USER " + user);
+//        Calendar cal = Calendar.getInstance();
+//        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+//            String messageValue = messages.getMessage("auth.message.expired", null, locale);
+//            model.addAttribute("message", messageValue);
+//            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+//        }
+
+        user.setEnabled(true);
+        userService.update(user);
+//        service.saveRegisteredUser(user);
+//        return "redirect:/login.html?lang=" + request.getLocale().getLanguage();
+        return "/register";
     }
 
 

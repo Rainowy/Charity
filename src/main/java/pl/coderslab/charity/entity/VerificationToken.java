@@ -1,6 +1,7 @@
 package pl.coderslab.charity.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,10 +12,9 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class VerificationToken {
     private static final int EXPIRATION = 60 * 24;
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,6 +31,7 @@ public class VerificationToken {
     public VerificationToken(String token, User user) {
         this.token = token;
         this.user = user;
+        calculateExpiryDate(EXPIRATION);
     }
 
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
