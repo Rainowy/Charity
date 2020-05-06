@@ -23,9 +23,7 @@
         <ul th:replace="fragments/general.html :: sections"></ul>
     </nav>
     <div class="slogan container container--90">
-        <h2>
-            Użytkownik został zarejestrowany
-        </h2>
+        <h2 th:text="${message}"></h2>
     </div>
 </header>
 <footer th:replace="fragments/general.html :: footer"></footer>

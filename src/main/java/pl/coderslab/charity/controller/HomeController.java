@@ -106,34 +106,35 @@ public class HomeController {
 
     @GetMapping("/regitrationConfirm")
     public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token) {
+            (WebRequest request, Model model, @RequestParam("token") String token, RedirectAttributes redirectAttributes) {
 
-        System.out.println("KURDE CO JEST");
         Locale locale = request.getLocale();
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
 
         if (verificationToken == null) {
-            System.out.println("JEST NULL  ");
-            String message = messages.getMessage("auth.message.invalidToken", null, locale);
-            model.addAttribute("message", message);
-//            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+            String messageValue = messages.getMessage("auth.message.invalidToken", null, locale);
+            redirectAttributes.addFlashAttribute("message", messageValue);
+            return "redirect:/registrationMessage";
         }
 
         User user = verificationToken.getUser();
-        System.out.println("VERI USER " + user);
-//        Calendar cal = Calendar.getInstance();
-//        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-//            String messageValue = messages.getMessage("auth.message.expired", null, locale);
-//            model.addAttribute("message", messageValue);
-//            return "redirect:/badUser.html?lang=" + locale.getLanguage();
-//        }
-
+        Calendar cal = Calendar.getInstance();
+        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            String messageValue = messages.getMessage("auth.message.expired", null, locale);
+            redirectAttributes.addFlashAttribute("message", messageValue);
+            return "redirect:/registrationMessage";
+        }
+        String messageValue = messages.getMessage("auth.message.registered", null, locale);
+        redirectAttributes.addFlashAttribute("message", messageValue);
         user.setEnabled(true);
         userService.update(user);
-//        service.saveRegisteredUser(user);
-//        return "redirect:/login.html?lang=" + request.getLocale().getLanguage();
-        return "/register";
+        return "redirect:/registrationMessage";
+    }
+
+    @GetMapping("/registrationMessage")
+    public ModelAndView registrationMessage(@ModelAttribute("message") String message) {
+        return new ModelAndView("register-confirmation", "message", message);
     }
 
 
