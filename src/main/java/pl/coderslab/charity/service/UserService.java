@@ -1,5 +1,6 @@
 package pl.coderslab.charity.service;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,7 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
+import pl.coderslab.charity.Repository.VerificationTokenRepository;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.entity.VerificationToken;
+import pl.coderslab.charity.event.OnRegistrationCompleteEvent;
 import pl.coderslab.charity.userStore.LoggedUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,17 +31,24 @@ import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 @Service
 public class UserService {
 
+
+
+
     private String UPLOADED_FOLDER = "/opt/files/";
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private HttpServletRequest request;
+    private ApplicationEventPublisher eventPublisher;
+    private VerificationTokenRepository tokenRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, HttpServletRequest request) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, HttpServletRequest request,  ApplicationEventPublisher eventPublisher,VerificationTokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.request = request;
+        this.eventPublisher = eventPublisher;
+        this.tokenRepository = tokenRepository;
     }
 
     public Optional<User> userByEmail(String email) {
@@ -73,14 +84,21 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        //tu miejsce na event
         Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
         formPass.ifPresentOrElse(
                 password -> user.setPassword(passwordEncoder.encode(password)),
                 () -> user.setPassword(getCurrentUser().getPassword()));
 
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-        user.setEnabled(true);  /** must be enabled to login */
-        return userRepository.save(user);
+//        user.setEnabled(true);  /** must be enabled to login */
+
+        User registered = userRepository.save(user);
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
+                request.getLocale(), appUrl));
+
+        return registered;
     }
 
     public void saveAvatar(MultipartFile file) {
@@ -119,5 +137,11 @@ public class UserService {
 
     public List<User> findAllAdmins (){
         return userRepository.findAllByRoles(roleRepository.findByName("ROLE_ADMIN"));
+    }
+
+    //mail verification
+    public void createVerificationToken(User user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        tokenRepository.save(myToken);
     }
 }

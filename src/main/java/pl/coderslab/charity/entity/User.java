@@ -71,6 +71,10 @@ public class User {
     private boolean tokenExpired;
     private String avatar;
 
+    public User() {
+        super();
+        this.enabled=false;
+    }
     @ManyToMany
     @JoinTable(
             name = "users_roles",
