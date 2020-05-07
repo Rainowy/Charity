@@ -7,8 +7,6 @@
 <header>
     <nav class="container container--70">
         <ul class="nav--actions">
-            <!--<li><a href="#">Zaloguj</a></li>-->
-            <!--<li class="highlighted"><a href="#">Załóż konto</a></li>-->
             <li><a th:href="@{/register}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
         </ul>
         <ul th:replace="fragments/general.html :: sections"></ul>
@@ -17,28 +15,19 @@
 
 <section class="login-page">
     <h2>Zaloguj się</h2>
-    <form method="post" action="/login">
+    <form method="post">
         <div class="form-group">
-            <input type="text" name="username" placeholder="Imię lub Email" value="Kasia"/>
+            <input type="text" name="username" placeholder="Imię lub Email"/>
         </div>
         <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło" value="kasiaczek"/>
+            <input type="password" name="password" placeholder="Hasło"/>
             <a href="#" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
         </div>
-<!--        <div align="center" th:if="${param.error}">-->
-<!--            <p style="font-size: 20px; color: #FF1C19;">Nieprawidłowy email lub hasło</p>-->
-<!--        </div>-->
-        <div align="center" th:if="${param.error != null}">
-            <p style="font-size: 20px; color: #FF1C19;" th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}"></p></div>
-
+        <div th:if="${param.error != null}"
+             style="font-size: 20px; color: #FF1C19;" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION}"></div>
         <div class="form-group form-group--buttons">
-            <!--<a href="#" class="btn btn&#45;&#45;without-border">Załóż konto</a>-->
             <button class="btn" type="submit">Zaloguj się</button>
             <a th:href="@{/register}" class="btn btn--without-border">Załóż konto</a>
-
-        </div>
-        <div th:if="${param.error != null}"
-             th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error
         </div>
     </form>
 </section>

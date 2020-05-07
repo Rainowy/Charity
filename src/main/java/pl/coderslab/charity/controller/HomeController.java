@@ -55,12 +55,22 @@ public class HomeController {
         return modelAndView;
     }
 
+//    @GetMapping("/login")
+//    public ModelAndView login(@RequestParam(required = false) String error) {
+//        System.out.println("ERROR TO " + error);
+//        return new ModelAndView("login", "error", error);
+//    }
+
     @GetMapping("/login")
     public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        return modelAndView;
+//        System.out.println("ERROR TO " + error);
+        return new ModelAndView("login");
     }
+
+//    @PostMapping Mapping("/login")
+//    public ModelAndView login() {
+//        return new ModelAndView("login");
+//    }
 
     @GetMapping("home/{section}")
     public ModelAndView links(@PathVariable String section, RedirectAttributes redirectAttributes) {

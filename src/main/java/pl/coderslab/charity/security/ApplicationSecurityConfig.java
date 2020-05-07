@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import pl.coderslab.charity.config.CustomAuthenticationFailureHandler;
 import pl.coderslab.charity.config.UrlAuthenticationSuccessHandler;
 import pl.coderslab.charity.service.MyUserDetailsService;
 
@@ -49,6 +51,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return new UrlAuthenticationSuccessHandler();
     }
 
+    @Bean
+    public AuthenticationFailureHandler myAuthenticationFailureHandler(){
+        return new CustomAuthenticationFailureHandler();
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -70,7 +77,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 /**   */
 
                 .authorizeRequests()
-                .antMatchers("/", "index", "/donation/*", "/register", "/regitrationConfirm","/registrationMessage" , "/css/**", "/js/**", "/images/**", "/webjars/**", "/scss/**", "/vendor/**").permitAll() //wszystkie wymienione będą dopuszczone
+                .antMatchers("/", "/login", "/index", "/donation/*", "/register", "/regitrationConfirm","/registrationMessage" , "/css/**", "/js/**", "/images/**", "/webjars/**", "/scss/**", "/vendor/**").permitAll() //wszystkie wymienione będą dopuszczone
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/api/**").hasRole("USER") // wszystko z takim URL ** musi mieć rolę student = ROLE BASED AUTHENTICATION
 //                .antMatchers("/courses").hasRole("USER")
@@ -99,6 +106,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin() //form based authentication
                 .loginPage("/login").permitAll()//każdy może wejść na ten adres
+                .failureHandler(myAuthenticationFailureHandler())
 //                    .defaultSuccessUrl("/courses", true)
 
                 .successHandler(myAuthenticationSuccessHandler())
