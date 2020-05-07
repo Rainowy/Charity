@@ -131,7 +131,7 @@ public class HomeController {
         User user = verificationToken.getUser();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            String messageValue = messages.getMessage("auth.message.expired", null, locale);
+            String messageValue = messages.getMessage("auth.message.verification.expired", null, locale);
             redirectAttributes.addFlashAttribute("message", messageValue);
             return "redirect:/registrationMessage";
         }

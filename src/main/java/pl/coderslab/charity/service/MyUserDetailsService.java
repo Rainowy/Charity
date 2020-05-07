@@ -1,7 +1,6 @@
 package pl.coderslab.charity.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,14 +8,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
-import pl.coderslab.charity.entity.Privilege;
 import pl.coderslab.charity.entity.Role;
 import pl.coderslab.charity.entity.User;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Service("userDetailsService")
 @Transactional
@@ -52,8 +51,13 @@ public class MyUserDetailsService implements UserDetailsService {
 
     private UserDetails getUserDetails(User user) {
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), user.isEnabled(), true, true,
-                true, getAuthorities(user.getRoles()));
+                user.getEmail(),
+                user.getPassword(),
+                user.isEnabled(),
+                user.isNotExpired(),
+                true,
+                true,
+                getAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(

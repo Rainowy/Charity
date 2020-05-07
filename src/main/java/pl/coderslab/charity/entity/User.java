@@ -68,13 +68,16 @@ public class User {
 //    , message = "{password.notEmptyOrLonger5}"
     private String password;
     private boolean enabled;
+    private boolean isNotExpired;
     private boolean tokenExpired;
     private String avatar;
 
     public User() {
         super();
         this.enabled=false;
+        this.isNotExpired=false;
     }
+
     @ManyToMany
     @JoinTable(
             name = "users_roles",
@@ -162,6 +165,14 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public boolean isNotExpired() {
+        return isNotExpired;
+    }
+
+    public void setNotExpired(boolean notExpired) {
+        isNotExpired = notExpired;
     }
 
     @Override
