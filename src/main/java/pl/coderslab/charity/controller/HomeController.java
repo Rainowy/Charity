@@ -91,7 +91,7 @@ public class HomeController {
     @PostMapping("/register")
     public ModelAndView register(@Validated(ValidationStepOne.class) User user,
                                  BindingResult result,
-                                 @RequestParam String password2) {
+                                 @RequestParam String password2, RedirectAttributes redirectAttributes) {
         ModelAndView model = new ModelAndView();
 
         userService.existenceValidator(user, result);
@@ -106,13 +106,11 @@ public class HomeController {
 
         userService.saveUser(user);
 
-        model.setViewName("register-confirmation");
+        String messageValue = messages.getMessage("auth.message.confirmationEmail", null, Locale.getDefault());
+        redirectAttributes.addFlashAttribute("message", messageValue);
+        model.setViewName("redirect:/registrationMessage");
         return model;
     }
-
-//    @Autowired
-//    private IUserService service;
-
 
     @GetMapping("/regitrationConfirm")
     public String confirmRegistration
@@ -138,6 +136,7 @@ public class HomeController {
         String messageValue = messages.getMessage("auth.message.registered", null, locale);
         redirectAttributes.addFlashAttribute("message", messageValue);
         user.setEnabled(true);
+        user.setNotExpired(true);
         userService.update(user);
         return "redirect:/registrationMessage";
     }
@@ -159,6 +158,7 @@ public class HomeController {
                 .collect(Collectors.toMap(d -> d.getInstitution().getName(), Donation::getQuantity));
 
         List<String> instName = new ArrayList(collect.keySet());
+        //TODO tu trzeba przefiltrować instName i jeżeli się powtarzają to zsumować punkty i dodać do instQuantity
         List<String> instQuantity = new ArrayList(collect.values());
 
         List<String> randomColor = instName.stream()

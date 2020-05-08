@@ -54,14 +54,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank (groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
+    @NotBlank(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
     private String firstName;
-    @NotBlank (groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
+    @NotBlank(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
     private String lastName;
     @Email(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.regular}")
-    @NotEmpty(groups = {ValidationStepOne.class, ValidationStepTwo.class},  message = "{email.notempty}")
+    @NotEmpty(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.notempty}")
     private String email;
-//    @NotBlank(message = "nie pusty")
+    //    @NotBlank(message = "nie pusty")
     private String phone;
     @NotBlank(groups = ValidationStepOne.class, message = "{password.notempty}")
     @ValidPassword(groups = ValidationStepTwo.class)
@@ -74,11 +74,17 @@ public class User {
 
     public User() {
         super();
-        this.enabled=false;
-        this.isNotExpired=false;
+        this.enabled = false;
+        this.isNotExpired = false;
     }
 
-    @ManyToMany
+    @ManyToMany(
+            cascade = { /** deletes user_roles but not Role and not Privilege */
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(

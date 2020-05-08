@@ -87,7 +87,7 @@ public class UserController {
         return model;
     }
 
-    @PostMapping("/editprofile")
+    @PostMapping("/editrofile")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile(@Validated(ValidationStepTwo.class) User user,
                                 BindingResult result,
