@@ -151,16 +151,16 @@ public class HomeController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView admin(Principal principal) {
         ModelAndView model = new ModelAndView("admin/admin-panel");
+
         addUserNameToModel(principal, model);
 
-        Map<String, Integer> collect = donationService.getAllDonations()
-                .stream()
-                .collect(Collectors.toMap(d -> d.getInstitution().getName(), Donation::getQuantity));
+        /** If duplicates exist, group them in one and sum its quantity values */
+        List<Donation> allDonations = donationService.getAllDonations();
+        Map<String, Integer> collect = allDonations.stream().collect(
+                Collectors.groupingBy(d -> d.getInstitution().getName(), Collectors.summingInt(Donation::getQuantity)));
 
         List<String> instName = new ArrayList(collect.keySet());
-        //TODO tu trzeba przefiltrować instName i jeżeli się powtarzają to zsumować punkty i dodać do instQuantity
         List<String> instQuantity = new ArrayList(collect.values());
-
         List<String> randomColor = instName.stream()
                 .map(i -> String.format("#%06x", new Random().nextInt(0xffffff + 1)))
                 .collect(Collectors.toList());

@@ -6,6 +6,7 @@ import pl.coderslab.charity.Repository.DonationPartialView;
 import pl.coderslab.charity.Repository.DonationRepository;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
+import pl.coderslab.charity.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class DonationService {
     }
 
     public Donation saveDonation(Donation donation) {
+        //TODO przy zapisywaniu musi dodawać usera
         Institution institution = donation.getInstitution();
         institution.addDonation(donation);
 
@@ -39,7 +41,8 @@ public class DonationService {
         return donationRepository.findAllByOrderByIdAsc();
     }
     public List<Donation> getAllDonations(){return donationRepository.findAll();}
-    public Optional<Donation> donationById(Long id) {
+    public List<Donation> getAllDonationsByUser(User user){return donationRepository.findAllByUser(user);}
+    public Optional<Donation> getDonationById(Long id) {
         return donationRepository.findDonationById(id);
     }
 }

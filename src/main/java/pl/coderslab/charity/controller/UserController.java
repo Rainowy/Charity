@@ -48,7 +48,7 @@ public class UserController {
         Donation donation = new Donation();
         model.addObject("donation", donation);
 //        model.addObject("donations",donationService.getAllDonationsProjection());
-        model.addObject("donations", donationService.getAllDonations());
+        model.addObject("donations", donationService.getAllDonationsByUser(userService.getCurrentUser()));
 
         return model;
     }
@@ -61,7 +61,7 @@ public class UserController {
             model.setViewName("redirect:/user/donations");
             return model;
         }
-        Optional<Donation> donationById = donationService.donationById(donation.getId());
+        Optional<Donation> donationById = donationService.getDonationById(donation.getId());
         donationById.ifPresent(d -> d.setReceived(donation.isReceived()));
         donationById.ifPresent(d -> d.setDateReceived(donation.getDateReceived()));
 
@@ -124,7 +124,7 @@ public class UserController {
     @GetMapping("/table_details/{id}")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView table_details(@PathVariable String id) {
-        Optional<Donation> donationById = donationService.donationById(Long.parseLong(id));
+        Optional<Donation> donationById = donationService.getDonationById(Long.parseLong(id));
         ModelAndView model = new ModelAndView("user/donations");
 
         model.addObject("details", "true");
