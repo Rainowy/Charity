@@ -112,7 +112,7 @@ public class HomeController {
         return model;
     }
 
-    @GetMapping("/regitrationConfirm")
+    @GetMapping("/registrationConfirm")
     public String confirmRegistration
             (WebRequest request, Model model, @RequestParam("token") String token, RedirectAttributes redirectAttributes) {
 
@@ -135,8 +135,6 @@ public class HomeController {
         }
         String messageValue = messages.getMessage("auth.message.registered", null, locale);
         redirectAttributes.addFlashAttribute("message", messageValue);
-//        user.setEnabled(true);
-//        user.setNotExpired(true);
         userService.activateUser(user);
         return "redirect:/registrationMessage";
     }

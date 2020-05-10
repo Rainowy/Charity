@@ -84,13 +84,16 @@ public class UserService {
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-        User registered = userRepository.save(user);
 
-        String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
-                request.getLocale(), appUrl));
-
-        return registered;
+        try {
+            userRepository.save(user);
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
+                    request.getLocale(), appUrl));
+        } catch (RuntimeException ex) {
+            System.out.println(ex + "MAIL ERROR");
+        }
+        return user;
     }
 
     public void updateUser(User user) {

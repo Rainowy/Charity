@@ -43,8 +43,6 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
         Locale locale = localeResolver.resolveLocale(request);
 
-        String message = "hola hola kowboju";
-
         String errorMessage = messages.getMessage("message.badCredentials", null, Locale.getDefault());
         System.out.println(exception.getMessage() + "EXCEPTION");
 
