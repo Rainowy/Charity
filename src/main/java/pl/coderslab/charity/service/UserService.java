@@ -29,7 +29,7 @@ import java.util.Optional;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
 @Service
-public class UserService {
+public class UserService implements Confirmable {
 
 
     private String UPLOADED_FOLDER = "/opt/files/";
@@ -149,12 +149,19 @@ public class UserService {
         return userRepository.findAllByRoles(roleRepository.findByName("ROLE_ADMIN"));
     }
 
-    //mail verification
+    @Override
+    public User getUser(String verificationToken) {
+        User user = tokenRepository.findByToken(verificationToken).getUser();
+        return user;
+    }
+
+    @Override
     public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
     }
 
+    @Override
     public VerificationToken getVerificationToken(String VerificationToken) {
         return tokenRepository.findByToken(VerificationToken);
     }
