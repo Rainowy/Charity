@@ -32,8 +32,6 @@ import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 public class UserService {
 
 
-
-
     private String UPLOADED_FOLDER = "/opt/files/";
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -42,7 +40,7 @@ public class UserService {
     private ApplicationEventPublisher eventPublisher;
     private VerificationTokenRepository tokenRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, HttpServletRequest request,  ApplicationEventPublisher eventPublisher,VerificationTokenRepository tokenRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, HttpServletRequest request, ApplicationEventPublisher eventPublisher, VerificationTokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -84,21 +82,10 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        //tu miejsce na event
-        Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
-        formPass.ifPresentOrElse(
-                password -> user.setPassword(passwordEncoder.encode(password)),
-                () -> user.setPassword(getCurrentUser().getPassword()));
-
-//        Optional<Long> userId = Optional.ofNullable(user.getId());
-////        userId.ifPresent(UserService::setUserRoleAndSendMail);
-//        userId.ifPresent(u -> user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER"))));
-
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-//        user.setEnabled(true);  /** must be enabled to login */
-
         User registered = userRepository.save(user);
+
         String appUrl = request.getContextPath();
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
                 request.getLocale(), appUrl));
@@ -106,11 +93,18 @@ public class UserService {
         return registered;
     }
 
-//   public static void setUserRoleAndSendMail(Long userId){
-//        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-//    }
+    public void updateUser(User user) {
+        Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
+        formPass.ifPresentOrElse(
+                password -> user.setPassword(passwordEncoder.encode(password)),
+                () -> user.setPassword(getCurrentUser().getPassword()));
+        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+        activateUser(user);
+    }
 
-    public void update (User user){
+    public void activateUser(User user) {
+        user.setEnabled(true);
+        user.setNotExpired(true);
         userRepository.save(user);
     }
 
@@ -148,7 +142,7 @@ public class UserService {
         }
     }
 
-    public List<User> findAllAdmins (){
+    public List<User> findAllAdmins() {
         return userRepository.findAllByRoles(roleRepository.findByName("ROLE_ADMIN"));
     }
 
@@ -157,6 +151,7 @@ public class UserService {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
     }
+
     public VerificationToken getVerificationToken(String VerificationToken) {
         return tokenRepository.findByToken(VerificationToken);
     }

@@ -1,9 +1,11 @@
 package pl.coderslab.charity.controller;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
@@ -15,8 +17,6 @@ import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,10 +61,7 @@ public class DonationController {
 
     @PostMapping("/form")
     public ModelAndView donationForm(Donation donation) {
-        ModelAndView modelAndView = new ModelAndView("form-confirmation");
         donationService.saveDonation(donation);
-//        modelAndView.setViewName("redirect:/donation/form");
-
-        return modelAndView;
+        return new ModelAndView("form-confirmation");
     }
 }

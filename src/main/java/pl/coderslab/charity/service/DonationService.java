@@ -15,15 +15,20 @@ import java.util.Optional;
 public class DonationService {
 
     private DonationRepository donationRepository;
+    private UserService userService;
 
-    public DonationService(DonationRepository donationRepository) {
+    public DonationService(DonationRepository donationRepository, UserService userService) {
         this.donationRepository = donationRepository;
+        this.userService = userService;
     }
 
     public Donation saveDonation(Donation donation) {
-        //TODO przy zapisywaniu musi dodawać usera
         Institution institution = donation.getInstitution();
-        institution.addDonation(donation);
+        User currentUser = userService.getCurrentUser();
+        donation.setUser(currentUser);
+
+        institution.addDonation(donation); //synchro
+        currentUser.addDonation(donation); //synchro
 
         return donationRepository.save(donation);
     }

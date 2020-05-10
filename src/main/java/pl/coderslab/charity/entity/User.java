@@ -1,42 +1,4 @@
 package pl.coderslab.charity.entity;//package pl.coderslab.charity.entity;
-//
-//import org.hibernate.validator.constraints.Length;
-//
-//import javax.persistence.*;
-//import javax.validation.constraints.Email;
-//import javax.validation.constraints.NotEmpty;
-//import java.util.HashSet;
-//import java.util.Set;
-//
-//@Entity
-//public class User {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int id;
-//    @Column(name = "email")
-////    @Email(message = "{email.regularChild}")
-//    private String email;
-////    @Column(name = "password")
-////    @Length(min = 5, message = "{password.length}")
-////    @NotEmpty(message = "{password.notempty}")
-//    private String password;
-//    @Column(name = "username")
-////    @NotEmpty(message = "{username.notempty}")
-//    private String name;
-//    @Column(name = "lastname")
-////    @NotEmpty(message = "{lastname.notempty}")
-//    private String lastname;
-//
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.MERGE})
-//    @JoinTable(
-//            name = "user_role",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "role_id")}
-//    )
-//    private Set<Role> roles = new HashSet<>();
-//}
 
 import pl.coderslab.charity.validation.ValidPassword;
 import pl.coderslab.charity.validation.ValidationStepOne;
@@ -97,6 +59,16 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Donation> donations = new ArrayList<>();
+
+    /**Synchro methods*/
+    public void addDonation(Donation donation){
+        donations.add(donation);
+        donation.setUser(this);
+    }
+    public void removeDonation(Donation donation){
+        donations.remove(donation);
+        donation.setInstitution(null);
+    }
 
     public Long getId() {
         return id;

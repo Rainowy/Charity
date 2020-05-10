@@ -135,9 +135,9 @@ public class HomeController {
         }
         String messageValue = messages.getMessage("auth.message.registered", null, locale);
         redirectAttributes.addFlashAttribute("message", messageValue);
-        user.setEnabled(true);
-        user.setNotExpired(true);
-        userService.update(user);
+//        user.setEnabled(true);
+//        user.setNotExpired(true);
+        userService.activateUser(user);
         return "redirect:/registrationMessage";
     }
 

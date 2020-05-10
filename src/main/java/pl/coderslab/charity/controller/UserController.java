@@ -87,7 +87,7 @@ public class UserController {
         return model;
     }
 
-    @PostMapping("/editrofile")
+    @PostMapping("/editProfile")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile(@Validated(ValidationStepTwo.class) User user,
                                 BindingResult result,
@@ -115,7 +115,7 @@ public class UserController {
             return model;
         }
         user.setAvatar(userAvatar);
-        userService.saveUser(user);
+        userService.updateUser(user);
 
         model.setViewName("redirect:/user/profile");
         return model;
