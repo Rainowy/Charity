@@ -80,17 +80,8 @@ public class HomeController {
         return model;
     }
 
-//    @GetMapping("/register")
-    public ModelAndView register() {
-        ModelAndView model = new ModelAndView();
-        User user = new User();
-        model.addObject("user", user);
-        model.setViewName("register");
-        return model;
-    }
-
     @GetMapping("/register")
-    public ModelAndView registerDto() {
+    public ModelAndView register() {
         ModelAndView model = new ModelAndView();
         UserDto userDto = new UserDto();
         model.addObject("userDto", userDto);
@@ -98,32 +89,8 @@ public class HomeController {
         return model;
     }
 
-
-//    @PostMapping("/register")
-    public ModelAndView register(@Validated(ValidationStepOne.class) User user,
-                                 BindingResult result,
-                                 @RequestParam String password2, RedirectAttributes redirectAttributes) {
-        ModelAndView model = new ModelAndView();
-
-//        userService.existenceValidator(user, result);
-
-        if (!user.getPassword().equals(password2)) {
-            result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
-        }
-        if (result.hasErrors()) {
-            model.setViewName("/register");
-            return model;
-        }
-
-        userService.saveUser(user);
-
-        String messageValue = messages.getMessage("auth.message.confirmationEmail", null, Locale.getDefault());
-        redirectAttributes.addFlashAttribute("message", messageValue);
-        model.setViewName("redirect:/registrationMessage");
-        return model;
-    }
     @PostMapping("/register")
-    public ModelAndView registerDto(@Validated(ValidationStepOne.class) UserDto userDto,BindingResult result,   @RequestParam String password2, RedirectAttributes redirectAttributes){
+    public ModelAndView register(@Validated(ValidationStepOne.class) UserDto userDto,BindingResult result,   @RequestParam String password2, RedirectAttributes redirectAttributes){
         ModelAndView model = new ModelAndView();
 
         userService.existenceValidator(userDto, result);
@@ -135,6 +102,8 @@ public class HomeController {
             model.setViewName("/register");
             return model;
         }
+        userService.saveUser(userDto);
+
         String messageValue = messages.getMessage("auth.message.confirmationEmail", null, Locale.getDefault());
         redirectAttributes.addFlashAttribute("message", messageValue);
         model.setViewName("redirect:/registrationMessage");

@@ -1,16 +1,14 @@
 package pl.coderslab.testuje;
 
-import org.apache.logging.log4j.util.PropertySource;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class Main {
+public class Main  {
 
     public static void main(String[] args) throws IOException {
 
@@ -109,59 +107,96 @@ public class Main {
         getPeople().stream()
                 .forEach(System.out::println);
 
-        System.out.println("STREAM Z PLIKU TXT");
-        Stream<String> lines = Files.lines(Paths.get("/home/tomasz/workspace/Portfolio/CharityProject/src/main/java/pl/coderslab/testuje/data.txt"));
+//        System.out.println("STREAM Z PLIKU TXT");
+//        Stream<String> lines = Files.lines(Paths.get("/home/tomasz/workspace/Portfolio/CharityProject/src/main/java/pl/coderslab/testuje/data.txt"));
+//
+//        int rowCount = (int) lines
+//                .map(x -> x.split(","))
+//                .filter(x -> x.length == 3)
+//                .count();
+//        System.out.println(rowCount + " rows");
+//
+//
+//        Stream<String> lines1 = Files.lines(Paths.get("/home/tomasz/workspace/Portfolio/CharityProject/src/main/java/pl/coderslab/testuje/data.txt"));
+//
+//        lines1
+//                .map(x -> x.split(","))
+//                .filter(x -> x.length == 3)
+//                .filter(x -> Integer.parseInt(x[1]) > 15)
+//                .forEach(x -> System.out.println(x[0] + " " + x[1] + " " + x[2]));
+//        lines1.close();
+//
+//
+//        System.out.println("MAP");
+//
+//        Stream<String> lines2 = Files.lines(Paths.get("/home/tomasz/workspace/Portfolio/CharityProject/src/main/java/pl/coderslab/testuje/data.txt"));
+//
+//        Map<String, Integer> map = new HashMap<>();
+//
+//        map = lines2
+//                .map(x -> x.split(","))
+//                .filter(x -> x.length == 3)
+//                .filter(x -> Integer.parseInt(x[1]) > 15)
+//                .collect(Collectors.toMap(
+//                        x -> x[0],
+//                        x -> Integer.parseInt(x[1])));
+//        lines2.close();
+//
+//        for (String key : map.keySet()) {
+//            System.out.println(key + " " + map.get(key));
+//
+//
+//
+//           for(Person p : getPeople()){
+//               System.out.println(p); }
+//
+//
+//           getPeople().stream()
+//                   .forEach(System.out::println);
+//
+//
+//
+//
+//
+        Predicate<Person> name = (person) -> person.getName().contains("Jamie");
 
-        int rowCount = (int) lines
-                .map(x -> x.split(","))
-                .filter(x -> x.length == 3)
-                .count();
-        System.out.println(rowCount + " rows");
+        getPeople().stream()
+//                .filter(person -> Gender.FEMALE.equals(person.getGender()) && person.getAge() > 50)
+                .filter(p -> name.test(p))
+//                .map(person -> person.getName())
+//                .collect(Collectors.joining(" oraz "));
+//                .forEach(person -> System.out.println("koń " ));
+                .forEach(person -> System.out.println(person));
 
+//        System.out.println("Ich imiona to " + collect);
 
-        Stream<String> lines1 = Files.lines(Paths.get("/home/tomasz/workspace/Portfolio/CharityProject/src/main/java/pl/coderslab/testuje/data.txt"));
+       preetyPrintPerson(getPeople(),new PersonAgeFormatter());
 
-        lines1
-                .map(x -> x.split(","))
-                .filter(x -> x.length == 3)
-                .filter(x -> Integer.parseInt(x[1]) > 15)
-                .forEach(x -> System.out.println(x[0] + " " + x[1] + " " + x[2]));
-        lines1.close();
+    }
+    public static class PersonAgeFormatter implements PersonFormatter{
+        @Override
+        public String accept(Person person) {
 
-
-        System.out.println("MAP");
-
-        Stream<String> lines2 = Files.lines(Paths.get("/home/tomasz/workspace/Portfolio/CharityProject/src/main/java/pl/coderslab/testuje/data.txt"));
-
-        Map<String, Integer> map = new HashMap<>();
-
-        map = lines2
-                .map(x -> x.split(","))
-                .filter(x -> x.length == 3)
-                .filter(x -> Integer.parseInt(x[1]) > 15)
-                .collect(Collectors.toMap(
-                        x -> x[0],
-                        x -> Integer.parseInt(x[1])));
-        lines2.close();
-
-        for (String key : map.keySet()) {
-            System.out.println(key + " " + map.get(key));
-
-
-
-           for(Person p : getPeople()){
-               System.out.println(p); }
-
-
-           getPeople().stream()
-                   .forEach(System.out::println);
-
-
-
-
-
+            String characteristic = person.getAge() > 50 ? "stara" : "młoda";
+            return "A " + characteristic + " " + person.getName() + " person";
         }
     }
+
+    public static void preetyPrintPerson(List<Person> people, PersonFormatter formatter){
+
+        for(Person person: people){
+            String output = formatter.accept(person);
+            System.out.println(output);
+        }
+    }
+
+
+
+//    public interface PersonFormatter {
+//        String accept (Person person);
+//    }
+
+
 
 
     private static List<Person> getPeople() {
@@ -175,8 +210,6 @@ public class Main {
                 new Person("Zelda Brown", 120, Gender.FEMALE)
         );
     }
-
-
 
 
 }

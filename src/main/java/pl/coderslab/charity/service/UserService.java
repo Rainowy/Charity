@@ -89,7 +89,13 @@ public class UserService implements Confirmable {
         return userRepository.findUserById(id);
     }
 
-    public User saveUser(User user) {
+    public User saveUser(UserDto userDto) {
+
+        System.out.println(userDto.getAvatar() + " Avatar");
+
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(userDto, User.class);
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
 
@@ -108,12 +114,11 @@ public class UserService implements Confirmable {
 
         ModelMapper modelMapper = new ModelMapper();
         User user = modelMapper.map(userDto, User.class);
-        
+
         Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
         formPass.ifPresentOrElse(
                 password -> user.setPassword(passwordEncoder.encode(password)),
                 () -> user.setPassword(getCurrentUser().getPassword()));
-
 
 
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
