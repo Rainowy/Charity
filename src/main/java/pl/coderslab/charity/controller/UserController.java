@@ -9,8 +9,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.userStore.ActiveUserStore;
@@ -72,16 +72,11 @@ public class UserController {
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile() {
-            /*
-        Todo:
 
-    */
-
-
-        ModelAndView model = new ModelAndView("user/profile");
-        userAvatar = userService.getCurrentUser().getAvatar();
+        ModelAndView model = new ModelAndView("user/profile", "user",userService.getCurrentUserDto());
+        userAvatar = userService.getCurrentUserDto().getAvatar();
         mailHash = userService.mailHash();
-        model.addObject("user", userService.getCurrentUser());
+//        model.addObject("user", userService.getCurrentUserDto());
         model.addObject("gravatar", mailHash);
         model.addObject("userAvatar", userAvatar);
         return model;
@@ -89,7 +84,7 @@ public class UserController {
 
     @PostMapping("/editProfile")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView profile(@Validated(ValidationStepTwo.class) User user,
+    public ModelAndView profile(@Validated(ValidationStepTwo.class)UserDto userDto,
                                 BindingResult result,
                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                 @RequestParam(required = false) String password2) {
@@ -102,9 +97,9 @@ public class UserController {
                 .map(MultipartFile::getOriginalFilename)
                 .forEach(imgName -> userAvatar = imgName);
 
-        userService.existenceValidator(user, result);
+//        userService.existenceValidator(user, result);
 
-        if (Optional.ofNullable(password2).isPresent() && (!user.getPassword().equals(password2))) {
+        if (Optional.ofNullable(password2).isPresent() && (!userDto.getPassword().equals(password2))) {
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
         }
         if (result.hasErrors()) {
@@ -114,8 +109,8 @@ public class UserController {
             model.addObject("gravatar",mailHash);
             return model;
         }
-        user.setAvatar(userAvatar);
-        userService.updateUser(user);
+        userDto.setAvatar(userAvatar);
+        userService.updateUser(userDto);
 
         model.setViewName("redirect:/user/profile");
         return model;

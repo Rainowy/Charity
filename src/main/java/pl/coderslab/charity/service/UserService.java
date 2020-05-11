@@ -1,5 +1,6 @@
 package pl.coderslab.charity.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.Repository.VerificationTokenRepository;
+import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.entity.VerificationToken;
 import pl.coderslab.charity.event.OnRegistrationCompleteEvent;
@@ -64,8 +66,14 @@ public class UserService implements Confirmable {
     }
 
     public User getCurrentUser() {
-        LoggedUser loggedUser = getLoggedUser();
-        return userById(loggedUser.getUserId()).get();
+        return userById(getLoggedUser().getUserId()).get();
+    }
+
+    public UserDto getCurrentUserDto() {
+        User user = userById(getLoggedUser().getUserId()).get();
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        return userDto;
     }
 
     public String mailHash() {
@@ -96,11 +104,18 @@ public class UserService implements Confirmable {
         return user;
     }
 
-    public void updateUser(User user) {
+    public void updateUser(UserDto userDto) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(userDto, User.class);
+        
         Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
         formPass.ifPresentOrElse(
                 password -> user.setPassword(passwordEncoder.encode(password)),
                 () -> user.setPassword(getCurrentUser().getPassword()));
+
+
+
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         activateUser(user);
     }
@@ -124,7 +139,11 @@ public class UserService implements Confirmable {
         }
     }
 
-    public void existenceValidator(@Valid User user, BindingResult result) {
+    public void existenceValidator(@Valid UserDto userDto, BindingResult result) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(userDto, User.class);
+
         Optional<Long> userId = Optional.ofNullable(user.getId());
         userId.ifPresentOrElse(var -> userNotEmpty(user, result), () -> userEmpty(user, result));
     }

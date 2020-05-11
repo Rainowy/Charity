@@ -15,7 +15,7 @@
 <!--action="#"-->
 <section class="login-page">
     <h2>Załóż konto</h2>
-    <form autocomplete="off"  th:action="@{/register}" th:object="${user}" method="post">
+    <form autocomplete="off"  th:action="@{/register}" th:object="${userDto}" method="post">
         <div class="form-group">
             <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
                class="validation-message"></p>

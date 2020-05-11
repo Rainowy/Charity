@@ -12,6 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.charity.Repository.InstitutionPartialView;
+import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.entity.VerificationToken;
@@ -79,7 +80,7 @@ public class HomeController {
         return model;
     }
 
-    @GetMapping("/register")
+//    @GetMapping("/register")
     public ModelAndView register() {
         ModelAndView model = new ModelAndView();
         User user = new User();
@@ -88,13 +89,23 @@ public class HomeController {
         return model;
     }
 
-    @PostMapping("/register")
+    @GetMapping("/register")
+    public ModelAndView registerDto() {
+        ModelAndView model = new ModelAndView();
+        UserDto userDto = new UserDto();
+        model.addObject("userDto", userDto);
+        model.setViewName("register");
+        return model;
+    }
+
+
+//    @PostMapping("/register")
     public ModelAndView register(@Validated(ValidationStepOne.class) User user,
                                  BindingResult result,
                                  @RequestParam String password2, RedirectAttributes redirectAttributes) {
         ModelAndView model = new ModelAndView();
 
-        userService.existenceValidator(user, result);
+//        userService.existenceValidator(user, result);
 
         if (!user.getPassword().equals(password2)) {
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
@@ -111,6 +122,25 @@ public class HomeController {
         model.setViewName("redirect:/registrationMessage");
         return model;
     }
+    @PostMapping("/register")
+    public ModelAndView registerDto(@Validated(ValidationStepOne.class) UserDto userDto,BindingResult result,   @RequestParam String password2, RedirectAttributes redirectAttributes){
+        ModelAndView model = new ModelAndView();
+
+        userService.existenceValidator(userDto, result);
+
+        if (!userDto.getPassword().equals(password2)) {
+            result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
+        }
+        if (result.hasErrors()) {
+            model.setViewName("/register");
+            return model;
+        }
+        String messageValue = messages.getMessage("auth.message.confirmationEmail", null, Locale.getDefault());
+        redirectAttributes.addFlashAttribute("message", messageValue);
+        model.setViewName("redirect:/registrationMessage");
+        return model;
+    }
+
 
     @GetMapping("/registrationConfirm")
     public String confirmRegistration

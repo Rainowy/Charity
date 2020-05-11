@@ -1,13 +1,6 @@
 package pl.coderslab.charity.entity;//package pl.coderslab.charity.entity;
 
-import pl.coderslab.charity.validation.ValidPassword;
-import pl.coderslab.charity.validation.ValidationStepOne;
-import pl.coderslab.charity.validation.ValidationStepTwo;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,17 +11,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
+//    @NotBlank(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
     private String firstName;
-    @NotBlank(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
+//    @NotBlank(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notempty}")
     private String lastName;
-    @Email(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.regular}")
-    @NotEmpty(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.notempty}")
+//    @Email(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.regular}")
+//    @NotEmpty(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.notempty}")
     private String email;
     //    @NotBlank(message = "nie pusty")
     private String phone;
-    @NotBlank(groups = ValidationStepOne.class, message = "{password.notempty}")
-    @ValidPassword(groups = ValidationStepTwo.class)
+//    @NotBlank(groups = ValidationStepOne.class, message = "{password.notempty}")
+//    @ValidPassword(groups = ValidationStepTwo.class)
 //    , message = "{password.notEmptyOrLonger5}"
     private String password;
     private boolean enabled;
