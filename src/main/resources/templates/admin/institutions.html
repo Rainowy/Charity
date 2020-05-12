@@ -365,7 +365,7 @@
                         <button id="hide">Dodaj instytucję</button>
                     </div>
                     <div class="card-body" id="hideNew">
-                        <form autocomplete="off" th:action="@{/admin/addOrEditInstitution}" th:object="${institution}"
+                        <form autocomplete="off" th:action="@{/admin/addOrEditInstitution}" th:object="${institutionDto}"
                               method="post">
                             <div class="form-group">
                                 <p th:if="${#fields.hasErrors('name') && (unhide.equals('true'))}" th:errors="*{name}"
@@ -411,7 +411,7 @@
                                 <tbody>
                                 <tr th:each="currentInst : ${institutions}">
                                     <form autocomplete="off" th:action="@{/admin/addOrEditInstitution}"
-                                          th:object="${institution}"
+                                          th:object="${institutionDto}"
                                           method="post">
                                         <input type="hidden" th:value="${currentInstStat.current.id}" th:name="id"/>
                                         <td th:text="${currentInstStat.current.id}"></td>

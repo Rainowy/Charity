@@ -3,9 +3,8 @@ package pl.coderslab.charity.service;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
-import pl.coderslab.charity.Repository.InstitutionPartialView;
 import pl.coderslab.charity.Repository.InstitutionRepository;
-import pl.coderslab.charity.dto.DtoUtils;
+import pl.coderslab.charity.utils.DtoUtils;
 import pl.coderslab.charity.dto.InstitutionDto;
 import pl.coderslab.charity.entity.Institution;
 
@@ -21,14 +20,29 @@ public class InstitutionService {
         this.institutionRepository = institutionRepository;
     }
 
-    public List<InstitutionPartialView> getAllInstitutionsProjection() {
-        return institutionRepository.findAllByOrderByIdAsc();
+//    public List<InstitutionPartialView> getAllInstitutionsProjection() {
+//        return institutionRepository.findAllByOrderByIdAsc();
+//    }
+
+    public List<InstitutionDto> getAllInstitutionsProjection() {
+
+        List<Institution> institutions = institutionRepository.findAll();
+        PropertyMap<Institution, InstitutionDto> propertyMap = new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                skip(destination.getId()); //skip this properties
+                skip(destination.getDonations());
+            }
+        };
+        return new DtoUtils().convertToDtoList(institutions, new TypeToken<List<InstitutionDto>>() {
+        }.getType(), propertyMap);
     }
 
     public List<InstitutionDto> getAllInstitutions() {
         List<Institution> institutions = institutionRepository.findAll();
 
         /** Here we skip properties, if null pass as parameter, do not skip **/
+
         PropertyMap<Institution, InstitutionDto> propertyMap = new PropertyMap<>() {
             @Override
             protected void configure() {
@@ -43,7 +57,10 @@ public class InstitutionService {
         return institutionRepository.findById(id);
     }
 
-    public Institution saveInstitution(Institution institution) {
+    public Institution saveInstitution(InstitutionDto institutionDto) {
+
+        Institution institution = (Institution) new DtoUtils().convertToEntity(new Institution(), institutionDto);
+
         Optional.ofNullable(institution.getId()).ifPresent(i ->
                 institution.setDonations(getById(i).get().getDonations()));
         return institutionRepository.save(institution);

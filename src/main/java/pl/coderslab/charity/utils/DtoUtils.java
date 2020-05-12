@@ -1,8 +1,7 @@
-package pl.coderslab.charity.dto;
+package pl.coderslab.charity.utils;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import pl.coderslab.charity.utils.DtoEntity;
 
 import java.lang.reflect.Type;
 import java.util.List;

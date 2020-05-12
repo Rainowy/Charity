@@ -4,7 +4,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.Repository.CategoryRepository;
 import pl.coderslab.charity.dto.CategoryDto;
-import pl.coderslab.charity.dto.DtoUtils;
+import pl.coderslab.charity.utils.DtoUtils;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.utils.DtoEntity;
 

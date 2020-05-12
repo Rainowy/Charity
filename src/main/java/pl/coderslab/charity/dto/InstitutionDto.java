@@ -21,6 +21,6 @@ public class InstitutionDto implements DtoEntity {
     @Length(min = 5, message = "{field.descToShort}")
     @NotBlank(message = "{field.notempty}")
     private String description;
-    private  List<Donation> donations = new ArrayList<>();
+    private List<Donation> donations = new ArrayList<>();
 }
 

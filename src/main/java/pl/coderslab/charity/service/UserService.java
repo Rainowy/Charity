@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.Repository.VerificationTokenRepository;
-import pl.coderslab.charity.dto.DtoUtils;
+import pl.coderslab.charity.utils.DtoUtils;
 import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.entity.VerificationToken;

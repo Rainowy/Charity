@@ -6,7 +6,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.dto.InstitutionDto;
-import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.AdminService;
 import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
@@ -38,17 +37,16 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView institutions() {
         ModelAndView model = new ModelAndView("admin/institutions");
-        Institution institution = new Institution();
-        model.addObject("institution", institution);
+        model.addObject("institutionDto", new InstitutionDto());
         model.addObject("institutions");
         return model;
     }
 
     @PostMapping("/addOrEditInstitution")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView addInstitutions(@Valid Institution institution, BindingResult result) {
+    public ModelAndView addInstitutions(@Valid InstitutionDto institutionDto, BindingResult result) {
         ModelAndView model = new ModelAndView("redirect:/admin/inst");
-        Optional<Long> id = Optional.ofNullable(institution.getId());
+        Optional<Long> id = Optional.ofNullable(institutionDto.getId());
 
         if (result.hasErrors()) {
             id.ifPresentOrElse(i -> model.addObject("unhide", "false"),
@@ -56,7 +54,7 @@ public class AdminController {
             model.setViewName("admin/institutions");
             return model;
         }
-        institutionService.saveInstitution(institution);
+        institutionService.saveInstitution(institutionDto);
         return model;
     }
 
@@ -64,9 +62,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteInstitution(@PathVariable Long id) {
         ModelAndView model = new ModelAndView("redirect:/admin/inst");
-        System.out.println("ID do kasacji " + id);
         institutionService.deleteById(id);
-
         return model;
     }
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.coderslab.charity.Repository.InstitutionPartialView;
+import pl.coderslab.charity.dto.InstitutionDto;
 import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
@@ -42,7 +42,7 @@ public class HomeController {
     }
 
     @ModelAttribute("institutions")
-    List<InstitutionPartialView> showAllInstitutionsProjection() {
+    List<InstitutionDto> showAllInstitutionsProjection() {
         return institutionService.getAllInstitutionsProjection();
     }
 
