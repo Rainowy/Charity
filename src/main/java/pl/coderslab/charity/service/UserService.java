@@ -91,10 +91,7 @@ public class UserService implements Confirmable {
 
     public User saveUser(UserDto userDto) {
 
-        System.out.println(userDto.getAvatar() + " Avatar");
-
-        ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(userDto, User.class);
+        User user = getEntity(userDto);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
@@ -112,8 +109,7 @@ public class UserService implements Confirmable {
 
     public void updateUser(UserDto userDto) {
 
-        ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(userDto, User.class);
+        User user = getEntity(userDto);
 
         Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
         formPass.ifPresentOrElse(
@@ -123,6 +119,11 @@ public class UserService implements Confirmable {
 
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         activateUser(user);
+    }
+
+    private User getEntity(UserDto userDto) {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(userDto, User.class);
     }
 
     public void activateUser(User user) {
@@ -146,8 +147,7 @@ public class UserService implements Confirmable {
 
     public void existenceValidator(@Valid UserDto userDto, BindingResult result) {
 
-        ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(userDto, User.class);
+        User user = getEntity(userDto);
 
         Optional<Long> userId = Optional.ofNullable(user.getId());
         userId.ifPresentOrElse(var -> userNotEmpty(user, result), () -> userEmpty(user, result));

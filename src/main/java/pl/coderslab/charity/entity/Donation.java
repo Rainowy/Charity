@@ -29,6 +29,7 @@ public class Donation {
 //            cascade = CascadeType.ALL)
 //            orphanRemoval = true)
     @JoinColumn(name = "donation_id")
+    //TODO powinno być ManytoMany nie OneToMany
     private List<Category> categories = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")

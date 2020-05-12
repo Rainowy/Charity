@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.coderslab.charity.dto.InstitutionDto;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.AdminService;
 import pl.coderslab.charity.service.InstitutionService;
@@ -29,7 +30,7 @@ public class AdminController {
     }
 
     @ModelAttribute("institutions")
-    public List<Institution> showAllInstitutions() {
+    public List<InstitutionDto> showAllInstitutions() {
         return institutionService.getAllInstitutions();
     }
 

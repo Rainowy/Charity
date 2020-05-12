@@ -1,16 +1,11 @@
 package pl.coderslab.charity.dto;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@EqualsAndHashCode
+@Setter
 public class CategoryDto {
     private Long id;
     private String name;
-
-    public CategoryDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }
