@@ -3,6 +3,7 @@ package pl.coderslab.charity.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import pl.coderslab.charity.utils.DtoEntity;
 import pl.coderslab.charity.validation.ValidPassword;
 import pl.coderslab.charity.validation.ValidationStepOne;
 import pl.coderslab.charity.validation.ValidationStepTwo;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
-public class UserDto {
+public class UserDto implements DtoEntity {
 
     private Long id;
     @NotBlank(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{field.notEmpty}")

@@ -1,4 +1,4 @@
-package pl.coderslab.charity.event;
+package pl.coderslab.charity.utils;
 
 import lombok.Getter;
 import lombok.Setter;

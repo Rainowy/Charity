@@ -50,12 +50,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Donation> donations = new ArrayList<>();
 
-    /**Synchro methods*/
-    public void addDonation(Donation donation){
+    /**
+     * Synchro methods
+     */
+    public void addDonation(Donation donation) {
         donations.add(donation);
         donation.setUser(this);
     }
-    public void removeDonation(Donation donation){
+
+    public void removeDonation(Donation donation) {
         donations.remove(donation);
         donation.setInstitution(null);
     }

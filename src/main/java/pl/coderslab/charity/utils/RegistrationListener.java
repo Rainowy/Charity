@@ -1,4 +1,4 @@
-package pl.coderslab.charity.event;
+package pl.coderslab.charity.utils;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;

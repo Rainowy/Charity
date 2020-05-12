@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import pl.coderslab.charity.dto.CategoryDto;
 import pl.coderslab.charity.dto.InstitutionDto;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
@@ -15,6 +14,7 @@ import pl.coderslab.charity.service.CategoryService;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
+import pl.coderslab.charity.utils.DtoEntity;
 
 import java.security.Principal;
 import java.util.List;
@@ -42,7 +42,7 @@ public class DonationController {
     }
 
     @ModelAttribute("categories")
-    public List<CategoryDto> getAllCategories() {
+    public List<DtoEntity> getAllCategories() {
         return categoryService.getAllCategories();
     }
 

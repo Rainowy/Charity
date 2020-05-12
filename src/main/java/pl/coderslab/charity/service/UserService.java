@@ -1,6 +1,5 @@
 package pl.coderslab.charity.service;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,11 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.Repository.VerificationTokenRepository;
+import pl.coderslab.charity.dto.DtoUtils;
 import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.entity.VerificationToken;
-import pl.coderslab.charity.event.OnRegistrationCompleteEvent;
 import pl.coderslab.charity.userStore.LoggedUser;
+import pl.coderslab.charity.utils.OnRegistrationCompleteEvent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -71,9 +71,7 @@ public class UserService implements Confirmable {
 
     public UserDto getCurrentUserDto() {
         User user = userById(getLoggedUser().getUserId()).get();
-        ModelMapper modelMapper = new ModelMapper();
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        return userDto;
+        return (UserDto) new DtoUtils().convertToDto(user, new UserDto());
     }
 
     public String mailHash() {
@@ -91,7 +89,7 @@ public class UserService implements Confirmable {
 
     public User saveUser(UserDto userDto) {
 
-        User user = getEntity(userDto);
+        User user = (User) new DtoUtils().convertToEntity(new User(), userDto);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
@@ -109,7 +107,7 @@ public class UserService implements Confirmable {
 
     public void updateUser(UserDto userDto) {
 
-        User user = getEntity(userDto);
+        User user = (User) new DtoUtils().convertToEntity(new User(), userDto);
 
         Optional<String> formPass = Optional.ofNullable(user.getPassword()).filter(s -> !s.isEmpty());  /** if formPass empty don't change password **/
         formPass.ifPresentOrElse(
@@ -119,11 +117,6 @@ public class UserService implements Confirmable {
 
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         activateUser(user);
-    }
-
-    private User getEntity(UserDto userDto) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(userDto, User.class);
     }
 
     public void activateUser(User user) {
@@ -147,7 +140,7 @@ public class UserService implements Confirmable {
 
     public void existenceValidator(@Valid UserDto userDto, BindingResult result) {
 
-        User user = getEntity(userDto);
+        User user = (User) new DtoUtils().convertToEntity(new User(), userDto);
 
         Optional<Long> userId = Optional.ofNullable(user.getId());
         userId.ifPresentOrElse(var -> userNotEmpty(user, result), () -> userEmpty(user, result));
