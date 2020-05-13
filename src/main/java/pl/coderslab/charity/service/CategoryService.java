@@ -4,9 +4,8 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.Repository.CategoryRepository;
 import pl.coderslab.charity.dto.CategoryDto;
-import pl.coderslab.charity.utils.DtoUtils;
 import pl.coderslab.charity.entity.Category;
-import pl.coderslab.charity.utils.DtoEntity;
+import pl.coderslab.charity.utils.DtoUtils;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<DtoEntity> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
         return new DtoUtils().convertToDtoList(categories, new TypeToken<List<CategoryDto>>() {
         }.getType(), null);

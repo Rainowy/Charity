@@ -49,8 +49,14 @@ public class InstitutionService {
                 skip(destination.getDonations());  //skip this properties
             }
         };
-        return new DtoUtils().convertToDtoList(institutions, new TypeToken<List<InstitutionDto>>() {
+        List<InstitutionDto> institutionDtos = new DtoUtils().convertToDtoList(institutions, new TypeToken<List<InstitutionDto>>() {
         }.getType(), propertyMap);
+
+//        institutionDtos.stream()
+//                .map(s -> s.getDonations())
+//                .forEach(s -> new DtoUtils().convertToDto(s, new DonationDto));
+
+        return institutionDtos;
     }
 
     public Optional<Institution> getById(Long id) {

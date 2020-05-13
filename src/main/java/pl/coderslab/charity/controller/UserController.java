@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import pl.coderslab.charity.dto.DonationDto;
 import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.service.DonationService;
@@ -43,29 +44,24 @@ public class UserController {
 
     @GetMapping("/donations")
     @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
-    public ModelAndView userPanel() {
+    public ModelAndView donations() {
         ModelAndView model = new ModelAndView("user/donations");
-        Donation donation = new Donation();
-        model.addObject("donation", donation);
+        model.addObject("donationDto", new DonationDto());
 //        model.addObject("donations",donationService.getAllDonationsProjection());
-        model.addObject("donations", donationService.getAllDonationsByUser(userService.getCurrentUser()));
+        model.addObject("donationsDto", donationService.getAllDonationsByUser());
 
         return model;
     }
 
-    @PostMapping("/table")
+    @PostMapping("/donations")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView table(@Valid Donation donation, BindingResult result) {
+    public ModelAndView donations(@Valid DonationDto donationDto, BindingResult result) {
         ModelAndView model = new ModelAndView("redirect:/user/donations");
         if (result.hasErrors()) {
             model.setViewName("redirect:/user/donations");
             return model;
         }
-        Optional<Donation> donationById = donationService.getDonationById(donation.getId());
-        donationById.ifPresent(d -> d.setReceived(donation.isReceived()));
-        donationById.ifPresent(d -> d.setDateReceived(donation.getDateReceived()));
-
-        donationService.saveDonation(donationById.get());
+        donationService.editDonation(donationDto);
         return model;
     }
 
@@ -73,7 +69,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile() {
 
-        ModelAndView model = new ModelAndView("user/profile", "user",userService.getCurrentUserDto());
+        ModelAndView model = new ModelAndView("user/profile", "user", userService.getCurrentUserDto());
         userAvatar = userService.getCurrentUserDto().getAvatar();
         mailHash = userService.mailHash();
 //        model.addObject("user", userService.getCurrentUserDto());
@@ -84,7 +80,7 @@ public class UserController {
 
     @PostMapping("/editProfile")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView profile(@Validated(ValidationStepTwo.class)UserDto userDto,
+    public ModelAndView profile(@Validated(ValidationStepTwo.class) UserDto userDto,
                                 BindingResult result,
                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                 @RequestParam(required = false) String password2) {
@@ -106,7 +102,7 @@ public class UserController {
             model.setViewName("/user/profile");
             model.addObject("editEnabled", "true");
             model.addObject("userAvatar", userAvatar);
-            model.addObject("gravatar",mailHash);
+            model.addObject("gravatar", mailHash);
             return model;
         }
         userDto.setAvatar(userAvatar);

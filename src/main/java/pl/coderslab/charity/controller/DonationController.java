@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import pl.coderslab.charity.dto.CategoryDto;
+import pl.coderslab.charity.dto.DonationDto;
 import pl.coderslab.charity.dto.InstitutionDto;
-import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.CategoryService;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
-import pl.coderslab.charity.utils.DtoEntity;
 
 import java.security.Principal;
 import java.util.List;
@@ -42,7 +42,7 @@ public class DonationController {
     }
 
     @ModelAttribute("categories")
-    public List<DtoEntity> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
@@ -50,8 +50,7 @@ public class DonationController {
     @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
     public ModelAndView donationForm(Principal principal) {
         ModelAndView model = new ModelAndView("form");
-        Donation donation = new Donation();
-        model.addObject("donation", donation);
+        model.addObject("donationDto", new DonationDto());
         model.addObject("institutions");
         model.addObject("categories");
         Optional<User> user = userService.userByEmail(principal.getName());
@@ -60,8 +59,8 @@ public class DonationController {
     }
 
     @PostMapping("/form")
-    public ModelAndView donationForm(Donation donation) {
-        donationService.saveDonation(donation);
+    public ModelAndView donationForm(DonationDto donationDto) {
+        donationService.saveDonation(donationDto);
         return new ModelAndView("form-confirmation");
     }
 }

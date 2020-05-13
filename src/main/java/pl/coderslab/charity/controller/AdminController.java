@@ -73,7 +73,6 @@ public class AdminController {
 
         System.out.println(userService.findAllAdmins());
 
-
         return model;
     }
 
@@ -81,7 +80,6 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteUser(@PathVariable Long id) {
         ModelAndView model = new ModelAndView("redirect:/admin/inst");
-//        Optional<User> userToDelete = userService.userById(id);
         adminService.deleteById(id);
         return model;
     }

@@ -71,7 +71,7 @@
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
         <!--action="#"  w formularzu zostaje na tej samej stronie-->
-        <form th:action="@{/donation/form}" th:object="${donation}" method="post">
+        <form th:action="@{/donation/form}" th:object="${donationDto}" method="post">
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
