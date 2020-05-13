@@ -67,22 +67,47 @@ public class DonationService {
         return donationRepository.findAllByOrderByIdAsc();
     }
 
-    public List<Donation> getAllDonations() {
-        return donationRepository.findAll();
+    public List<DonationDto> getAllDonations() {
+
+        List<Donation> donations = donationRepository.findAll();
+        return new DtoUtils().convertToDtoList(donations, new TypeToken<List<DonationDto>>() {
+        }.getType(), skipAllExceptInstitutionAndQuantity());
     }
 
-    public List<Donation> getAllDonationsByUser() {
+    public List<DonationDto> getAllDonationsByUser() {
 
         List<Donation> donations = donationRepository.findAllByUser(userService.getCurrentUser());
-        PropertyMap<Donation, DonationDto> propertyMap = new PropertyMap<>() {
+        return new DtoUtils().convertToDtoList(donations, new TypeToken<List<DonationDto>>() {
+        }.getType(), skipCategories());
+    }
+
+    private PropertyMap<Donation, DonationDto> skipAllExceptInstitutionAndQuantity() {
+        return new PropertyMap<>() {
             @Override
             protected void configure() {
-                skip(destination.getCategories()); //skip this properties
+                skip(destination.getId());
+                skip(destination.getCategories());
+                skip(destination.getDateReceived());
+                skip(destination.getCity());
+                skip(destination.getStreet());
+                skip(destination.getCreated());
+                skip(destination.getPhoneNumber());
+                skip(destination.getPickUpComment());
+                skip(destination.getPickUpDate());
+                skip(destination.getPickUpTime());
+                skip(destination.getUser());
+                skip(destination.getZipCode());
             }
         };
-        return new DtoUtils().convertToDtoList(donations, new TypeToken<List<DonationDto>>() {
-        }.getType(), propertyMap);
+    }
 
+    private PropertyMap<Donation, DonationDto> skipCategories() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                skip(destination.getCategories());
+            }
+        };
     }
 
     public Optional<Donation> getDonationById(Long id) {

@@ -53,9 +53,9 @@ public class UserController {
         return model;
     }
 
-    @PostMapping("/donations")
+    @PostMapping("/editDonations")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView donations(@Valid DonationDto donationDto, BindingResult result) {
+    public ModelAndView editDonations(@Valid DonationDto donationDto, BindingResult result) {
         ModelAndView model = new ModelAndView("redirect:/user/donations");
         if (result.hasErrors()) {
             model.setViewName("redirect:/user/donations");
@@ -80,7 +80,7 @@ public class UserController {
 
     @PostMapping("/editProfile")
     @PreAuthorize("hasRole('USER')")
-    public ModelAndView profile(@Validated(ValidationStepTwo.class) UserDto userDto,
+    public ModelAndView editProfile(@Validated(ValidationStepTwo.class) UserDto userDto,
                                 BindingResult result,
                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                 @RequestParam(required = false) String password2) {

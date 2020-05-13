@@ -61,11 +61,12 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
             if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
 //            if (grantedAuthority.getAuthority().equals("READ_PRIVILEGE")) {
 //                return "user/panel";
-                return "donation/form";
+                return "logged/user";
 //            } else if (grantedAuthority.getAuthority().equals("CHILD")) {
 //                return "child/panel";
             } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
-                return "admin/panel";
+//                return "admin/panel";
+                return "logged/admin";
             }
         }
         throw new IllegalStateException();

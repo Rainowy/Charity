@@ -405,7 +405,7 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="donationView : ${donationsDto}">
-                                    <form autocomplete="off" th:action="@{/user/donations}" th:object="${donationDto}"
+                                    <form autocomplete="off" th:action="@{/user/editDonations}" th:object="${donationDto}"
                                           method="post">
                                         <td><a th:href="@{'/user/table_details/' + ${donationView.id}}"
                                                th:text="${donationView.id} + ' *'"></a></td>
@@ -469,7 +469,7 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="donationView : ${donationsDto}">
-                                    <form autocomplete="off" th:action="@{/user/donations}" th:object="${donationDto}"
+                                    <form autocomplete="off" th:action="@{/user/editDonations}" th:object="${donationDto}"
                                           method="post">
                                         <td><a th:href="@{'/user/table_details/' + ${donationView.id}}"
                                                th:text="${donationView.id} + ' *'"></a></td>

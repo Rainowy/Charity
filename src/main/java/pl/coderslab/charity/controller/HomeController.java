@@ -2,9 +2,7 @@ package pl.coderslab.charity.controller;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.charity.dto.InstitutionDto;
 import pl.coderslab.charity.dto.UserDto;
-import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.entity.VerificationToken;
 import pl.coderslab.charity.service.DonationService;
@@ -21,9 +18,9 @@ import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.validation.ValidationStepOne;
 
-import java.security.Principal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
@@ -56,28 +53,16 @@ public class HomeController {
         return modelAndView;
     }
 
-//    @GetMapping("/login")
-//    public ModelAndView login(@RequestParam(required = false) String error) {
-//        System.out.println("ERROR TO " + error);
-//        return new ModelAndView("login", "error", error);
-//    }
-
-    @GetMapping("/login")
-    public ModelAndView login() {
-//        System.out.println("ERROR TO " + error);
-        return new ModelAndView("login");
-    }
-
-//    @PostMapping Mapping("/login")
-//    public ModelAndView login() {
-//        return new ModelAndView("login");
-//    }
-
     @GetMapping("home/{section}")
     public ModelAndView links(@PathVariable String section, RedirectAttributes redirectAttributes) {
         ModelAndView model = new ModelAndView("redirect:/");
         redirectAttributes.addFlashAttribute("flashSection", section);
         return model;
+    }
+
+    @GetMapping("/login")
+    public ModelAndView login() {
+        return new ModelAndView("login");
     }
 
     @GetMapping("/register")
@@ -110,10 +95,9 @@ public class HomeController {
         return model;
     }
 
-
     @GetMapping("/registrationConfirm")
     public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token, RedirectAttributes redirectAttributes) {
+            (WebRequest request, @RequestParam("token") String token, RedirectAttributes redirectAttributes) {
 
         Locale locale = request.getLocale();
 
@@ -141,35 +125,5 @@ public class HomeController {
     @GetMapping("/registrationMessage")
     public ModelAndView registrationMessage(@ModelAttribute("message") String message) {
         return new ModelAndView("register-confirmation", "message", message);
-    }
-
-
-    @GetMapping("/admin/panel")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView admin(Principal principal) {
-        ModelAndView model = new ModelAndView("admin/admin-panel");
-
-        addUserNameToModel(principal, model);
-
-        /** If duplicates exist, group them in one and sum its quantity values */
-        List<Donation> allDonations = donationService.getAllDonations();
-        Map<String, Integer> collect = allDonations.stream().collect(
-                Collectors.groupingBy(d -> d.getInstitution().getName(), Collectors.summingInt(Donation::getQuantity)));
-
-        List<String> instName = new ArrayList(collect.keySet());
-        List<String> instQuantity = new ArrayList(collect.values());
-        List<String> randomColor = instName.stream()
-                .map(i -> String.format("#%06x", new Random().nextInt(0xffffff + 1)))
-                .collect(Collectors.toList());
-
-        model.addObject("colors", randomColor);
-        model.addObject("institutionName", instName);
-        model.addObject("allQuantities", instQuantity);
-        return model;
-    }
-
-    private void addUserNameToModel(Principal principal, ModelAndView model) {
-        Optional<User> user = userService.userByEmail(principal.getName());
-        user.ifPresent(r -> model.addObject("userName", r.getFirstName()));
     }
 }
