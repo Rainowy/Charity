@@ -1,5 +1,7 @@
 package pl.coderslab.charity.service;
 
+import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeToken;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,11 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.coderslab.charity.Repository.RoleRepository;
 import pl.coderslab.charity.Repository.UserRepository;
 import pl.coderslab.charity.Repository.VerificationTokenRepository;
-import pl.coderslab.charity.utils.DtoUtils;
 import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.entity.VerificationToken;
 import pl.coderslab.charity.userStore.LoggedUser;
+import pl.coderslab.charity.utils.DtoUtils;
 import pl.coderslab.charity.utils.OnRegistrationCompleteEvent;
 
 import javax.servlet.http.HttpServletRequest;
@@ -162,8 +164,24 @@ public class UserService implements Confirmable {
         }
     }
 
-    public List<User> findAllAdmins() {
-        return userRepository.findAllByRoles(roleRepository.findByName("ROLE_ADMIN"));
+    public List<UserDto> findAllAdmins() {
+        List<User> admins = userRepository.findAllByRoles(roleRepository.findByName("ROLE_ADMIN"));
+        return new DtoUtils().convertToDtoList(admins, new TypeToken<List<UserDto>>() {
+        }.getType(), skipPasswordAndAvatar());
+    }
+
+    private PropertyMap<User, UserDto> skipPasswordAndAvatar() {
+        return new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                skip(destination.getAvatar());
+                skip(destination.getPassword());
+            }
+        };
+    }
+
+    public void deleteByUser() {
+        userRepository.deleteById(1L);
     }
 
     @Override

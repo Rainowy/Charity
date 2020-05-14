@@ -2,6 +2,7 @@ package pl.coderslab.charity.entity;//package pl.coderslab.charity.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +15,14 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy= GenerationType.AUTO,
+            generator="native"
+    )
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
     private String firstName;
     private String lastName;
@@ -37,7 +45,7 @@ public class User {
                     CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.REFRESH,
-                    CascadeType.PERSIST
+                    CascadeType.PERSIST,
             })
     @JoinTable(
             name = "users_roles",
@@ -63,102 +71,8 @@ public class User {
         donation.setInstitution(null);
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getFirstName() {
-//        return firstName;
-//    }
-//
-//    public void setFirstName(String firstName) {
-//        this.firstName = firstName;
-//    }
-//
-//    public String getLastName() {
-//        return lastName;
-//    }
-//
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//
-//    public boolean isEnabled() {
-//        return enabled;
-//    }
-//
-//    public void setEnabled(boolean enabled) {
-//        this.enabled = enabled;
-//    }
-//
-//    public boolean isTokenExpired() {
-//        return tokenExpired;
-//    }
-//
-//    public void setTokenExpired(boolean tokenExpired) {
-//        this.tokenExpired = tokenExpired;
-//    }
-//
-//    public Collection<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Collection<Role> roles) {
-//        this.roles = roles;
-//    }
-//
-//    public String getPhone() {
-//        return phone;
-//    }
-//
-//    public void setPhone(String phone) {
-//        this.phone = phone;
-//    }
-//
-//    public String getAvatar() {
-//        return avatar;
-//    }
-//
-//    public void setAvatar(String avatar) {
-//        this.avatar = avatar;
-//    }
-//
-//    public boolean isNotExpired() {
-//        return isNotExpired;
-//    }
-//
-//    public void setNotExpired(boolean notExpired) {
-//        isNotExpired = notExpired;
-//    }
-//
-//    public List<Donation> getDonations() {
-//        return donations;
-//    }
-//
-//    public void setDonations(List<Donation> donations) {
-//        this.donations = donations;
-//    }
-//
+
+
 //    @Override
 //    public String toString() {
 //        return "User{" +

@@ -24,12 +24,13 @@ public class UserDto implements DtoEntity {
     @Email(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.regular}")
     @NotEmpty(groups = {ValidationStepOne.class, ValidationStepTwo.class}, message = "{email.notEmpty}")
     private String email;
-
     private String phone;
     @NotBlank(groups = ValidationStepOne.class, message = "{password.notEmpty}")
     @Length(min = 5, groups = ValidationStepOne.class, message = "{password.toShort}")
     @ValidPassword(groups = ValidationStepTwo.class)/** for profile edition purpose */
     private String password;
     private String avatar;
+    private boolean enabled;
+    private boolean isNotExpired;
 }
 

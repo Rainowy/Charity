@@ -365,7 +365,7 @@
                         <button id="hide">Dodaj instytucję</button>
                     </div>
                     <div class="card-body" id="hideNew">
-                        <form autocomplete="off" th:action="@{/admin/addOrEditInstitution}" th:object="${institutionDto}"
+                        <form autocomplete="off" th:action="@{/addOrEditInstitution}" th:object="${institutionDto}"
                               method="post">
                             <div class="form-group">
                                 <p th:if="${#fields.hasErrors('name') && (unhide.equals('true'))}" th:errors="*{name}"
@@ -404,13 +404,12 @@
                                     <th>Edytuj</th>
                                     <th>Zapisz</th>
                                     <th>Usuń</th>
-
                                 </tr>
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="currentInst : ${institutions}">
-                                    <form autocomplete="off" th:action="@{/admin/addOrEditInstitution}"
+                                    <form autocomplete="off" th:action="@{/addOrEditInstitution}"
                                           th:object="${institutionDto}"
                                           method="post">
                                         <input type="hidden" th:value="${currentInstStat.current.id}" th:name="id"/>
@@ -455,13 +454,12 @@
                                                             data-dismiss="modal">Zamknij
                                                     </button>
                                                     <a type="button" class="btn btn-danger"
-                                                       th:href="@{/admin/deleteInst/{id}(id=${currentInst.id})}"><i
+                                                       th:href="@{/deleteInst/{id}(id=${currentInst.id})}"><i
                                                             class="fa fa-check"></i>&nbsp;Kasuj</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </tr>
                                 </tbody>
                             </table>

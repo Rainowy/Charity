@@ -6,11 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import pl.coderslab.charity.dto.UserDto;
-import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.userStore.ActiveUserStore;
@@ -83,16 +85,7 @@ public class UserController {
         return model;
     }
 
-    @GetMapping("/table_details/{id}")
-    @PreAuthorize("hasRole('USER')")
-    public ModelAndView table_details(@PathVariable String id) {
-        Optional<Donation> donationById = donationService.getDonationById(Long.parseLong(id));
-        ModelAndView model = new ModelAndView("user/donations");
 
-        model.addObject("details", "true");
-        System.out.println(id);
-        return model;
-    }
 
     @GetMapping("/loggedUsers")
     @PreAuthorize("hasRole('USER')")
@@ -100,5 +93,12 @@ public class UserController {
         model.addAttribute("users", activeUserStore.getUsers());
         model.addAttribute("usersId", activeUserStore.getUsersId());
         return "user/users";
+    }
+
+    @GetMapping("/delete")
+    public String deleteUser(){
+        userService.deleteByUser();
+        return "redirect:/user/loggedUsers";
+
     }
 }
