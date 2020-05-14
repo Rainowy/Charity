@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import pl.coderslab.charity.dto.DonationDto;
 import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.service.DonationService;
@@ -17,12 +16,8 @@ import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.userStore.ActiveUserStore;
 import pl.coderslab.charity.validation.ValidationStepTwo;
 
-import javax.validation.Valid;
 import java.util.Locale;
 import java.util.Optional;
-//import org.apache.commons.codec.digest.DigestUtils;
-
-//import static org.apache.commons.codec.digest.DigestUtils.*;
 
 @Controller
 @RequestMapping("/user")
@@ -42,37 +37,13 @@ public class UserController {
         this.mailHash = "";
     }
 
-    @GetMapping("/donations")
-    @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
-    public ModelAndView donations() {
-        ModelAndView model = new ModelAndView("user/donations");
-        model.addObject("donationDto", new DonationDto());
-//        model.addObject("donations",donationService.getAllDonationsProjection());
-        model.addObject("donationsDto", donationService.getAllDonationsByUser());
-
-        return model;
-    }
-
-    @PostMapping("/editDonations")
-    @PreAuthorize("hasRole('USER')")
-    public ModelAndView editDonations(@Valid DonationDto donationDto, BindingResult result) {
-        ModelAndView model = new ModelAndView("redirect:/user/donations");
-        if (result.hasErrors()) {
-            model.setViewName("redirect:/user/donations");
-            return model;
-        }
-        donationService.editDonation(donationDto);
-        return model;
-    }
-
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER')")
     public ModelAndView profile() {
 
-        ModelAndView model = new ModelAndView("user/profile", "user", userService.getCurrentUserDto());
+        ModelAndView model = new ModelAndView("user/profile", "userDto", userService.getCurrentUserDto());
         userAvatar = userService.getCurrentUserDto().getAvatar();
         mailHash = userService.mailHash();
-//        model.addObject("user", userService.getCurrentUserDto());
         model.addObject("gravatar", mailHash);
         model.addObject("userAvatar", userAvatar);
         return model;
@@ -93,7 +64,7 @@ public class UserController {
                 .map(MultipartFile::getOriginalFilename)
                 .forEach(imgName -> userAvatar = imgName);
 
-//        userService.existenceValidator(user, result);
+        userService.existenceValidator(userDto, result);
 
         if (Optional.ofNullable(password2).isPresent() && (!userDto.getPassword().equals(password2))) {
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");

@@ -81,7 +81,7 @@ public class LoggedInController {
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER')") //ROLE_USER też tu działą
     public ModelAndView donationForm(Principal principal) {
-        ModelAndView model = new ModelAndView("user-panel", "donationDto", new DonationDto());
+        ModelAndView model = new ModelAndView("user/user-panel", "donationDto", new DonationDto());
 //        model.addObject("donationDto", new DonationDto());
         model.addObject("institutions");
         model.addObject("categories");
