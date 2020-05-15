@@ -32,5 +32,6 @@ public class UserDto implements DtoEntity {
     private String avatar;
     private boolean enabled;
     private boolean isNotExpired;
+    private boolean tokenExpired;
 }
 

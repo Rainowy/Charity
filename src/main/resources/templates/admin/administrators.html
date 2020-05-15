@@ -392,8 +392,9 @@
                                     <th>Imię</th>
                                     <th>Nazwisko</th>
                                     <th>Telefon</th>
+                                    <th>Włączony</th>
                                     <th>Aktywny</th>
-                                    <th>Wygasł</th>
+                                    <th>Edytuj</th>
                                     <th>Zapisz</th>
                                     <th>Usuń</th>
                                 </tr>
@@ -406,8 +407,9 @@
                                     <th>Imię</th>
                                     <th>Nazwisko</th>
                                     <th>Telefon</th>
+                                    <th>Włączony</th>
                                     <th>Aktywny</th>
-                                    <th>Wygasł</th>
+                                    <th>Edytuj</th>
                                     <th>Zapisz</th>
                                     <th>Usuń</th>
                                 </tr>
@@ -453,14 +455,23 @@
                                                                        th:checked="${currentAdmin.enabled}"
                                                                        th:name="received"/><span> Nie </span></td>
                                         </th:block>
+                                        <th:block th:switch="${currentAdmin.tokenExpired}">
+                                            <td th:case="true"><input type="checkbox"
+                                                                      th:checked="${currentAdmin.tokenExpired}"
+                                                                      th:name="received"/><span> Tak </span></td>
+                                            <td th:case="false"><input type="checkbox"
+                                                                       th:checked="${currentAdmin.tokenExpired}"
+                                                                       th:name="received"/><span> Nie </span></td>
+                                        </th:block>
                                         <td>
 
                                             <button class="btn btn-lg" type="button" id="edit"><i
                                             ></i> Edytuj
                                             </button>
                                         </td>
-                                        <td><input type="submit" class="sub" value="Zapisz" id="submit">
-                                            <i class="fas fa-save"></i></td>
+<!--                                        <td><input type="submit" class="sub" value="Zapisz" id="submit">-->
+<!--                                            <i class="fas fa-save"></i></td>-->
+
                                         <td><input type="button" value="Kasuj" data-toggle="modal"
                                                    th:attr="data-target='#deleteModal'+${currentAdmin.id}">
                                             <i class="fa fa-trash" aria-hidden="true"></i></td>
