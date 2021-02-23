@@ -1,12 +1,14 @@
-<img alt="Logo" src="http://coderslab.pl/svg/logo-coderslab.svg" width="400">
+# CHARITY 
+
+> Application written as part of Portfolio Lab after the end of the Coders Lab Java course.
+
+> Technologies
+- Java 11
+- MySQL
+- Spring Boot
+- Thymeleaf
 
 
-Przed przystąpieniem do pracy  przeczytaj poniższe wskazówki.
-## Jak zacząć?
+ 
 
-1. Zaimportuj projekt jako projekt `Maven`, wg poniższych wskazówek:
 
-	* W `IntelliJ` wybieramy: `File –> New –> Project from Existing Sources...`
-	* Wskazujemy lokalizację katalogu ze sklonowanym projektem i zatwierdzamy.
-	* Następnie w nowym oknie wybieramy: `Import project from external model` i wskazujemy `Maven`
-	* Wybieramy kolejno opcje: `Next –> Next –> Next –> Finish`
