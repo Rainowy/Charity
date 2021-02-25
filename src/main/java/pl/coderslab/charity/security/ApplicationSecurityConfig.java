@@ -18,6 +18,8 @@ import pl.coderslab.charity.config.CustomAuthenticationFailureHandler;
 import pl.coderslab.charity.config.UrlAuthenticationSuccessHandler;
 import pl.coderslab.charity.service.MyUserDetailsService;
 
+//import pl.coderslab.charity.config.CustomAuthenticationFailureHandler;
+
 
 @Configuration
 @EnableWebSecurity

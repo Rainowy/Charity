@@ -77,6 +77,8 @@ public class DonationService {
     public List<DonationDto> getAllDonationsByUser() {
 
         List<Donation> donations = donationRepository.findAllByUser(userService.getCurrentUser());
+        System.out.println(donations);
+
         return new DtoUtils().convertToDtoList(donations, new TypeToken<List<DonationDto>>() {
         }.getType(), skipCategories());
     }
