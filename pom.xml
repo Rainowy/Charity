@@ -15,7 +15,9 @@
     <description>Charity project, created with love in CodersLab</description>
 
     <properties>
-        <java.version>13</java.version>
+        <java.version>11</java.version>
+        <jib.version>2.5.0</jib.version>
+        <exec.mainClass>pl.coderslab.charity.CharityApplication</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -116,7 +118,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib.version}</version>
+                <configuration>
+                    <to>
+                        <image>registry.hub.docker.com/rainowy/charity</image>
+                    </to>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
