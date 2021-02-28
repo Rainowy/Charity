@@ -363,7 +363,7 @@
 
             <!-- Begin Page Content -->
             <!--            <hr>-->
-            <form class="form" th:action="@{/user/editprofile}" th:object="${user}" method="post"
+            <form class="form" th:action="@{/user/editProfile}" th:object="${userDto}" method="post"
                   id="registrationForm" enctype="multipart/form-data">
                 <div class="container bootstrap snippet">
                     <div class="row">
@@ -381,13 +381,13 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="home">
                                     <hr>
-                                    <input type="hidden" th:value="${user.id}" th:name="id"/>
+                                    <input type="hidden" th:value="${userDto.id}" th:name="id"/>
                                     <div class="form-group">
                                         <div class="col-xs-6">
                                             <label for="first_name"><h4>Imię</h4></label>
                                             <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
                                                class="validation-message"></p>
-                                            <input type="text" class="form-control" th:value="${user.firstName}"
+                                            <input type="text" class="form-control" th:value="${userDto.firstName}"
                                                    id="first_name"
                                                    th:name="firstName" title="wprowadź imię" disabled>
                                         </div>
@@ -396,7 +396,7 @@
 
                                         <div class="col-xs-6">
                                             <label for="last_name"><h4>Nazwisko</h4></label>
-                                            <input type="text" class="form-control" th:value="${user.lastName}"
+                                            <input type="text" class="form-control" th:value="${userDto.lastName}"
                                                    id="last_name"
                                                    th:name="lastName" title="wprowadź nazwisko" disabled>
                                         </div>
@@ -405,7 +405,7 @@
 
                                         <div class="col-xs-6">
                                             <label for="phone"><h4>Telefon</h4></label>
-                                            <input type="text" class="form-control" th:value="${user.phone}" id="phone"
+                                            <input type="text" class="form-control" th:value="${userDto.phone}" id="phone"
                                                    th:name="phone" title="wprowadź numer telefonu" disabled>
                                         </div>
                                     </div>
@@ -415,7 +415,7 @@
                                             <label for="email"><h4>Email</h4></label>
                                             <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
                                                class="validation-message"></p>
-                                            <input  type="email" class="form-control" th:value="${user.email}" id="email"
+                                            <input  type="email" class="form-control" th:value="${userDto.email}" id="email"
                                                    th:name="email" title="wprowadź email" disabled>
                                         </div>
                                     </div>
@@ -424,7 +424,7 @@
                                             <label for="password"><h4>Hasło</h4></label>
                                             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                                                class="validation-message"></p>
-                                            <input type="password" class="form-control" th:field="${user.password}"
+                                            <input type="password" class="form-control" th:field="${userDto.password}"
                                                    id="password"
                                                    placeholder="jeśli zmieniasz wpisz hasło" title="wprowadź hasło"
                                                    disabled>

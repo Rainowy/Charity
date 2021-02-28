@@ -12,6 +12,10 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
 //    public List<User> findAllAdmins (String role){
 //        return userRepository.findAllByRolesNotNull(role);
 //    }

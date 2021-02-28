@@ -24,7 +24,6 @@
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/datatables/dataTables.bootstrap4.css}"/>
 
 </head>
-
 <body id="page-top">
 
 <!-- Page Wrapper -->
@@ -404,8 +403,8 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="donationView : ${donations}">
-                                    <form autocomplete="off" th:action="@{/user/table}" th:object="${donation}"
+                                <tr th:each="donationView : ${donationsByUser}">
+                                    <form autocomplete="off" th:action="@{/editDonations}" th:object="${donationDto}"
                                           method="post">
                                         <td><a th:href="@{'/user/table_details/' + ${donationView.id}}"
                                                th:text="${donationView.id} + ' *'"></a></td>
@@ -468,8 +467,8 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="donationView : ${donations}">
-                                    <form autocomplete="off" th:action="@{/user/table}" th:object="${donation}"
+                                <tr th:each="donationView : ${donationsByUser}">
+                                    <form autocomplete="off" th:action="@{/editDonations}" th:object="${donationDto}"
                                           method="post">
                                         <td><a th:href="@{'/user/table_details/' + ${donationView.id}}"
                                                th:text="${donationView.id} + ' *'"></a></td>
