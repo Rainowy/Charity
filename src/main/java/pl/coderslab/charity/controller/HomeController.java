@@ -84,7 +84,7 @@ public class HomeController {
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
         }
         if (result.hasErrors()) {
-            model.setViewName("/register");
+            model.setViewName("register");
             return model;
         }
         userService.saveUser(userDto);
