@@ -1,5 +1,8 @@
 package pl.coderslab.charity.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.*;
+import lombok.SneakyThrows;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,10 +25,6 @@ import pl.coderslab.charity.utils.OnRegistrationCompleteEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,22 +34,24 @@ import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 @Service
 public class UserService implements Confirmable {
 
-
-    private String UPLOADED_FOLDER = "/opt/files/";
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private HttpServletRequest request;
     private ApplicationEventPublisher eventPublisher;
     private VerificationTokenRepository tokenRepository;
+    private AmazonS3 s3client;
+    private String awsS3Bucket;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, HttpServletRequest request, ApplicationEventPublisher eventPublisher, VerificationTokenRepository tokenRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, HttpServletRequest request, ApplicationEventPublisher eventPublisher, VerificationTokenRepository tokenRepository, AmazonS3Service amazonS3Service) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.request = request;
         this.eventPublisher = eventPublisher;
         this.tokenRepository = tokenRepository;
+        this.s3client = amazonS3Service.getS3client();
+        this.awsS3Bucket = amazonS3Service.getAwsS3Bucket();
     }
 
     public Optional<User> userByEmail(String email) {
@@ -116,7 +117,6 @@ public class UserService implements Confirmable {
                 password -> user.setPassword(passwordEncoder.encode(password)),
                 () -> user.setPassword(getCurrentUser().getPassword()));
 
-
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         activateUser(user);
     }
@@ -127,17 +127,22 @@ public class UserService implements Confirmable {
         userRepository.save(user);
     }
 
+    @SneakyThrows
     public void saveAvatar(MultipartFile file) {
-        try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
-//            redirectAttributes.addFlashAttribute("message",
-//                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        ObjectMetadata data = new ObjectMetadata();
+        data.setContentType(file.getContentType());
+        data.setContentLength(file.getSize());
+
+        s3client.putObject(new PutObjectRequest(awsS3Bucket,
+                file.getOriginalFilename(),
+                file.getInputStream(),
+                data)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
+
+    public String avatarUrl(String userAvatar) {
+        return s3client.getUrl(awsS3Bucket, userAvatar).toString();
     }
 
     public void existenceValidator(@Valid UserDto userDto, BindingResult result) {
@@ -186,8 +191,7 @@ public class UserService implements Confirmable {
 
     @Override
     public User getUser(String verificationToken) {
-        User user = tokenRepository.findByToken(verificationToken).getUser();
-        return user;
+        return tokenRepository.findByToken(verificationToken).getUser();
     }
 
     @Override
