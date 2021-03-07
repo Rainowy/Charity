@@ -32,8 +32,6 @@ public class UserController {
     public UserController(UserService userService, ActiveUserStore activeUserStore) {
         this.userService = userService;
         this.activeUserStore = activeUserStore;
-//        this.userAvatar;
-//        this.mailHash = "";
     }
 
     @GetMapping("/profile")
@@ -71,7 +69,7 @@ public class UserController {
             result.rejectValue("password", "messageCode", "Hasła muszą być takie same");
         }
         if (result.hasErrors()) {
-            model.setViewName("/user/profile");
+            model.setViewName("user/profile");
             model.addObject("editEnabled", "true");
             model.addObject("userAvatar", avatarUrl);
             model.addObject("gravatar", mailHash);

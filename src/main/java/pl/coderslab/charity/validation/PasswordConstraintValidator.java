@@ -5,8 +5,7 @@ import org.passay.*;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.io.FileInputStream;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -25,9 +24,14 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
         lengthComplexityRule.addRules("[0,0]", new LengthRule(0));
         lengthComplexityRule.addRules("[3,10]", new LengthRule(3, 10));
 
-        URL resource = this.getClass().getClassLoader().getResource("messages_pl.properties");
+        InputStream is =
+                getClass().getClassLoader().getResourceAsStream("messages_pl.properties");
+
+//        URL resource = this.getClass().getClassLoader().getResource("/messages_pl.properties");
+//        String resource = this.getClass().getClassLoader().getResource("messages_pl.properties").toExternalForm();
         Properties props = new Properties();
-        props.load(new FileInputStream(resource.getPath()));
+//        props.load(new FileInputStream(resource.getPath()));
+        props.load(is);
         MessageResolver resolver = new PropertiesMessageResolver(props);
 
         /**Same in different way */
