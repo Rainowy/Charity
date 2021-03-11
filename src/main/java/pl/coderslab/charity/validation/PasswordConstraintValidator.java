@@ -24,13 +24,16 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
         lengthComplexityRule.addRules("[0,0]", new LengthRule(0));
         lengthComplexityRule.addRules("[3,10]", new LengthRule(3, 10));
 
-        InputStream is =
-                getClass().getClassLoader().getResourceAsStream("messages_pl.properties");
+        //Works in jar file and IDE
+        InputStream is = getClass().getClassLoader().getResourceAsStream("messages_pl.properties");
 
+        //Do not work in jar file but works in IDE
 //        URL resource = this.getClass().getClassLoader().getResource("/messages_pl.properties");
 //        String resource = this.getClass().getClassLoader().getResource("messages_pl.properties").toExternalForm();
-        Properties props = new Properties();
+//        Properties props = new Properties();
 //        props.load(new FileInputStream(resource.getPath()));
+
+        Properties props = new Properties();
         props.load(is);
         MessageResolver resolver = new PropertiesMessageResolver(props);
 
