@@ -29,6 +29,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mySql:3306/charity?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: coders
+      #      AWS S3
+      aws.s3.bucket: ${AWS_BUCKET}
+      aws.access.key: ${AWS_ACCESS_KEY}
+      aws.secret.key: ${AWS_SECRET_KEY}
+      #       Mail
+      spring.mail.host: smtp.gmail.com
+      spring.mail.port: 587
+      spring.mail.username: ${MAIL_USER}
+      spring.mail.password: ${MAIL_PASS}
+
 
   adminer:
     image: adminer
